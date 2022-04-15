@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   VStack,
   Input,
@@ -15,117 +15,241 @@ import {
   Button,
   Divider,
 } from "@chakra-ui/react";
+import { useFormik } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import { addProductAction } from "../actions/productAction";
+import { useNavigate } from "react-router-dom";
 
 function AddProduct() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const productData = useSelector((state) => {
+    return state.productDetails;
+  });
+  const { loding, productDetail, error } = productData;
+  useEffect(() => {
+    if (productDetail) {
+      navigate("/home");
+    }
+  }, [productDetail]);
+
+  console.log(productData, "----009888888");
+  const formik = useFormik({
+    initialValues: {
+      productName: "",
+      description: "",
+      category: "",
+      mainCategory: "",
+      subCategory: "",
+      brand: "",
+      size: "",
+      color: "",
+      marketPrice: "",
+      sellingPrice: "",
+      discountPrice: "",
+      stocks: "",
+      vendorCode: "",
+    },
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+      dispatch(addProductAction(values));
+    },
+  });
   return (
     <Stack spacing={4}>
       <VStack>
-        <HStack mt="10">
-          <Input placeholder="Enter The Product Name" w="50%" ml="20" />
+        <form onSubmit={formik.handleSubmit}>
+          <HStack mt="10">
+            <Input
+              onChange={formik.handleChange}
+              value={formik.values.productName}
+              name="productName"
+              placeholder="Enter The Product Name"
+              w="50%"
+              ml="20"
+            />
+
+            <Spacer />
+
+            <Input
+              onChange={formik.handleChange}
+              value={formik.values.description}
+              name="description"
+              placeholder="Enter The Description"
+              w="50%"
+              pr="40"
+            />
+          </HStack>
+
+          <HStack mt="10">
+            <Input
+              onChange={formik.handleChange}
+              value={formik.values.category}
+              name="category"
+              placeholder="Enter The Product category"
+              w="50%"
+              ml="20"
+            />
+
+            <Spacer />
+
+            <Input
+              onChange={formik.handleChange}
+              value={formik.values.mainCategory}
+              name="mainCategory"
+              placeholder="Enter The mainCategory"
+              w="50%"
+              pr="40"
+            />
+          </HStack>
+
+          <HStack mt="10">
+            <Input
+              onChange={formik.handleChange}
+              value={formik.values.subCategory}
+              name="subCategory"
+              placeholder="Enter The Product subCategory"
+              w="50%"
+              ml="20"
+            />
+
+            <Spacer />
+
+            <Input
+              onChange={formik.handleChange}
+              value={formik.values.brand}
+              name="brand"
+              placeholder="Enter The brand"
+              w="50%"
+              pr="40"
+            />
+          </HStack>
+
+          <HStack mt="10">
+            <Input
+              onChange={formik.handleChange}
+              value={formik.values.size}
+              name="size"
+              placeholder="Enter The Product size"
+              w="50%"
+              ml="20"
+            />
+
+            <Spacer />
+
+            <Input
+              onChange={formik.handleChange}
+              value={formik.values.color}
+              name="color"
+              placeholder="Enter The color"
+              w="50%"
+              pr="40"
+            />
+          </HStack>
+
+          <HStack mt="10">
+            <Input
+              type="number"
+              onChange={formik.handleChange}
+              value={formik.values.marketPrice}
+              name="marketPrice"
+              placeholder="Enter The Product marketPrice"
+              w="50%"
+              ml="20"
+            />
+
+            <Spacer />
+
+            <Input
+              type="number"
+              onChange={formik.handleChange}
+              value={formik.values.sellingPrice}
+              name="sellingPrice"
+              placeholder="Enter The sellingPrice"
+              w="50%"
+              pr="40"
+            />
+          </HStack>
+
+          <HStack mt="10">
+            <Input
+              type="number"
+              onChange={formik.handleChange}
+              value={formik.values.discountPrice}
+              name="discountPrice"
+              placeholder="Enter The Product discountPrice"
+              w="50%"
+              ml="20"
+            />
+
+            <Spacer />
+
+            <Input
+              type="number"
+              onChange={formik.handleChange}
+              value={formik.values.stocks}
+              name="stocks"
+              placeholder="Enter The stocks"
+              w="50%"
+              pr="40"
+            />
+          </HStack>
 
           <Spacer />
 
-          <Input placeholder="Enter The Description" w="50%" pr="40" />
-        </HStack>
-        <HStack mt="10">
-          <Select placeholder="Select category">
-            <option value="option1">Men</option>
-            <option value="option2">Women</option>
-          </Select>
+          <VStack mt="10">
+            <Input
+              onChange={formik.handleChange}
+              value={formik.values.vendorCode}
+              name="vendorCode"
+              placeholder="Enter The Product vendorCode"
+              w="50%"
+              ml="20"
+            />
 
-          <Spacer />
-
-          <Select placeholder="Main Category">
-            <option value="option2">Top Wear</option>
-            <option value="option3">Bottom Wear</option>
-          </Select>
-
-          <Spacer />
-
-          <Select placeholder="Sub Category">
-            <option value="option1">Tshirts</option>
-            <option value="option2">Shirts</option>
-            <option value="option3"> Pants</option>
-          </Select>
-        </HStack>
-
-        <HStack mt="10">
-          <Select placeholder="Select Brand">
-            <option value="option1">Levis</option>
-            <option value="option2">Parx</option>
-          </Select>
-
-          <Spacer />
-
-          <Select placeholder="Size">
-            <option value="option2">SM</option>
-            <option value="option3">MD</option>
-            <option value="option3">LG</option>
-            <option value="option3">XL</option>
-            <option value="option3">XXL</option>
-          </Select>
-
-          <Spacer />
-
-          <Select placeholder="color">
-            <option value="option1">Blue</option>
-            <option value="option2">Red</option>
-            <option value="option3">Yello</option>
-          </Select>
-        </HStack>
-        <HStack>
-          <VStack>
-            <Text>Market Price</Text>
-            <NumberInput size="lg" maxW={32} defaultValue={15} min={10}>
-              <NumberInputField />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
+            <Spacer />
           </VStack>
 
-          <Spacer />
-
-          <VStack>
-            <Text>Selling Price</Text>
-            <NumberInput size="lg" maxW={32} defaultValue={15} min={10}>
-              <NumberInputField />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
+          <Stack spacing={4}>
+            <MultiSelectMenu
+              label="Animals"
+              options={["Bat", "Tiger", "Lion"]}
+            />
+            <MultiSelectMenu
+              label="Fruits"
+              options={[
+                "Apple",
+                "Banana",
+                "Orange",
+                "Pineapple",
+                "Pomegranate",
+                "Watermelon",
+                "Kiwi",
+                "Peach",
+                "Papaya",
+                "Dragonfruit",
+                "Cantaloupe",
+                "Musk Melon",
+                "Grapefruit",
+                "Durian",
+                "Mango",
+                "Pear",
+                "Raspberry",
+              ]}
+            />
+          </Stack>
+          <Divider />
+          <VStack mt="5">
+            <Button
+              type="submit"
+              boxShadow="sm"
+              _hover={{ boxShadow: "md" }}
+              _active={{ boxShadow: "lg" }}
+            >
+              Submit!!
+            </Button>
           </VStack>
-
-          <Spacer />
-          <VStack>
-            <Text>Discount Price</Text>
-            <NumberInput size="lg" maxW={32} defaultValue={15} min={10}>
-              <NumberInputField />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-          </VStack>
-        </HStack>
-        <HStack mt="10">
-          <Input placeholder="Enter The Product Stocks" w="50%" ml="20" />
-
-          <Spacer />
-
-          <Input placeholder="Enter The Vendor Code" w="50%" pr="40" />
-        </HStack>
-        <Divider />
-        <Button
-          type="submit"
-          boxShadow="sm"
-          _hover={{ boxShadow: "md" }}
-          _active={{ boxShadow: "lg" }}
-        >
-          Submit!!
-        </Button>
+        </form>
       </VStack>
     </Stack>
   );

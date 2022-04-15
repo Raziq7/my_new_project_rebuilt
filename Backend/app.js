@@ -2,11 +2,13 @@ const express = require("express");
 const app = express();
 const dashBoard = require("./router/dashBoard.js");
 const staff = require("./router/staff");
+const Sadmin = require("./router/superAdmin");
 const { notFound, errorHandler } = require("./Middleware/ErroreHandling");
 
 app.use(express.json());
 app.use("/api", dashBoard);
 app.use("/api/staff", staff);
+app.use("/api/superAdmin", Sadmin);
 
 //ERROR HANDLING
 app.use(notFound);

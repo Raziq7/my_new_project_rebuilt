@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "symbology": "^3.0.8",
+    "uuid": "^8.3.2"
+  }
+}
