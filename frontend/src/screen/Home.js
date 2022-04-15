@@ -24,7 +24,6 @@ import { useNavigate } from "react-router-dom";
 function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  navigate("/home");
 
   //selector
   let productDetail = useSelector((state) => {
@@ -39,7 +38,6 @@ function Home() {
   useEffect(() => {
     if (deleteDetail) {
       console.log(deleteDetail, "deleteDetaildeleteDetail");
-      navigate("/home");
     }
   }, [deleteDetail]);
 
