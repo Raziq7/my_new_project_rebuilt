@@ -18,10 +18,15 @@ import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { staffLogin } from "../../actions/staffAction";
 import { useNavigate } from "react-router-dom";
+import Messege from "../Messege";
 
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const loginMsg = useSelector((state) => {
+    return state.staffLginData;
+  });
+  let { error } = loginMsg;
 
   const staffLoginData = useSelector((state) => {
     return state.staffLginData;
@@ -84,6 +89,7 @@ function Login() {
   });
   return (
     <div>
+      {error && <Messege variant="danger">{error}</Messege>}
       {loding ? (
         <h1>Loding......</h1>
       ) : (

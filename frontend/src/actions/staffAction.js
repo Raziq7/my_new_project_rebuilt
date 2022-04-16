@@ -36,7 +36,6 @@ export const staffLogin = (details) => async (dispatch, getState) => {
     dispatch({
       type: STAFF_LOGIN_REQUEST,
     });
-    console.log("=================", details);
     let { data } = await axios.post("/api/staff/login", details);
 
     dispatch({
@@ -47,7 +46,10 @@ export const staffLogin = (details) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: STAFF_LOGIN_ERROR,
-      payload: error.data.messege,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
     });
   }
 };

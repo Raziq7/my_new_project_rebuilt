@@ -20,7 +20,7 @@ module.exports = {
       if (staffExist) {
         res.status(400);
 
-        throw new Error("User already exists");
+        throw new Error("Staff already exists");
       } else {
         password = await bcrypt.hash(password, 10);
 
@@ -62,16 +62,22 @@ module.exports = {
               console.log("hello");
               res.json({ findStaff, Token: generatorToken(findStaff) });
             } else {
+              res.status(401);
               throw new Error("Password is incorrect");
             }
           })
           .catch((err) => {
-            console.log(err);
+            res.status(401);
+            throw new Error("Password is incorrect");
           });
       } else {
-        throw new Error("User does not exist");
+        res.status(401);
+        throw new Error("Staff does not exist");
       }
     } catch (err) {
+      res.status(401);
+      throw new Error("Try Again");
+
       console.log(err);
     }
   }),
