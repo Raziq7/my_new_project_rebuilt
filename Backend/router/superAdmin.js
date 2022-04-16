@@ -4,6 +4,7 @@ const {
   getProductDetails,
   deleteProduct,
 } = require("../controllers/sAdminController");
+const protect = require("../Middleware/auth");
 const router = express.Router();
 
 //add Product

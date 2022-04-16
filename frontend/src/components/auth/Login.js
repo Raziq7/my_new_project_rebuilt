@@ -10,7 +10,7 @@ import {
   InputLeftElement,
   Stack,
   Text,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import { AiTwotoneLock } from "react-icons/ai";
 import { MdLocalPostOffice } from "react-icons/md";
@@ -20,24 +20,30 @@ import { staffLogin } from "../../actions/staffAction";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
- 
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const staffLoginData = useSelector((state)=>{
-    return state.staffLginData
-  })
-  
-  
-  let {loding,staffInfo} = staffLoginData
+  const staffLoginData = useSelector((state) => {
+    return state.staffLginData;
+  });
 
-  useEffect(()=>{
-    if(staffInfo){
-      navigate('/')
+  let { loding, staffInfo } = staffLoginData;
+
+  useEffect(() => {
+    if (staffInfo) {
+      navigate("/");
     }
-  },[staffInfo])
+  }, [staffInfo]);
 
-  
+  useEffect(() => {
+    let isStaff = localStorage.getItem("staffInfo")
+      ? JSON.stringify(localStorage.getItem("staffInfo"))
+      : null;
+    if (isStaff) {
+      navigate("/");
+    }
+  }, []);
+
   //validatio form
 
   const validate = (values) => {
@@ -66,94 +72,97 @@ function Login() {
   };
 
   const formik = useFormik({
-    initialValues:{
-      name:"",
-      email:"",
-      password:""
+    initialValues: {
+      name: "",
+      email: "",
+      password: "",
     },
     validate,
-    onSubmit:(values)=>{
-      dispatch(staffLogin(values))
-    }
-  })
+    onSubmit: (values) => {
+      dispatch(staffLogin(values));
+    },
+  });
   return (
     <div>
-      {loding ? <h1>Loding......</h1>:<Flex justify={"center"} align={"center"}>
-        <form onSubmit={formik.handleSubmit}>
-          <Stack spacing={4}>
-                <VStack>
-            <FormControl isRequired>
-              <InputGroup>
-                <InputLeftElement children={<Icon name="info" />} />
-                <Input
-                onChange={formik.handleChange}
-                value={formik.values.name}
-                onBlur={formik.handleBlur}
-                  type="name"
-                  placeholder="Enter Your Name"
-                  aria-label="name"
-                  name="name"
-                />
-              
-              </InputGroup>
-            </FormControl>
-            { formik.errors.name ? (
+      {loding ? (
+        <h1>Loding......</h1>
+      ) : (
+        <Flex justify={"center"} align={"center"}>
+          <form onSubmit={formik.handleSubmit}>
+            <Stack spacing={4}>
+              <VStack>
+                <FormControl isRequired>
+                  <InputGroup>
+                    <InputLeftElement children={<Icon name="info" />} />
+                    <Input
+                      onChange={formik.handleChange}
+                      value={formik.values.name}
+                      onBlur={formik.handleBlur}
+                      type="name"
+                      placeholder="Enter Your Name"
+                      aria-label="name"
+                      name="name"
+                    />
+                  </InputGroup>
+                </FormControl>
+                {formik.errors.name ? (
                   <Text color="tomato">{formik.errors.name}</Text>
                 ) : null}
-                </VStack>
+              </VStack>
 
               <VStack>
-            <FormControl isRequired>
-              <InputGroup>
-                <InputLeftElement children={<MdLocalPostOffice />} />
-                <Input
-                onChange={formik.handleChange}
-                value={formik.values.email}
-                onBlur={formik.handleBlur}
-                  type="email"
-                  placeholder="Enter Your Email"
-                  aria-label="Email"
-                  name="email"
-                />
-              </InputGroup>
-            </FormControl>
-            { formik.errors.name ? (
+                <FormControl isRequired>
+                  <InputGroup>
+                    <InputLeftElement children={<MdLocalPostOffice />} />
+                    <Input
+                      onChange={formik.handleChange}
+                      value={formik.values.email}
+                      onBlur={formik.handleBlur}
+                      type="email"
+                      placeholder="Enter Your Email"
+                      aria-label="Email"
+                      name="email"
+                    />
+                  </InputGroup>
+                </FormControl>
+                {formik.errors.name ? (
                   <Text color="tomato">{formik.errors.email}</Text>
                 ) : null}
-            </VStack>
+              </VStack>
 
               <VStack>
-            <FormControl isRequired>
-              <InputGroup>
-                <InputLeftElement children={<AiTwotoneLock />} />
-                <Input
-                onChange={formik.handleChange}
-                value={formik.values.password}
-                onBlur={formik.handleBlur}
-                  type="password"
-                  placeholder="Enter Your Password"
-                  aria-label="Password"
-                  name="password"
-                />
-              </InputGroup>
-            </FormControl>
-            { formik.errors.name ? (
+                <FormControl isRequired>
+                  <InputGroup>
+                    <InputLeftElement children={<AiTwotoneLock />} />
+                    <Input
+                      onChange={formik.handleChange}
+                      value={formik.values.password}
+                      onBlur={formik.handleBlur}
+                      type="password"
+                      placeholder="Enter Your Password"
+                      aria-label="Password"
+                      name="password"
+                    />
+                  </InputGroup>
+                </FormControl>
+                {formik.errors.name ? (
                   <Text color="tomato">{formik.errors.password}</Text>
                 ) : null}
-            </VStack>
+              </VStack>
 
-            <Divider />
-            <Button
-              type="submit"
-              boxShadow="sm"
-              _hover={{ boxShadow: "md" }}
-              _active={{ boxShadow: "lg" }}
-            >
-              Sign In!
-            </Button>
-          </Stack>
-        </form>
-      </Flex>}
+              <Divider />
+              <Button
+                type="submit"
+                boxShadow="sm"
+                _hover={{ boxShadow: "md" }}
+                _active={{ boxShadow: "lg" }}
+              >
+                Sign In!
+              </Button>
+            </Stack>
+          </form>
+        </Flex>
+      )}
     </div>
   );
 }

@@ -88,6 +88,15 @@ function Register() {
     }
   }, [staffInfo]);
 
+  useEffect(() => {
+    let isStaff = localStorage.getItem("staffInfo")
+      ? JSON.stringify(localStorage.getItem("staffInfo"))
+      : null;
+    if (isStaff) {
+      navigate("/");
+    }
+  }, []);
+
   return (
     <Flex justify={"center"} align={"center"}>
       <form onSubmit={formik.handleSubmit}>

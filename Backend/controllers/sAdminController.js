@@ -4,6 +4,7 @@ const { SymbologyType, createStream } = require("symbology");
 const { nanoid } = require("nanoid");
 var ObjecId = require("mongodb").ObjecId;
 const { ObjectId } = require("bson");
+const protect = require("../Middleware/auth");
 module.exports = {
   addProduct: asyncHandler(async (req, res) => {
     const {

@@ -5,15 +5,15 @@ import {
   HStack,
   Stack,
   Spacer,
-  Select,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  Text,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItemOption,
+  MenuOptionGroup,
+  MenuDivider,
   Button,
   Divider,
+  Checkbox,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,13 +27,24 @@ function AddProduct() {
     return state.productDetails;
   });
   const { loding, productDetail, error } = productData;
+
+  //useEffect
   useEffect(() => {
     if (productDetail) {
       navigate("/home");
     }
   }, [productDetail]);
 
-  console.log(productData, "----009888888");
+  useEffect(() => {
+    let staffExit = localStorage.getItem("staffInfo")
+      ? JSON.stringify(localStorage.getItem("staffInfo"))
+      : null;
+    if (!staffExit) {
+      console.log("staffExits");
+      navigate("/login");
+    }
+  }, []);
+
   const formik = useFormik({
     initialValues: {
       productName: "",
@@ -49,9 +60,12 @@ function AddProduct() {
       discountPrice: "",
       stocks: "",
       vendorCode: "",
+      order: "",
+      country: "",
     },
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
+      console.log(values);
       dispatch(addProductAction(values));
     },
   });
@@ -210,34 +224,53 @@ function AddProduct() {
             <Spacer />
           </VStack>
 
-          <Stack spacing={4}>
-            <MultiSelectMenu
-              label="Animals"
-              options={["Bat", "Tiger", "Lion"]}
-            />
-            <MultiSelectMenu
-              label="Fruits"
-              options={[
-                "Apple",
-                "Banana",
-                "Orange",
-                "Pineapple",
-                "Pomegranate",
-                "Watermelon",
-                "Kiwi",
-                "Peach",
-                "Papaya",
-                "Dragonfruit",
-                "Cantaloupe",
-                "Musk Melon",
-                "Grapefruit",
-                "Durian",
-                "Mango",
-                "Pear",
-                "Raspberry",
-              ]}
-            />
-          </Stack>
+          {/* <Menu closeOnSelect={false}>
+            <MenuButton as={Button} colorScheme="blue">
+              MenuItem
+            </MenuButton>
+            <MenuList minWidth="240px">
+              <MenuOptionGroup defaultValue="asc" title="Order" type="radio">
+                <MenuItemOption
+                  onChange={formik.handleChange}
+                  value={formik.values.ass}
+                >
+                  Ascending
+                </MenuItemOption>
+                <MenuItemOption
+                  onChange={formik.handleChange}
+                  value={formik.values.dss}
+                >
+                  Descending
+                </MenuItemOption>
+              </MenuOptionGroup>
+              <MenuDivider />
+              <MenuOptionGroup
+                onChange={formik.handleChange}
+                values={formik.values.country}
+                title="Country"
+                type="checkbox"
+              >
+                <MenuItemOption
+                  onClick={(e) => {
+                    console.log("jhikgku");
+                  }}
+                  value="email"
+                >
+                  Email
+                </MenuItemOption>
+                <MenuItemOption value="phone">Phone</MenuItemOption>
+                <MenuItemOption value="country">Country</MenuItemOption>
+              </MenuOptionGroup>
+            </MenuList>
+          </Menu> */}
+          {/* <Stack spacing={10} direction="row">
+            <Checkbox colorScheme="red" defaultIsChecked>
+              Checkbox
+            </Checkbox>
+            <Checkbox colorScheme="green" defaultIsChecked>
+              Checkbox
+            </Checkbox>
+          </Stack> */}
           <Divider />
           <VStack mt="5">
             <Button

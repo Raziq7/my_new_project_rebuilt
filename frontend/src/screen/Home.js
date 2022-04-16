@@ -45,6 +45,15 @@ function Home() {
     dispatch(showProductAction());
   }, []);
 
+  useEffect(() => {
+    let staffExit = localStorage.getItem("staffInfo")
+      ? JSON.stringify(localStorage.getItem("staffInfo"))
+      : null;
+    if (!staffExit) {
+      console.log("staffExits");
+      navigate("/login");
+    }
+  }, []);
   const editPro = () => {};
 
   //delete
