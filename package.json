@@ -10,7 +10,8 @@
   },
   "scripts": {
     "start": "node Backend/server.js",
-    "server": "node Backend/server.js",
+    "start:dev": "nodemon Backend/server.js",
+    "server": "nodemon Backend/server.js",
     "frontend": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run frontend\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
