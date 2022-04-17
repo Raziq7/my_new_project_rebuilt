@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+let path = require("path");
 const dashBoard = require("./router/dashBoard.js");
 const staff = require("./router/staff");
 const Sadmin = require("./router/superAdmin");
