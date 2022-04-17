@@ -5,7 +5,7 @@
   "main": "app.js",
   "author": "raziq",
   "license": "ISC",
-  "type": "module",
+  "type": "commonjs",
  
   "scripts": {
     "start": "node Backend/server.js",
