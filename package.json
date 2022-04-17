@@ -5,6 +5,7 @@
   "main": "app.js",
   "author": "raziq",
   "license": "ISC",
+  "type": "module",
  
   "scripts": {
     "start": "node Backend/server.js",
