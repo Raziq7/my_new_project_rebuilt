@@ -17,7 +17,7 @@ app.use("/api/superAdmin", Sadmin);
 if (process.env.NODE_ENV === "production") {
   // Set static folder
   console.log(path.resolve(__dirname, "../frontend", "build"));
-  app.use(express.static(path.resolve(__dirname, "frontend", "build")));
+  app.use(express.static(path.resolve(__dirname, "../frontend", "build")));
 
   app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "../frontend", "build", "index.html"));
