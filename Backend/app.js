@@ -16,7 +16,7 @@ app.use("/api/superAdmin", Sadmin);
 // Serve static assets if in production
 if (process.env.NODE_ENV === "production") {
   // Set static folder
-  console.log(path.resolve(__dirname, "frontend", "build"));
+  console.log(path.resolve(__dirname, "../frontend", "build"));
   app.use(express.static(path.resolve(__dirname, "frontend", "build")));
 
   app.get("*", (req, res) => {
