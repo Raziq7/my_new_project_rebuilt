@@ -16,7 +16,10 @@ export const addProductAction = (details) => async (dispatch, getState) => {
   try {
     dispatch({ type: ADD_PRODUCT_REQUEST });
 
-    let { data } = await axios.post("/api/superAdmin", details);
+    let { data } = await axios.post(
+      "https://raziq.herokuapp.com/api/superAdmin",
+      details
+    );
 
     console.log(data, "action page");
 
@@ -32,7 +35,9 @@ export const showProductAction = () => async (dispatch, getState) => {
   try {
     dispatch({ type: SHOW_PRODUCT_REQUEST });
 
-    let { data } = await axios.get("/api/superAdmin/getProduct");
+    let { data } = await axios.get(
+      "https://raziq.herokuapp.com/api/superAdmin/getProduct"
+    );
 
     dispatch({ type: SHOW_PRODUCT_SUCCESS, payload: data });
   } catch (err) {
@@ -47,7 +52,9 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
   try {
     dispatch({ type: DELETE_PRODUCT_REQUEST });
 
-    let { data } = await axios.delete(`/api/superAdmin/deletePro/?id=${id}`);
+    let { data } = await axios.delete(
+      `https://raziq.herokuapp.com/api/superAdmin/deletePro/?id=${id}`
+    );
 
     dispatch({ type: DELETE_PRODUCT_SUCCESS });
   } catch (err) {

@@ -18,7 +18,11 @@ export const staffRegster = (detail) => async (dispatch, getState) => {
         "Content-Type": "application/json",
       },
     };
-    const { data } = await axios.post("/api/staff", detail, config);
+    const { data } = await axios.post(
+      "https://raziq.herokuapp.com//api/staff",
+      detail,
+      config
+    );
 
     dispatch({
       type: STAFF_REGISTER_SUCCESS,
@@ -36,7 +40,10 @@ export const staffLogin = (details) => async (dispatch, getState) => {
     dispatch({
       type: STAFF_LOGIN_REQUEST,
     });
-    let { data } = await axios.post("/api/staff/login", details);
+    let { data } = await axios.post(
+      "https://raziq.herokuapp.com//api/staff/login",
+      details
+    );
 
     dispatch({
       type: STAFF_LOGIN_SUCCESS,
