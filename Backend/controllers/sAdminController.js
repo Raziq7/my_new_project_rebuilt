@@ -14,45 +14,51 @@ module.exports = {
       mainCategory,
       subCategory,
       brand,
-      size,
-      color,
-      marketPrice,
-      sellingPrice,
-      discountPrice,
-      stocks,
-      vendorCode,
+      vendorName,
+      vendoreDetails,
+      select,
     } = req.body;
     let productDetailsExist = await addProductModel.findOne({ productName });
+    // console.log(productDetailsExist, "546546464646465654654");
     if (productDetailsExist) {
+      console.log("errrrrrrrrrrrrrrrrrrrr");
       throw new Error("Product already Exist");
     } else {
-      var val = Math.floor(1000 + Math.random() * 9000);
-      const { data } = await createStream(
-        {
-          symbology: SymbologyType.CODE11,
-          data: productDetailsExist,
-        },
-        val
-      );
+      // var val = Math.floor(100000 + Math.random() * 900000);
+      // // console.log(val);
 
-      let details = await addProductModel.create({
-        productName,
-        description,
-        category,
-        mainCategory,
-        subCategory,
-        brand,
-        size,
-        color,
-        marketPrice,
-        sellingPrice,
-        discountPrice,
-        stocks,
-        vendorCode,
-        barcode: data,
+      // console.log(select);
+      let data = select.map(async (detail, index) => {
+        var val = Math.floor(100000 + Math.random() * 900000);
+        console.log(val);
+        const { data } = await createStream(
+          {
+            symbology: SymbologyType.CODE11,
+            data: productDetailsExist,
+          },
+          val
+        );
+        detail.barcode = data;
+        detail.barcodepin = val;
+
+        console.log("SUCCESSSSSSSSS", detail);
+
+        let details = await addProductModel.create({
+          productName,
+          description,
+          category,
+          mainCategory,
+          subCategory,
+          brand,
+          vendorName,
+          vendoreDetails,
+          productItemDetails: detail,
+        });
+        console.log("SUCCESSSSSSSSS", details);
+        return details;
       });
-      console.log("SUCCESSSSSSSSS", details);
-      res.json({ details });
+      console.log(data);
+      res.json({ data });
     }
   }),
 
@@ -60,6 +66,7 @@ module.exports = {
   getProductDetails: async (req, res) => {
     try {
       let showProduct = await addProductModel.find({});
+      console.log(showProduct.productItemDetails);
       res.json({ showProduct });
     } catch (err) {
       console.log(err);

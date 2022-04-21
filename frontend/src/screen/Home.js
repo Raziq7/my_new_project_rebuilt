@@ -62,7 +62,7 @@ function Home() {
   };
 
   return (
-    <TableContainer>
+    <TableContainer ml="100px">
       {loading ? (
         <Stack>
           <Skeleton height="20px" />

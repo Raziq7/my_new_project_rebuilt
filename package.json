@@ -6,7 +6,6 @@
   "author": "raziq",
   "license": "ISC",
   "type": "commonjs",
- 
   "scripts": {
     "start": "node Backend/server.js",
     "start:dev": "nodemon Backend/server.js",

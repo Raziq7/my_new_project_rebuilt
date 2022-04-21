@@ -1,19 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   VStack,
   Input,
   HStack,
   Stack,
   Spacer,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItemOption,
-  MenuOptionGroup,
-  MenuDivider,
   Button,
   Divider,
   Checkbox,
+  Center,
+  Flex,
+  Box,
+  Textarea,
+  Text,
+  Select,
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  Container,
+  TableContainer,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
@@ -44,6 +53,15 @@ function AddProduct() {
       navigate("/login");
     }
   }, []);
+  const [select, setSelect] = useState([]);
+  const [proSize, setProSize] = useState("");
+  const [proColor, setProColor] = useState("");
+  const [qty, setQty] = useState("");
+  const [marketPrice, setMarketPrice] = useState("");
+  const [sellingPrice, setSellPrice] = useState("");
+  const [selectQty, setSelectQty] = useState("");
+  const [stocks, setStocks] = useState("");
+  const [priceCode, setPriceCode] = useState("");
 
   const formik = useFormik({
     initialValues: {
@@ -53,226 +71,376 @@ function AddProduct() {
       mainCategory: "",
       subCategory: "",
       brand: "",
-      size: "",
-      color: "",
-      marketPrice: "",
-      sellingPrice: "",
-      discountPrice: "",
-      stocks: "",
-      vendorCode: "",
-      order: "",
-      country: "",
+      meterial: "",
+      vendorName: "",
+      vendoreDetails: "",
+      select: [],
     },
     onSubmit: (values) => {
-      // alert(JSON.stringify(values, null, 2));
+      values.select = select;
+      alert(JSON.stringify(values, null, 2));
       console.log(values);
       dispatch(addProductAction(values));
     },
   });
+
+  const TableSubmit = (e) => {
+    e.preventDefault();
+    let obj = {
+      proSize: proSize,
+      proColor: proColor,
+      qty: qty,
+      marketPrice: marketPrice,
+      sellingPrice: sellingPrice,
+      selectQty: selectQty,
+      stocks: stocks,
+      priceCode: priceCode,
+    };
+
+    setSelect([...select, obj]);
+  };
   return (
-    <Stack spacing={4}>
+    // <Flex ml="auto" mr="auto">
+
+    <Container>
       <VStack>
         <form onSubmit={formik.handleSubmit}>
-          <HStack mt="10">
-            <Input
-              onChange={formik.handleChange}
-              value={formik.values.productName}
-              name="productName"
-              placeholder="Enter The Product Name"
-              w="50%"
-              ml="20"
-            />
-
+          <Box
+            display={{
+              sm: "block",
+              md: "block",
+              lg: "block",
+              xl: "block",
+            }}
+            mt="9px"
+          >
+            <HStack>
+              <Input
+                onChange={formik.handleChange}
+                value={formik.values.productName}
+                name="productName"
+                placeholder="Enter The Product Name"
+              />
+            </HStack>
             <Spacer />
+            <HStack mt="9px">
+              <Textarea
+                onChange={formik.handleChange}
+                value={formik.values.description}
+                name="description"
+                placeholder="Enter The Description"
+              />
+            </HStack>
+          </Box>
 
-            <Input
-              onChange={formik.handleChange}
-              value={formik.values.description}
-              name="description"
-              placeholder="Enter The Description"
-              w="50%"
-              pr="40"
-            />
-          </HStack>
-
-          <HStack mt="10">
-            <Input
+          <Box
+            display={{
+              sm: "revert",
+              md: "flex",
+              lg: "flex",
+              xl: "flex",
+            }}
+            justifyContent={{
+              sm: "center",
+              md: "space-between",
+              lg: "space-between",
+              xl: "space-between",
+            }}
+            mt="20px"
+          >
+            {/* <Input
               onChange={formik.handleChange}
               value={formik.values.category}
               name="category"
               placeholder="Enter The Product category"
-              w="50%"
-              ml="20"
-            />
+            /> */}
+            <Box>
+              <Text>Product Size</Text>
+              <Input
+                onChange={(e) => {
+                  setProSize(e.target.value);
+                }}
+                name="proSize"
+                htmlSize={4}
+                width="auto"
+              />
+            </Box>
 
-            <Spacer />
+            <Box>
+              <Text>Product Color</Text>
+              <Input
+                onChange={(e) => {
+                  setProColor(e.target.value);
+                }}
+                name="proColor"
+                htmlSize={4}
+                width="auto"
+              />
+            </Box>
 
+            <Box>
+              <Text>Product Qty</Text>
+              <Select
+                w="auto"
+                mb="10px"
+                name="qty"
+                onChange={(e) => {
+                  setSelectQty(e.target.value);
+                }}
+                placeholder="Select Qty"
+              >
+                <option value="Meters">Meters</option>
+                <option value="Pieces">Pieces</option>
+              </Select>
+            </Box>
+
+            <Box>
+              <Text> .</Text>
+              <Input
+                onChange={(e) => {
+                  setQty(e.target.value);
+                }}
+                name="qty"
+                htmlSize={4}
+                width="auto"
+              />
+            </Box>
+
+            <Box>
+              <Text>Market Price</Text>
+              <Input
+                onChange={(e) => {
+                  setMarketPrice(e.target.value);
+                }}
+                name="marketPrice"
+                htmlSize={4}
+                width="auto"
+              />
+            </Box>
+
+            <Box>
+              <Text>Selling Price</Text>
+              <Input
+                onChange={(e) => {
+                  setSellPrice(e.target.value);
+                }}
+                name="sellPrice"
+                htmlSize={4}
+                width="auto"
+              />
+            </Box>
+
+            <Box>
+              <Text>Total Stocks</Text>
+              <Input
+                onChange={(e) => {
+                  setStocks(e.target.value);
+                }}
+                name="stocks"
+                htmlSize={4}
+                width="auto"
+              />
+            </Box>
+
+            <Box>
+              <Text>Price Code</Text>
+              <Input
+                onChange={(e) => {
+                  setPriceCode(e.target.value);
+                }}
+                name="priceCode"
+                htmlSize={4}
+                width="auto"
+              />
+            </Box>
+
+            <Button
+              type="submit"
+              ml="5px"
+              mt="20px"
+              colorScheme="teal"
+              size="sm"
+              onClick={TableSubmit}
+            >
+              Add
+            </Button>
+          </Box>
+
+          <Box
+            width={{
+              sm: "60%",
+              md: "650px",
+              lg: "800px",
+              xl: "900px",
+            }}
+            overflowY="auto"
+            mt="10px"
+          >
+            <TableContainer>
+              <Table>
+                <Thead>
+                  <Tr>
+                    <Th>Product Size</Th>
+                    <Th>Product Color</Th>
+                    <Th isNumeric>Product Qty</Th>
+                    <Th isNumeric> Market Price</Th>
+                    <Th isNumeric>Selling Price</Th>
+                    <Th isNumeric>Total Stock</Th>
+                    <Th isNumeric>Price Code</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {select.map((value) => {
+                    console.log(value, "5465465465========");
+                    return (
+                      <Tr>
+                        <Td>{value.proSize}</Td>
+                        <Td>{value.proColor}</Td>
+                        <Td>{value.qty}</Td>
+                        <Td isNumeric>{value.marketPrice}</Td>
+                        <Td isNumeric>{value.sellingPrice}</Td>
+                        <Td isNumeric>{value.stocks}</Td>
+                        <Td isNumeric>{value.priceCode}</Td>
+                      </Tr>
+                    );
+                  })}
+                </Tbody>
+                <Tfoot>
+                  <Tr>
+                    <Th>Product Size</Th>
+                    <Th>Product Color</Th>
+                    <Th isNumeric>Product Qty</Th>
+                    <Th isNumeric> Market Price</Th>
+                    <Th isNumeric>Selling Price</Th>
+                    <Th isNumeric>Total Stock</Th>
+                    <Th isNumeric>Price Code</Th>
+                  </Tr>
+                </Tfoot>
+              </Table>
+            </TableContainer>
+          </Box>
+
+          <Box
+            display={{
+              sm: "revert",
+              md: "flex",
+              lg: "flex",
+              xl: "flex",
+            }}
+            justifyContent={{
+              sm: "center",
+              md: "space-between",
+              lg: "space-between",
+              xl: "space-between",
+            }}
+            mt="10px"
+          >
+            <Box>
+              <Select
+                w="auto"
+                name="brand"
+                onChange={formik.handleChange}
+                value={formik.values.brand}
+                placeholder="The brand"
+              >
+                <option value="Levise">Levise</option>
+                <option value="Allensolly">Allensolly</option>
+                <option value="GUCCI">GUCCI</option>
+              </Select>
+            </Box>
+
+            <Box>
+              <Select
+                w="auto"
+                name="meterial"
+                onChange={formik.handleChange}
+                value={formik.values.meterial}
+                placeholder="Product Meterial"
+              >
+                <option value="Cotton">Cotton</option>
+                <option value="Silk">Silk</option>
+                <option value="Fabrics">Fabrics</option>
+              </Select>
+            </Box>
+
+            <Box>
+              <Select
+                w="auto"
+                name="mainCategory"
+                onChange={formik.handleChange}
+                value={formik.values.mainCategory}
+                placeholder="Main Category"
+              >
+                <option value="TopWear">Top Wear</option>
+                <option value="BottomWear">Bottom Wear</option>
+                <option value="Linean">Linean</option>
+              </Select>
+            </Box>
+
+            <Box>
+              <Select
+                w="auto"
+                name="subCategory"
+                onChange={formik.handleChange}
+                value={formik.values.subCategory}
+                placeholder="Product subCategory"
+              >
+                <option value="Tshirt">T-Shirt</option>
+                <option value="shirt">Shirt</option>
+                <option value="uniform">Uniform</option>
+              </Select>
+            </Box>
+
+            <Box>
+              <Select
+                w="auto"
+                name="category"
+                onChange={formik.handleChange}
+                value={formik.values.category}
+                placeholder="Gender Category"
+              >
+                <option value="Men">Men</option>
+                <option value="Women">Women</option>
+                <option value="Kids">Kids</option>
+              </Select>
+            </Box>
+          </Box>
+
+          <Box
+            display={{
+              sm: "revert",
+              md: "block",
+              lg: "block",
+              xl: "block",
+            }}
+            width={{
+              sm: "50%",
+              md: "50%",
+              lg: "800px",
+              xl: "900px",
+            }}
+          >
             <Input
+              mt="10px"
               onChange={formik.handleChange}
-              value={formik.values.mainCategory}
-              name="mainCategory"
-              placeholder="Enter The mainCategory"
-              w="50%"
-              pr="40"
-            />
-          </HStack>
-
-          <HStack mt="10">
-            <Input
-              onChange={formik.handleChange}
-              value={formik.values.subCategory}
-              name="subCategory"
-              placeholder="Enter The Product subCategory"
-              w="50%"
-              ml="20"
+              value={formik.values.vendorName}
+              name="vendorName"
+              placeholder="Enter The Vendor Name"
             />
 
-            <Spacer />
-
-            <Input
+            <Textarea
+              mt="10px"
+              name="vendoreDetails"
               onChange={formik.handleChange}
-              value={formik.values.brand}
-              name="brand"
-              placeholder="Enter The brand"
-              w="50%"
-              pr="40"
+              value={formik.values.vendoreDetails}
+              placeholder="Enter The Product Vendor Details"
             />
-          </HStack>
-
-          <HStack mt="10">
-            <Input
-              onChange={formik.handleChange}
-              value={formik.values.size}
-              name="size"
-              placeholder="Enter The Product size"
-              w="50%"
-              ml="20"
-            />
-
-            <Spacer />
-
-            <Input
-              onChange={formik.handleChange}
-              value={formik.values.color}
-              name="color"
-              placeholder="Enter The color"
-              w="50%"
-              pr="40"
-            />
-          </HStack>
-
-          <HStack mt="10">
-            <Input
-              type="number"
-              onChange={formik.handleChange}
-              value={formik.values.marketPrice}
-              name="marketPrice"
-              placeholder="Enter The Product marketPrice"
-              w="50%"
-              ml="20"
-            />
-
-            <Spacer />
-
-            <Input
-              type="number"
-              onChange={formik.handleChange}
-              value={formik.values.sellingPrice}
-              name="sellingPrice"
-              placeholder="Enter The sellingPrice"
-              w="50%"
-              pr="40"
-            />
-          </HStack>
-
-          <HStack mt="10">
-            <Input
-              type="number"
-              onChange={formik.handleChange}
-              value={formik.values.discountPrice}
-              name="discountPrice"
-              placeholder="Enter The Product discountPrice"
-              w="50%"
-              ml="20"
-            />
-
-            <Spacer />
-
-            <Input
-              type="number"
-              onChange={formik.handleChange}
-              value={formik.values.stocks}
-              name="stocks"
-              placeholder="Enter The stocks"
-              w="50%"
-              pr="40"
-            />
-          </HStack>
+          </Box>
 
           <Spacer />
 
-          <VStack mt="10">
-            <Input
-              onChange={formik.handleChange}
-              value={formik.values.vendorCode}
-              name="vendorCode"
-              placeholder="Enter The Product vendorCode"
-              w="50%"
-              ml="20"
-            />
-
-            <Spacer />
-          </VStack>
-
-          {/* <Menu closeOnSelect={false}>
-            <MenuButton as={Button} colorScheme="blue">
-              MenuItem
-            </MenuButton>
-            <MenuList minWidth="240px">
-              <MenuOptionGroup defaultValue="asc" title="Order" type="radio">
-                <MenuItemOption
-                  onChange={formik.handleChange}
-                  value={formik.values.ass}
-                >
-                  Ascending
-                </MenuItemOption>
-                <MenuItemOption
-                  onChange={formik.handleChange}
-                  value={formik.values.dss}
-                >
-                  Descending
-                </MenuItemOption>
-              </MenuOptionGroup>
-              <MenuDivider />
-              <MenuOptionGroup
-                onChange={formik.handleChange}
-                values={formik.values.country}
-                title="Country"
-                type="checkbox"
-              >
-                <MenuItemOption
-                  onClick={(e) => {
-                    console.log("jhikgku");
-                  }}
-                  value="email"
-                >
-                  Email
-                </MenuItemOption>
-                <MenuItemOption value="phone">Phone</MenuItemOption>
-                <MenuItemOption value="country">Country</MenuItemOption>
-              </MenuOptionGroup>
-            </MenuList>
-          </Menu> */}
-          {/* <Stack spacing={10} direction="row">
-            <Checkbox colorScheme="red" defaultIsChecked>
-              Checkbox
-            </Checkbox>
-            <Checkbox colorScheme="green" defaultIsChecked>
-              Checkbox
-            </Checkbox>
-          </Stack> */}
           <Divider />
-          <VStack mt="5">
+          <VStack mt="5px">
             <Button
               type="submit"
               boxShadow="sm"
@@ -284,7 +452,7 @@ function AddProduct() {
           </VStack>
         </form>
       </VStack>
-    </Stack>
+    </Container>
   );
 }
 

@@ -1,49 +1,80 @@
+import { React } from "react";
 import {
-  Breadcrumb,
-  HStack,
-  Spacer,
-  Image,
-  Text,
-  IconButton,
+  Box,
+  Flex,
+  Avatar,
+  Link,
+  Button,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
+  useDisclosure,
+  useColorModeValue,
+  Stack,
   useColorMode,
+  Center,
 } from "@chakra-ui/react";
-import { FaSun, FaMoon } from "react-icons/fa";
-import React from "react";
+import { FaMoon, FaSun } from "react-icons/fa";
 
-function Navbar() {
+export default function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode();
+  // const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <div>
-      <Breadcrumb>
-        <HStack variantColor="blue">
-          <Image
-            objectFit="cover"
-            boxSize="100px"
-            w="27"
-            h="27"
-            rounded="100"
-            src="https://bit.ly/dan-abramov"
-            alt="Dan Abramov"
-          />
-          <Spacer />
-          <Text fontSize="sm">Raziq m.r</Text>
-          <Image
-            w="19"
-            h="19"
-            rounded="100"
-            src="https://bit.ly/dan-abramov"
-            alt="Dan Abramov"
-          />
-          <IconButton
-            icon={colorMode === "light" ? <FaSun /> : <FaMoon />}
-            isRound="true"
-            size="lg"
-            onClick={toggleColorMode}
-          />
-        </HStack>
-      </Breadcrumb>
-    </div>
+    <>
+      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
+        <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
+          <Box>
+            {" "}
+            <Avatar
+              size={"sm"}
+              src={"https://avatars.dicebear.com/api/male/username.svg"}
+            />
+          </Box>
+
+          <Flex alignItems={"center"}>
+            <Stack direction={"row"} spacing={7}>
+              <Button onClick={toggleColorMode}>
+                {colorMode === "light" ? <FaMoon /> : <FaSun />}
+              </Button>
+
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  rounded={"full"}
+                  variant={"link"}
+                  cursor={"pointer"}
+                  minW={0}
+                >
+                  <Avatar
+                    size={"sm"}
+                    src={"https://avatars.dicebear.com/api/male/username.svg"}
+                  />
+                </MenuButton>
+                <MenuList alignItems={"center"}>
+                  <br />
+                  <Center>
+                    <Avatar
+                      size={"2xl"}
+                      src={"https://avatars.dicebear.com/api/male/username.svg"}
+                    />
+                  </Center>
+                  <br />
+                  <Center>
+                    <p>Username</p>
+                  </Center>
+                  <br />
+                  <MenuDivider />
+                  <MenuItem>Your Servers</MenuItem>
+                  <MenuItem>Account Settings</MenuItem>
+                  <MenuItem>Logout</MenuItem>
+                </MenuList>
+              </Menu>
+            </Stack>
+          </Flex>
+        </Flex>
+      </Box>
+    </>
   );
 }
-
-export default Navbar;

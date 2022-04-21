@@ -25,40 +25,17 @@ const productSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    size: {
+
+    vendorName: {
       type: String,
       required: true,
     },
-    color: {
+    vendoreDetails: {
       type: String,
-      required: true,
+      require: true,
     },
-    marketPrice: {
-      type: Number,
-      required: true,
-    },
-
-    sellingPrice: {
-      type: Number,
-      required: true,
-    },
-
-    discountPrice: {
-      type: Number,
-      required: true,
-    },
-
-    stocks: {
-      type: Number,
-      required: true,
-    },
-
-    vendorCode: {
-      type: String,
-      required: true,
-    },
-    barcode: {
-      type: String,
+    productItemDetails: {
+      type: Array,
       require: true,
     },
   },
