@@ -66,8 +66,8 @@ function SideNav() {
           icon={MdCategory}
           title="Category Managment"
         />
-        <NavItems navSize={navSize} icon={FiBriefcase} title="Report" />
-        <NavItems navSize={navSize} icon={FiSettings} title="Setting" />
+        <NavItems navSize={navSize} icon={FiBriefcase} title="Reports" />
+        <NavItems navSize={navSize} icon={FiSettings} title="Settings" />
       </Flex>
 
       <Flex
