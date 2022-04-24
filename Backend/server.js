@@ -16,6 +16,7 @@ setupSocket(server);
 
 //color enable
 colors.enable();
+
 //mongo connection
 connectDb();
 
