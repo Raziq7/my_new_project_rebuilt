@@ -16,6 +16,7 @@ import {
   Divider,
   Image,
   Box,
+  Text,
   Center,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
@@ -106,16 +107,11 @@ function Home() {
           mr="auto"
           mb="100px"
         >
+          <Center fontSize="40px" color="teal">
+            Products
+          </Center>
           <TableContainer>
-            <Table
-              variant={{
-                xs: "sm",
-                sm: "sm",
-                md: "sm",
-                lg: "sm",
-                xl: "md",
-              }}
-            >
+            <Table variant="simple">
               <TableCaption>Imperial to metric conversion factors</TableCaption>
               <Thead>
                 <Tr>

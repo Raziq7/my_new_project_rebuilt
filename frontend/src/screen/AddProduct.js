@@ -23,6 +23,7 @@ import {
   Td,
   Container,
   TableContainer,
+  Heading,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
@@ -98,26 +99,16 @@ function AddProduct() {
     setSelect([...select, obj]);
   };
   return (
-    // <Flex ml="auto" mr="auto">
-
-    <VStack
-      ml={{
-        sm: "50px",
-        md: "50px",
-        lg: "50px",
-        xl: "150px",
-      }}
-    >
-      <form onSubmit={formik.handleSubmit}>
-        <Box
-          display={{
-            sm: "block",
-            md: "block",
-            lg: "block",
-            xl: "block",
-          }}
-          mt="9px"
-        >
+    <VStack width={["auto", "auto", "90%", "90%", "90%"]}>
+      <Text fontSize="40px" color="teal">
+        Add Product
+      </Text>
+      <form
+        width={["444px", "444px", "444px", "100%", "100%"]}
+        display={["444px", "444px", "444px", "100%", "100%"]}
+        onSubmit={formik.handleSubmit}
+      >
+        <Box mt="9px">
           <HStack>
             <Input
               onChange={formik.handleChange}
@@ -138,26 +129,16 @@ function AddProduct() {
         </Box>
 
         <Box
-          display={{
-            sm: "revert",
-            md: "flex",
-            lg: "flex",
-            xl: "flex",
-          }}
-          justifyContent={{
-            sm: "center",
-            md: "space-between",
-            lg: "space-between",
-            xl: "space-between",
-          }}
+          display={["block", "block", "block", "block", "flex"]}
+          justifyContent={[
+            "center",
+            "center",
+            "center",
+            "space-between",
+            "space-between",
+          ]}
           mt="20px"
         >
-          {/* <Input
-              onChange={formik.handleChange}
-              value={formik.values.category}
-              name="category"
-              placeholder="Enter The Product category"
-            /> */}
           <Box>
             <Text>Product Size</Text>
             <Input
@@ -185,7 +166,6 @@ function AddProduct() {
           <Box>
             <Text>Product Qty</Text>
             <Select
-              w="auto"
               mb="10px"
               name="qty"
               onChange={(e) => {
@@ -271,12 +251,7 @@ function AddProduct() {
         </Box>
 
         <Box
-          width={{
-            sm: "60%",
-            md: "650px",
-            lg: "800px",
-            xl: "900px",
-          }}
+          width={["65%", "60%", "650px", "800px", "900px"]}
           overflowY="auto"
           mt="10px"
         >
@@ -326,8 +301,8 @@ function AddProduct() {
         <Box
           display={{
             sm: "revert",
-            md: "flex",
-            lg: "flex",
+            md: "block",
+            lg: "block",
             xl: "flex",
           }}
           justifyContent={{
@@ -340,7 +315,12 @@ function AddProduct() {
         >
           <Box>
             <Select
-              w="auto"
+              w={{
+                sm: "200px",
+                md: "auto",
+                lg: "auto",
+                xl: "auto",
+              }}
               name="brand"
               onChange={formik.handleChange}
               value={formik.values.brand}
@@ -354,7 +334,6 @@ function AddProduct() {
 
           <Box>
             <Select
-              w="auto"
               name="meterial"
               onChange={formik.handleChange}
               value={formik.values.meterial}
@@ -368,7 +347,6 @@ function AddProduct() {
 
           <Box>
             <Select
-              w="auto"
               name="mainCategory"
               onChange={formik.handleChange}
               value={formik.values.mainCategory}
@@ -396,7 +374,6 @@ function AddProduct() {
 
           <Box>
             <Select
-              w="auto"
               name="category"
               onChange={formik.handleChange}
               value={formik.values.category}
@@ -411,16 +388,10 @@ function AddProduct() {
 
         <Box
           display={{
-            sm: "revert",
+            sm: "block",
             md: "block",
             lg: "block",
             xl: "block",
-          }}
-          width={{
-            sm: "50%",
-            md: "50%",
-            lg: "800px",
-            xl: "900px",
           }}
         >
           <Input

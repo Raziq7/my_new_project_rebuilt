@@ -9,14 +9,13 @@ import {
 import React, { useState } from "react";
 import {
   FiBriefcase,
-  FiCalendar,
-  FiDollarSign,
   FiHome,
   FiMenu,
   FiSettings,
   FiUser,
 } from "react-icons/fi";
-import { IoPawOutline } from "react-icons/io5";
+import { MdProductionQuantityLimits, MdCategory } from "react-icons/md";
+import { FaUserTie } from "react-icons/fa";
 import NavItems from "./NavItems";
 
 function SideNav() {
@@ -54,10 +53,19 @@ function SideNav() {
           }}
         />
         <NavItems navSize={navSize} icon={FiHome} title="Dashboard" />
-        <NavItems navSize={navSize} icon={FiCalendar} title="Calender" active />
-        <NavItems navSize={navSize} icon={FiUser} title="Clints" />
-        <NavItems navSize={navSize} icon={IoPawOutline} title="Animal" />
-        <NavItems navSize={navSize} icon={FiDollarSign} title="Stocks" />
+        <NavItems
+          navSize={navSize}
+          icon={MdProductionQuantityLimits}
+          title="Product Managment"
+          active
+        />
+        <NavItems navSize={navSize} icon={FiUser} title="User Managment" />
+        <NavItems navSize={navSize} icon={FaUserTie} title="Staff Managment" />
+        <NavItems
+          navSize={navSize}
+          icon={MdCategory}
+          title="Category Managment"
+        />
         <NavItems navSize={navSize} icon={FiBriefcase} title="Reports" />
         <NavItems navSize={navSize} icon={FiSettings} title="Settings" />
       </Flex>
