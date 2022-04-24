@@ -1,12 +1,22 @@
+let path = require("path");
+
 const express = require("express");
 const app = express();
-let path = require("path");
+const cors = require("cors");
+
 const dashBoard = require("./router/dashBoard.js");
 const staff = require("./router/staff");
 const Sadmin = require("./router/superAdmin");
 const { notFound, errorHandler } = require("./Middleware/ErroreHandling");
 
 app.use(express.json());
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+    optionsSuccessStatus: 200,
+  })
+);
 app.use("/", dashBoard);
 app.use("/api/staff", staff);
 app.use("/api/superAdmin", Sadmin);

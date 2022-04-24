@@ -1,4 +1,4 @@
-import { createStore, combineReducers, applyMiddleware } from "redux";
+import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import {
   staffLoginReducer,
   staffRegsterReducer,
@@ -17,7 +17,11 @@ const appReducer = combineReducers({
   deleteInfo: deleteProReducer,
 });
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 let Middleware = [thunk];
 
-const store = createStore(appReducer, applyMiddleware(...Middleware));
+const store = createStore(
+  appReducer,
+  composeEnhancers(applyMiddleware(...Middleware))
+);
 export default store;

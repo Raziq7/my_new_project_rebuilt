@@ -1,4 +1,5 @@
 import {
+  ADD_ONE_PRODUCT,
   ADD_PRODUCT_FAILED,
   ADD_PRODUCT_REQUEST,
   ADD_PRODUCT_SUCCESS,
@@ -51,6 +52,13 @@ export const getProductReducer = (
         loading: false,
         error: action.payload,
       };
+    case ADD_ONE_PRODUCT:
+      return {
+        ...state,
+        showProduct: {
+          showProduct: [...state.showProduct.showProduct, action.payload],
+        },
+      };
     default:
       return state;
   }
@@ -74,6 +82,7 @@ export const deleteProReducer = (state = { deleteDetail: false }, action) => {
         loading: false,
         error: action.payload,
       };
+
     default:
       return state;
   }

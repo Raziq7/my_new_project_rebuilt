@@ -1,24 +1,28 @@
+const { createServer } = require("http");
+const cors = require("cors");
+
 const express = require("express");
-const app = require("./app.js");
+const colors = require("colors");
 let dotenv = require("dotenv");
+
 const connectDb = require("./config/connect");
 dotenv.config();
 
+const app = require("./app.js");
+const { setupSocket } = require("./Socket/socket.route");
+const server = createServer(app);
+
+setupSocket(server);
+
+//color enable
+colors.enable();
 //mongo connection
 connectDb();
-// if (process.env.NODE_ENV === "production") {
-//   app.use(express.static(path.join(__dirname, "../frontend/build")));
-//   console.log(path.join(__dirname, "../frontend/build"));
 
-//   app.get("*", (req, res) => {
-//     console.log(path.join(__dirname, "../frontend/build"));
-//     res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
-//   });
-// } else {
-//   app.get("/", (req, res) => {
-//     res.send("API is running....");
-//   });
-// }
-app.listen(process.env.PORT || 5000, () => {
-  console.log("server is connected");
+const PORT = process.env.PORT || 5000;
+server.listen(PORT, () => {
+  console.log(`===========================================`.red);
+  console.log(` ======= ENV: ${process.env.NODE_ENV} =======`.red);
+  console.log(` App listening on the port ${PORT}`.red);
+  console.log(`============================================`.red);
 });

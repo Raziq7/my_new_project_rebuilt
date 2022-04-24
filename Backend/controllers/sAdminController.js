@@ -66,7 +66,7 @@ module.exports = {
   getProductDetails: async (req, res) => {
     try {
       let showProduct = await addProductModel.find({});
-      console.log(showProduct.productItemDetails);
+      // console.log(showProduct.productItemDetails);
       res.json({ showProduct });
     } catch (err) {
       console.log(err);
