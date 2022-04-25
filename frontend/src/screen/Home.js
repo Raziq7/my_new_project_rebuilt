@@ -95,22 +95,20 @@ function Home() {
           <Skeleton height="20px" />
         </Stack>
       ) : (
-        <Box
-          width={{
-            sm: "60%",
-            md: "650px",
-            lg: "800px",
-            xl: "70%",
-          }}
-          overflowY="auto"
-          ml="auto"
-          mr="auto"
-          mb="100px"
-        >
+        <Box overflowY="auto">
           <Center fontSize="40px" color="teal">
             Products
           </Center>
-          <TableContainer>
+          <TableContainer
+            ml="auto"
+            mr="auto"
+            width={{
+              sm: "60%",
+              md: "650px",
+              lg: "800px",
+              xl: "70%",
+            }}
+          >
             <Table variant="simple">
               <TableCaption>Imperial to metric conversion factors</TableCaption>
               <Thead>

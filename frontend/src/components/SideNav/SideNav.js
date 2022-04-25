@@ -4,8 +4,10 @@ import {
   Flex,
   Heading,
   IconButton,
+  Link,
   Text,
 } from "@chakra-ui/react";
+import { Link as ReachLink } from "react-router-dom";
 import React, { useState } from "react";
 import {
   FiBriefcase,
@@ -20,6 +22,7 @@ import NavItems from "./NavItems";
 
 function SideNav() {
   const [navSize, setNavSize] = useState("large");
+
   return (
     <Flex
       pos="sticky"
@@ -52,22 +55,78 @@ function SideNav() {
             }
           }}
         />
-        <NavItems navSize={navSize} icon={FiHome} title="Dashboard" />
-        <NavItems
-          navSize={navSize}
-          icon={MdProductionQuantityLimits}
-          title="Product Managment"
-          active
-        />
-        <NavItems navSize={navSize} icon={FiUser} title="User Managment" />
-        <NavItems navSize={navSize} icon={FaUserTie} title="Staff Managment" />
-        <NavItems
-          navSize={navSize}
-          icon={MdCategory}
-          title="Category Managment"
-        />
-        <NavItems navSize={navSize} icon={FiBriefcase} title="Reports" />
-        <NavItems navSize={navSize} icon={FiSettings} title="Settings" />
+
+        <Link
+          style={{ marginRight: "100%", textDecoration: "none" }}
+          as={ReachLink}
+          to="/"
+        >
+          <NavItems navSize={navSize} icon={FiHome} title="Dashboard" />
+        </Link>
+
+        <Link
+          style={{ marginRight: "100%", textDecoration: "none" }}
+          as={ReachLink}
+          to="/home"
+        >
+          <NavItems
+            navSize={navSize}
+            icon={MdProductionQuantityLimits}
+            title="Product Managment"
+            active
+          />
+        </Link>
+
+        <Link
+          style={{ marginRight: "100%", textDecoration: "none" }}
+          as={ReachLink}
+          to="/usermanagment"
+        >
+          <NavItems navSize={navSize} icon={FiUser} title="User Managment" />
+        </Link>
+
+        <Link
+          style={{ marginRight: "100%", textDecoration: "none" }}
+          as={ReachLink}
+          to="/staffmanagment"
+        >
+          <NavItems
+            navSize={navSize}
+            icon={FaUserTie}
+            title="Staff Managment"
+          />
+        </Link>
+
+        <Link
+          style={{ marginRight: "100%", textDecoration: "none" }}
+          as={ReachLink}
+          to="/categorymanagment"
+        >
+          <NavItems
+            navSize={navSize}
+            icon={MdCategory}
+            title="Category Managment"
+          />
+        </Link>
+
+        <Link
+          style={{
+            marginRight: "100%",
+            textDecoration: "none",
+          }}
+          as={ReachLink}
+          to="/Report"
+        >
+          <NavItems navSize={navSize} icon={FiBriefcase} title="Reports" />
+        </Link>
+
+        <Link
+          style={{ marginRight: "100%", textDecoration: "none" }}
+          as={ReachLink}
+          to="/Setting"
+        >
+          <NavItems navSize={navSize} icon={FiSettings} title="Settings" />
+        </Link>
       </Flex>
 
       <Flex
