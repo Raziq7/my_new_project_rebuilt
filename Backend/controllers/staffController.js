@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const staffModel = require("../Models/staffModel");
 const generatorToken = require("../util/jwtGenerator");
 const bcrypt = require("bcrypt");
+const res = require("express/lib/response");
 
 // @desc    Register a new user
 // @route   POST /api/staff
@@ -31,9 +32,10 @@ module.exports = {
           email,
           phone,
           password,
+          status: "staff",
           isblock: false,
         });
-        res.json({ staff, Token: generatorToken(staff) });
+        res.json({ staff });
       }
     } catch (err) {
       console.log(err);
@@ -44,16 +46,9 @@ module.exports = {
 
   staffLoginDetails: asyncHandler(async (req, res) => {
     // Admin Details
-    admin = {
-      adminName: "raziq",
-      email: "raziq@gmail.com",
-      Password: 7204,
-      isAdmin: true,
-    };
-
     try {
       let { name, email, password } = req.body;
-      const findStaff = await staffModel.findOne({ email, isblock: false });
+      const findStaff = await staffModel.findOne({ email, isBlock: false });
       if (findStaff) {
         bcrypt
           .compare(password, findStaff.password)
@@ -77,8 +72,65 @@ module.exports = {
     } catch (err) {
       res.status(401);
       throw new Error("Try Again");
+    }
+  }),
 
+  //staffShowing
+  staffShowing: asyncHandler(async (req, res) => {
+    try {
+      let staffShowing = await staffModel.find({});
+
+      res.json(staffShowing);
+    } catch (err) {
       console.log(err);
+      res.status(401);
+      throw new Error(err);
+    }
+  }),
+
+  staffStatusChange: asyncHandler(async (req, res) => {
+    try {
+      console.log(req.body.status);
+      if (req.body.status == "block") {
+        let change = await staffModel.updateOne(
+          { _id: req.body.id },
+          {
+            $set: { status: req.body.status, isBlock: true, isAdmin: false },
+          }
+        );
+        res.json(change);
+      }
+      if (req.body.status == "admin") {
+        let change = await staffModel.updateOne(
+          { _id: req.body.id },
+          {
+            $set: { status: req.body.status, isAdmin: true, isBlock: false },
+          }
+        );
+        res.json(change);
+      }
+      if (req.body.status == "UnBlock") {
+        let change = await staffModel.updateOne(
+          { _id: req.body.id },
+          {
+            $set: { status: req.body.status, isBlock: false, isAdmin: false },
+          }
+        );
+        res.json(change);
+      }
+
+      if (req.body.status == "staff") {
+        let change = await staffModel.updateOne(
+          { _id: req.body.id },
+          {
+            $set: { status: req.body.status, isAdmin: false, isBlock: false },
+          }
+        );
+        res.json(change);
+      }
+    } catch (err) {
+      res.status(401);
+      throw new Error(err);
     }
   }),
 };

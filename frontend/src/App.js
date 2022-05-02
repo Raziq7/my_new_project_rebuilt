@@ -1,4 +1,5 @@
 import React from "react";
+import "./App.css";
 import Register from "./components/auth/Register";
 import Navbar from "./components/Navbar";
 import { BrowserRouter as Routers, Route, Routes } from "react-router-dom";
@@ -8,7 +9,11 @@ import AddProduct from "./screen/AddProduct";
 import SideNav from "./components/SideNav/SideNav";
 import { Flex } from "@chakra-ui/react";
 import Dashboard from "./screen/Dashboard";
-import Smple from "./screen/Smple";
+// import Smple from "./screen/Smple";
+import EditProductForm from "./screen/EditProductForm";
+import UserManagment from "./screen/UserManagment";
+import Category from "./components/Category";
+import ParchaseStock from "./screen/ParchaseStock";
 
 function App() {
   return (
@@ -18,7 +23,7 @@ function App() {
         <Flex alignItems="center">
           <SideNav />
           <Routes>
-            <Route path="/signup" element={<Register />} />
+            <Route path="/StaffForm" element={<Register />} />
 
             <Route path="/login" element={<Login />} />
 
@@ -27,7 +32,16 @@ function App() {
             <Route path="/home" element={<Home />} />
 
             <Route path="/" element={<Dashboard />} />
-            <Route path="/sample" element={<Smple />} />
+
+            <Route path="/categorymanagment" element={<Category />} />
+
+            {/* <Route path="/sample" element={<Smple />} /> */}
+
+            <Route path="/editProduct/:id" element={<EditProductForm />} />
+
+            <Route path="/usermanagment" element={<UserManagment />} />
+
+            <Route path="/purchaseStock" element={<ParchaseStock />} />
           </Routes>
         </Flex>
       </Routers>

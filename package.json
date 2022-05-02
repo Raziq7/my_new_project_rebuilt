@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node Backend/server.js",
     "start:dev": "nodemon Backend/server.js",
-    "server": "nodemon Backend/server.js",
+    "server": "nodemon Backend/server.js --ignore frontend",
     "frontend": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run frontend\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"

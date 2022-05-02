@@ -21,6 +21,16 @@ const staffModelSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    status: {
+      type: String,
+      required: true,
+    },
+    isBlock: {
+      type: Boolean,
+    },
+    isAdmin: {
+      type: Boolean,
+    },
   },
   {
     timestamps: true,

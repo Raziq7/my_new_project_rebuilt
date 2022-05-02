@@ -34,11 +34,11 @@ function Login() {
 
   let { loding, staffInfo } = staffLoginData;
 
-  useEffect(() => {
-    if (staffInfo) {
-      navigate("/");
-    }
-  }, [staffInfo]);
+  // useEffect(() => {
+  //   if (staffInfo) {
+  //     navigate("/");
+  //   }
+  // }, [staffInfo]);
 
   useEffect(() => {
     let isStaff = localStorage.getItem("staffInfo")
@@ -47,7 +47,7 @@ function Login() {
     if (isStaff) {
       navigate("/");
     }
-  }, []);
+  }, [staffInfo]);
 
   //validatio form
 
@@ -93,7 +93,14 @@ function Login() {
       {loding ? (
         <h1>Loding......</h1>
       ) : (
-        <Flex justify={"center"} align={"center"}>
+        <Flex
+          justify={"center"}
+          align={"center"}
+          ml={["70px", "250px", "400px", "500px"]}
+          // mr="20"
+          // mr={["70px", "250px", "400px", "auto"]}
+          mt="150px"
+        >
           <form onSubmit={formik.handleSubmit}>
             <Stack spacing={4}>
               <VStack>

@@ -84,21 +84,28 @@ function Register() {
   });
   useEffect(() => {
     if (staffInfo) {
-      navigate("/");
+      navigate("/usermanagment");
     }
   }, [staffInfo]);
 
-  useEffect(() => {
-    let isStaff = localStorage.getItem("staffInfo")
-      ? JSON.stringify(localStorage.getItem("staffInfo"))
-      : null;
-    if (isStaff) {
-      navigate("/");
-    }
-  }, []);
+  // useEffect(() => {
+  //   let isStaff = localStorage.getItem("staffInfo")
+  //     ? JSON.stringify(localStorage.getItem("staffInfo"))
+  //     : null;
+  //   if (isStaff) {
+  //     navigate("/");
+  //   }
+  // }, []);
 
   return (
-    <Flex justify={"center"} align={"center"}>
+    <Flex
+      justify={"center"}
+      align={"center"}
+      ml="auto"
+      mr="auto"
+      mb="auto"
+      mt="10px"
+    >
       <form onSubmit={formik.handleSubmit}>
         <Stack spacing={4}>
           <VStack>
