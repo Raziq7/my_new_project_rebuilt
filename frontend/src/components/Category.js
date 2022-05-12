@@ -52,7 +52,7 @@ function Category() {
               }}
               colorScheme="teal"
             >
-              Vendor Details
+              Vendor Detail
             </Button>
 
             <Button
