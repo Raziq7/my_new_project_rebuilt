@@ -54,14 +54,7 @@ function Category() {
             >
               Vendor Details
             </Button>
-            {/* <Button
-              onClick={() => {
-                setMode("subcategory");
-              }}
-              colorScheme="teal"
-            >
-              Subcategory{" "}
-            </Button> */}
+
             <Button
               onClick={() => {
                 setMode("Main_Category");
