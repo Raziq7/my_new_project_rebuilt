@@ -14,19 +14,47 @@ import {
   Heading,
   Spacer,
   useToast,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+  ModalOverlay,
+  TableContainer,
+  Table,
+  Thead,
+  Tr,
+  Th,
+  Tbody,
+  Td,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteCategory,
   getShowCategory,
   setCategoryAction,
+  setSubCategoryAction,
+  getSubCategory,
+  deleteSubCatAction,
 } from "../actions/productAction";
 import { AiFillDelete } from "react-icons/ai";
+import { MdOutlineAddCircle } from "react-icons/md";
 
 function CategoryForm({ mode }) {
   const [category, setCategory] = useState("");
+  const [subCat, setSubCat] = useState({
+    value: "",
+    mainValue: null,
+  });
+  const [init, setInit] = useState("");
+
   const dispatch = useDispatch();
   const toast = useToast();
+
+  const [subCategory, setSubCategory] = useState(false);
+  const [mainValue, setMainValue] = useState("");
 
   const categoryData = useSelector((state) => {
     return state.getCategory;
@@ -37,20 +65,50 @@ function CategoryForm({ mode }) {
     return state.addCategory;
   });
 
-  console.log(showCategory, "777777");
+  const { subCategoryData } = useSelector((state) => {
+    return state.subCategory;
+  });
 
+  const { deleteSubCat } = useSelector((state) => {
+    return state.deleteSubCategory;
+  });
+  console.log(deleteSubCat, "55555555555555");
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(setCategoryAction(category, mode));
+  };
+
+  const subCategorySubmit = (e) => {
+    e.preventDefault();
+    dispatch(setSubCategoryAction(subCat));
   };
 
   const { deleteCatData } = useSelector((state) => {
     return state.deleteCategory;
   });
 
+  const { showSubCategory } = useSelector((state) => {
+    return state.getSubCategories;
+  });
+
   useEffect(() => {
     dispatch(getShowCategory());
-  }, [setcategory, deleteCatData]);
+    setCategory("");
+  }, [setcategory, deleteCatData, showSubCategory]);
+
+  useEffect(() => {
+    dispatch(getSubCategory());
+  }, [deleteSubCat, subCategoryData]);
+
+  const OverlayOne = () => (
+    <ModalOverlay
+      bg="blackAlpha.300"
+      backdropFilter="blur(10px) hue-rotate(90deg)"
+    />
+  );
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [overlay, setOverlay] = React.useState(<OverlayOne />);
 
   return (
     <>
@@ -79,6 +137,7 @@ function CategoryForm({ mode }) {
                 <Input
                   id={mode}
                   placeholder={mode}
+                  value={category}
                   onChange={(e) => {
                     setCategory(e.target.value);
                   }}
@@ -218,7 +277,7 @@ function CategoryForm({ mode }) {
                 }
               })}
           </Box>
-          <Box w="auto" h="auto" boxShadow="lg" p="6" rounded="md">
+          {/* <Box w="auto" h="auto" boxShadow="lg" p="6" rounded="md">
             <Heading as="h4" size="md">
               Sub Category
             </Heading>
@@ -248,7 +307,7 @@ function CategoryForm({ mode }) {
                   });
                 }
               })}
-          </Box>
+          </Box> */}
 
           <Box w="auto" h="auto" boxShadow="lg" p="6" rounded="md">
             <Heading as="h4" size="md">
@@ -275,11 +334,81 @@ function CategoryForm({ mode }) {
                             });
                           }}
                         />
+                        <MdOutlineAddCircle
+                          onClick={() => {
+                            setSubCategory(true);
+                            setMainValue(MainCategory);
+                          }}
+                        />
                       </HStack>
                     );
                   });
                 }
               })}
+            <Button
+              onClick={() => {
+                setOverlay(<OverlayOne />);
+                onOpen();
+              }}
+            >
+              Show SubCategory
+            </Button>
+
+            <Modal isCentered isOpen={isOpen} onClose={onClose}>
+              {overlay}
+              <ModalContent>
+                <ModalHeader>Sub Category</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  <TableContainer>
+                    <Table size="sm">
+                      <Thead>
+                        <Tr>
+                          <Th>Main Category</Th>
+                          <Th>Sub Category</Th>
+                          <Th>Action</Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        {showSubCategory &&
+                          showSubCategory.map((value) => {
+                            return (
+                              value.subCategory &&
+                              value.subCategory.map((sub) => {
+                                return (
+                                  <>
+                                    <Tr>
+                                      <Td>{value.categoryName}</Td>
+                                      <Td>{sub}</Td>
+                                      <Td>
+                                        <Button
+                                          onClick={() => {
+                                            dispatch(
+                                              deleteSubCatAction({
+                                                value: value.categoryName,
+                                                sub,
+                                              })
+                                            );
+                                          }}
+                                        >
+                                          Delete
+                                        </Button>
+                                      </Td>
+                                    </Tr>
+                                  </>
+                                );
+                              })
+                            );
+                          })}
+                      </Tbody>
+                    </Table>
+                  </TableContainer>
+                </ModalBody>
+                <ModalFooter>
+                  <Button onClick={onClose}>Close</Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
           </Box>
 
           <Box w="auto" h="auto" boxShadow="lg" p="6" rounded="md">
@@ -314,6 +443,25 @@ function CategoryForm({ mode }) {
               })}
           </Box>
         </HStack>
+        {subCategory == true ? (
+          <Box mt="20px" w="400px" boxShadow="lg" p="6" rounded="md">
+            <form onSubmit={subCategorySubmit}>
+              <FormControl>
+                <FormLabel htmlFor="name">Add SubCategory</FormLabel>
+                <Input
+                  placeholder="Add SubCategory"
+                  onChange={(e) => {
+                    setSubCat({ value: e.target.value, mainValue });
+                  }}
+                />
+                <FormErrorMessage>{}</FormErrorMessage>
+              </FormControl>
+              <Button mt={4} colorScheme="teal" isLoading={false} type="submit">
+                Submit
+              </Button>
+            </form>
+          </Box>
+        ) : null}
       </VStack>
     </>
   );

@@ -9,6 +9,11 @@ const {
   categorySet,
   categoryShow,
   deleteCategory,
+  increaseValueStock,
+  setSubCategory,
+  getCategory,
+  deleteSubCategory,
+  downloadBarcode,
 } = require("../controllers/sAdminController");
 const protect = require("../Middleware/auth");
 const router = express.Router();
@@ -41,4 +46,20 @@ router.route("/getCategories").get(categoryShow);
 
 router.route("/deleteCategory/").delete(deleteCategory);
 
+//increasStock
+
+router.route("/increasStock").post(increaseValueStock);
+
+//setSubCategory
+
+router.route("/setSubCategory").post(setSubCategory);
+
+//Get Category
+router.route("/getCategory").get(getCategory);
+
+//delete SubCategory
+router.route("/deleteSubCategory").post(deleteSubCategory);
+
+//download Barcode
+router.route("/downloadBarcode").post(downloadBarcode);
 module.exports = router;

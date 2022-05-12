@@ -14,6 +14,7 @@ import EditProductForm from "./screen/EditProductForm";
 import UserManagment from "./screen/UserManagment";
 import Category from "./components/Category";
 import ParchaseStock from "./screen/ParchaseStock";
+import SettingComponent from "./components/SettingComponent";
 
 function App() {
   return (
@@ -35,7 +36,7 @@ function App() {
 
             <Route path="/categorymanagment" element={<Category />} />
 
-            {/* <Route path="/sample" element={<Smple />} /> */}
+            <Route path="/Setting" element={<SettingComponent />} />
 
             <Route path="/editProduct/:id" element={<EditProductForm />} />
 

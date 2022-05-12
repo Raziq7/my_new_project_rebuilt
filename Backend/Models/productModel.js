@@ -29,10 +29,24 @@ const productSchema = mongoose.Schema(
     vendoreDetails: {
       type: String,
     },
-    productItemDetails: {
-      type: Array,
-      require: true,
-    },
+    productItemDetails: [
+      {
+        proSize: String,
+        proColor: String,
+        qty: Number,
+        marketPrice: Number,
+        sellingPrice: Number,
+        selectQty: String,
+        stocks: Number,
+        MaxQty: Number,
+        MinQty: Number,
+        priceCode: String,
+        barcodeUrl: String,
+        barcodepin: Number,
+        mrpBarCodeUrl: String,
+        mrpBarCodePin: Number,
+      },
+    ],
   },
   {
     timestamps: true,

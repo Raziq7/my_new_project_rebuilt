@@ -3,27 +3,26 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
   TableCaption,
   TableContainer,
   Skeleton,
-  Stack,
   Button,
   Spacer,
   Divider,
   Image,
   Box,
-  Text,
   Center,
   HStack,
+  useToast,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addOneProduct,
   deleteProduct,
+  downloadBarCode,
   showProductAction,
 } from "../actions/productAction";
 import { Link, useNavigate } from "react-router-dom";
@@ -33,6 +32,7 @@ import { Link as ReachLink } from "react-router-dom";
 function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const toast = useToast();
 
   //socket io
   const socket = useSocket((socket) => {
@@ -43,12 +43,9 @@ function Home() {
       dispatch(deleteProduct(data._id));
     });
     socket.on("updatePro", (data) => {
-      console.log("data=======*********======", data);
       dispatch(showProductAction());
     });
-    socket.on("connect_error", (data) => {
-      console.log(data, "errrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
-    });
+    socket.on("connect_error", (data) => {});
   });
 
   //selector
@@ -65,7 +62,39 @@ function Home() {
     return state.editSuccess;
   });
 
-  console.log(editSuccess, "/*/*/*/*-*/*-*/888");
+  const { download } = useSelector((state) => {
+    return state.downloadBarCode;
+  });
+  console.log(download, "download");
+  // const { columnHideAndVisible } = useSelector((state) => {
+  //   return state.ProductManageColomnHideAndVisible;
+  // });
+
+  let columnExist;
+
+  columnExist = localStorage.getItem("productColumn")
+    ? JSON.parse(localStorage.getItem("productColumn"))
+    : { id: true, name: "null" };
+
+  useEffect(() => {
+    if (download) {
+      toast({
+        title: "Download Success.",
+        description: "Barcode Downloaded Successfully.",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+  }, [download]);
+
+  useEffect(() => {
+    console.log(columnExist, "*****************");
+
+    if (!columnExist) {
+      columnExist.id = true;
+    }
+  }, []);
 
   useEffect(() => {
     if (editSuccess) {
@@ -92,6 +121,95 @@ function Home() {
   const deletePro = (proId) => {
     dispatch(deleteProduct(proId));
   };
+
+  //downloadClick
+  const downloadClick = (id) => {
+    dispatch(downloadBarCode(id));
+  };
+
+  const columns = [
+    {
+      column_name: "Product Name",
+
+      enabled: columnExist.name == "Product Name" ? columnExist.status : true,
+      // enabled: columnExist ? columnExist.status : true,
+    },
+    {
+      column_name: "Description",
+      enabled: columnExist.name == "Description" ? columnExist.status : true,
+      // enabled: columnExist ? columnExist.status : true,
+    },
+    {
+      column_name: "Main Category",
+      enabled: columnExist.name == "Main Category" ? columnExist.status : true,
+      // enabled: columnExist ? columnExist.status : true,
+    },
+    {
+      column_name: "Sub Category",
+      enabled: columnExist.name == "Sub Category" ? columnExist.status : true,
+      // enabled: columnExist ? columnExist.status : true,
+    },
+    {
+      column_name: "Vendor Name",
+      enabled: columnExist.name == "Vendor Name" ? columnExist.status : true,
+      // enabled: columnExist ? columnExist.status : true,
+    },
+    {
+      column_name: "Size",
+      enabled: columnExist.name == "Size" ? columnExist.status : true,
+      // enabled: columnExist ? columnExist.status : true,
+    },
+    {
+      column_name: "Color",
+      enabled: columnExist.name == "Color" ? columnExist.status : true,
+      // enabled: columnExist ? columnExist.status : true,
+    },
+    {
+      column_name: "Stocks",
+      enabled: columnExist.name == "Stocks" ? columnExist.status : true,
+      // enabled: columnExist ? columnExist.status : true,
+    },
+    {
+      column_name: "Qty Type",
+      enabled: columnExist.name == "Qty Type" ? columnExist.status : true,
+      // enabled: columnExist ? columnExist.status : true,
+    },
+    {
+      column_name: "Qty",
+      enabled: columnExist.name == "Qty" ? columnExist.status : true,
+      // enabled: columnExist ? columnExist.status : true,
+    },
+    {
+      column_name: "Market Price",
+      enabled: columnExist.name == "Market Price" ? columnExist.status : true,
+      // enabled: columnExist ? columnExist.status : true,
+    },
+    {
+      column_name: "Selling Price",
+      enabled: columnExist.name == "Selling Price" ? columnExist.status : true,
+      // enabled: columnExist ? columnExist.status : true,
+    },
+    {
+      column_name: "Price Code",
+      enabled: columnExist.name == "Price Code" ? columnExist.status : true,
+      // enabled: columnExist ? columnExist.status : true,
+    },
+    {
+      column_name: "Bar Code",
+      enabled: columnExist.name == "Bar Code" ? columnExist.status : true,
+      // enabled: columnExist ? columnExist.status : true,
+    },
+    {
+      column_name: "MRP Bar Code",
+      enabled: columnExist.name == "MRP Bar Code" ? columnExist.status : true,
+      // enabled: columnExist ? columnExist.status : true,
+    },
+    {
+      column_name: "Action",
+      enabled: columnExist.name == "Action" ? columnExist.status : true,
+      // enabled: columnExist ? columnExist.status : true,
+    },
+  ];
 
   return (
     <>
@@ -149,124 +267,141 @@ function Home() {
               }}
             >
               <Table variant="simple">
-                <TableCaption>
-                  Imperial to metric conversion factors
-                </TableCaption>
+                <TableCaption>Ukkens Vasthralay Product Details</TableCaption>
                 <Thead>
                   <Tr>
-                    <Th>Product Name</Th>
-                    <Th>Description</Th>
-                    <Th>Main Category</Th>
-                    <Th>Sub Category</Th>
-                    <Th>Vendor Name</Th>
-                    <Th>Vendor Details</Th>
-
-                    {/* <Th>Discount Price</Th> */}
-                    <Th>Size</Th>
-                    <Th>Color</Th>
-                    <Th>Stocks</Th>
-                    <Th>Qty Type</Th>
-                    <Th>Qty</Th>
-                    <Th isNumeric>Market Price</Th>
-                    <Th>Selling Price</Th>
-                    <Th>Price Code</Th>
-                    <Th>Bar Code</Th>
-                    <Th>MRP Bar Code</Th>
-                    <Th>Action</Th>
+                    {columns.map((item) => {
+                      if (item.enabled) {
+                        return <Th> {item.column_name} </Th>;
+                      }
+                    })}
                   </Tr>
                 </Thead>
                 {showProduct.showProduct.map((data) => {
                   return (
                     <Tbody key={data._id}>
                       <Tr>
-                        <Td>{data.productName}</Td>
-                        <Td>{data.description}</Td>
-                        <Td>{data.mainCategory}</Td>
-                        <Td>{data.subCategory}</Td>
-                        <Td>{data.vendorName}</Td>
-                        <Td>{data.vendoreDetails}</Td>
+                        {columnExist.name == "Product Name" &&
+                        !columnExist.status ? null : (
+                          <Td>{data.productName}</Td>
+                        )}
+
+                        {columnExist.name == "Description" ? null : (
+                          <Td>{data.description}</Td>
+                        )}
+
+                        {columnExist.name == "Main Category" ? null : (
+                          <Td>{data.mainCategory}</Td>
+                        )}
+
+                        {columnExist.name == "Sub Category" ? null : (
+                          <Td>{data.subCategory}</Td>
+                        )}
+
+                        {columnExist.name == "Vendor Name" ? null : (
+                          <Td>{data.vendorName}</Td>
+                        )}
 
                         {data.productItemDetails.map((details) => {
                           return (
                             <>
-                              {/* <Td>{details.discountPrice}</Td> */}
-                              <Td>{details.proSize}</Td>
-                              <Td>{details.proColor}</Td>
-                              <Td>{details.stocks}</Td>
-                              <Td>{details.selectQty}</Td>
-                              <Td>{details.qty}</Td>
-                              <Td isNumeric>{details.marketPrice}</Td>
-                              <Td>{details.sellingPrice}</Td>
-                              <Td>{details.priceCode}</Td>
+                              {columnExist.name == "Size" ? null : (
+                                <Td>{details.proSize}</Td>
+                              )}
 
-                              <Td>
-                                <Image src={details.barcode} alt="Bar Code" />
-                                <Button size="sm" colorScheme="teal" mt="10px">
-                                  Download
-                                </Button>
-                              </Td>
-                              <Td>
-                                <Image
-                                  src={details.mrpBarCode}
-                                  alt="MRP Barcode"
-                                />
-                                <Button size="sm" colorScheme="teal" mt="10px">
-                                  Download
-                                </Button>
-                              </Td>
+                              {columnExist.name == "Color" ? null : (
+                                <Td>{details.proColor}</Td>
+                              )}
+
+                              {columnExist.name == "Stocks" ? null : (
+                                <Td>{details.stocks}</Td>
+                              )}
+
+                              {columnExist.name == "Qty Type" ? null : (
+                                <Td>{details.selectQty}</Td>
+                              )}
+
+                              {columnExist.name == "Qty" ? null : (
+                                <Td>{details.qty}</Td>
+                              )}
+
+                              {columnExist.name == "Market Price" ? null : (
+                                <Td isNumeric>{details.marketPrice}</Td>
+                              )}
+
+                              {columnExist.name == "Selling Price" ? null : (
+                                <Td>{details.sellingPrice}</Td>
+                              )}
+
+                              {columnExist.name == "Price Code" ? null : (
+                                <Td>{details.priceCode}</Td>
+                              )}
+
+                              {columnExist.name == "Bar Code" ? null : (
+                                <Td>
+                                  <Image
+                                    src={details.barcodeUrl}
+                                    alt="Bar Code"
+                                  />
+                                  <Button
+                                    size="sm"
+                                    colorScheme="teal"
+                                    mt="10px"
+                                    onClick={() => {
+                                      downloadClick(data._id);
+                                    }}
+                                  >
+                                    Download
+                                  </Button>
+                                </Td>
+                              )}
+
+                              {columnExist.name == "MRP Bar Code" ? null : (
+                                <Td>
+                                  <Image
+                                    src={details.mrpBarCodeUrl}
+                                    alt="MRP Barcode"
+                                  />
+                                  <Button
+                                    size="sm"
+                                    colorScheme="teal"
+                                    mt="10px"
+                                  >
+                                    Download
+                                  </Button>
+                                </Td>
+                              )}
                             </>
                           );
                         })}
-
-                        <Td>
-                          <Button
-                            onClick={() => {
-                              editPro(data._id);
-                            }}
-                            colorScheme="teal"
-                            size="sm"
-                          >
-                            Edit
-                          </Button>
-                          <Spacer />
-                          <Divider />
-                          <Button
-                            onClick={() => {
-                              deletePro(data._id);
-                            }}
-                            colorScheme="red"
-                            size="sm"
-                          >
-                            Delete
-                          </Button>
-                        </Td>
+                        {columnExist.name == "Action" ? null : (
+                          <Td>
+                            <Button
+                              onClick={() => {
+                                editPro(data._id);
+                              }}
+                              colorScheme="teal"
+                              size="sm"
+                            >
+                              Edit
+                            </Button>
+                            <Spacer />
+                            <Divider />
+                            <Button
+                              onClick={() => {
+                                deletePro(data._id);
+                              }}
+                              colorScheme="red"
+                              size="sm"
+                            >
+                              Delete
+                            </Button>
+                          </Td>
+                        )}
                       </Tr>
                     </Tbody>
                   );
                 })}
-
-                <Tfoot>
-                  <Tr>
-                    <Th>Product Name</Th>
-                    <Th>Description</Th>
-                    <Th>Main Category</Th>
-                    <Th>Sub Category</Th>
-                    <Th>Vendor Name</Th>
-                    <Th>Vendor Details</Th>
-
-                    {/* <Th>Discount Price</Th> */}
-                    <Th>Size</Th>
-                    <Th>Color</Th>
-                    <Th>Stocks</Th>
-                    <Th>Qty Type</Th>
-                    <Th>Qty</Th>
-                    <Th isNumeric>Market Price</Th>
-                    <Th>Selling Price</Th>
-                    <Th>Price Code</Th>
-                    <Th>Bar Code</Th>
-                    <Th>Action</Th>
-                  </Tr>
-                </Tfoot>
               </Table>
             </TableContainer>
           </>

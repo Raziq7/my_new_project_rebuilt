@@ -3,13 +3,9 @@ import {
   VStack,
   Input,
   HStack,
-  Stack,
   Spacer,
   Button,
   Divider,
-  Checkbox,
-  Center,
-  Flex,
   Box,
   Textarea,
   Text,
@@ -21,13 +17,15 @@ import {
   Tr,
   Th,
   Td,
-  Container,
   TableContainer,
-  Heading,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { addProductAction, getShowCategory } from "../actions/productAction";
+import {
+  addProductAction,
+  getShowCategory,
+  getSubCategory,
+} from "../actions/productAction";
 import { useNavigate } from "react-router-dom";
 
 function AddProduct() {
@@ -38,7 +36,16 @@ function AddProduct() {
   });
   const { loding, productDetail, error } = productData;
 
+  const { showSubCategory } = useSelector((state) => {
+    return state.getSubCategories;
+  });
+
   //useEffect
+
+  useEffect(() => {
+    dispatch(getSubCategory());
+  }, []);
+
   useEffect(() => {
     if (productDetail) {
     }
@@ -425,15 +432,13 @@ function AddProduct() {
               value={formik.values.mainCategory}
               placeholder="Main Category"
             >
-              {showCategory &&
-                showCategory.map((data) => {
-                  if (data.Main_Category) {
-                    return data.Main_Category.map((mainCategory) => {
-                      return (
-                        <option value={mainCategory}>{mainCategory}</option>
-                      );
-                    });
-                  }
+              {showSubCategory &&
+                showSubCategory.map((data) => {
+                  return (
+                    <option value={data.categoryName}>
+                      {data.categoryName}
+                    </option>
+                  );
                 })}
             </Select>
           </Box>
@@ -446,10 +451,10 @@ function AddProduct() {
               value={formik.values.subCategory}
               placeholder="Product subCategory"
             >
-              {showCategory &&
-                showCategory.map((data) => {
-                  if (data.subcategory) {
-                    return data.subcategory.map((subCategory) => {
+              {showSubCategory &&
+                showSubCategory.map((data) => {
+                  if (data.categoryName == formik.values.mainCategory) {
+                    return data.subCategory.map((subCategory) => {
                       return <option value={subCategory}>{subCategory}</option>;
                     });
                   }

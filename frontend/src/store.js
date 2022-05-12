@@ -15,9 +15,15 @@ import {
   addCategoryReducer,
   getCategoryReducer,
   deleteCategoryReducer,
+  subCategoryReducer,
+  getSubCategoriesReducer,
+  deleteSubCategoryReducer,
+  increasStockValueReducer,
+  downloadBarCodeReducer,
 } from "./reducers/productReducer";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
+import { ProductManageColomnHideAndVisibleReducer } from "./reducers/SettingReducer";
 
 const appReducer = combineReducers({
   staffData: staffRegsterReducer,
@@ -33,6 +39,12 @@ const appReducer = combineReducers({
   addCategory: addCategoryReducer,
   getCategory: getCategoryReducer,
   deleteCategory: deleteCategoryReducer,
+  subCategory: subCategoryReducer,
+  getSubCategories: getSubCategoriesReducer,
+  deleteSubCategory: deleteSubCategoryReducer,
+  increasStockValue: increasStockValueReducer,
+  ProductManageColomnHideAndVisible: ProductManageColomnHideAndVisibleReducer,
+  downloadBarCode: downloadBarCodeReducer,
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

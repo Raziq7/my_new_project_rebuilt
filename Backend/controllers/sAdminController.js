@@ -5,7 +5,14 @@ const { nanoid } = require("nanoid");
 const { ObjectId } = require("bson");
 const category = require("../Models/category");
 const protect = require("../Middleware/auth");
-const res = require("express/lib/response");
+const cloudinary = require("cloudinary").v2;
+const imageDownloader = require("image-downloader");
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
 
 module.exports = {
   addProduct: asyncHandler(async (req, res) => {
@@ -33,7 +40,7 @@ module.exports = {
       vendoreDetails,
       select,
     } = req.body;
-    console.log(meterial);
+
     //for VendoreCode
     select.forEach((entry) => {
       let priceCoded = "";
@@ -47,19 +54,15 @@ module.exports = {
       entry.marketPrice = parseInt(entry.marketPrice);
       entry.sellingPrice = parseInt(entry.sellingPrice);
       entry.MinQty = parseInt(entry.MinQty);
+      entry.MaxQty = parseInt(entry.MaxQty);
       entry.stocks = parseInt(entry.stocks);
     });
-
-    console.log(select);
 
     let productDetailsExist = await product.findOne({ productName });
     if (productDetailsExist) {
       res.status(401);
       throw new Error("Product already Exist");
     } else {
-      // var val = Math.floor(100000 + Math.random() * 900000);
-      // // console.log(val);
-
       let data = select.map(async (detail, index) => {
         var val = Math.floor(100000 + Math.random() * 900000);
         var mrpVal = Math.floor(100000 + Math.random() * 900000);
@@ -73,6 +76,17 @@ module.exports = {
         );
         let barcode = data;
 
+        const image = {
+          image: barcode,
+        };
+
+        let BarCode_link1 = await cloudinary.uploader.upload(image.image, {
+          folder: "ukkens_Bar_Code",
+        });
+
+        console.log(BarCode_link1.url, "555555");
+        let BarCodelink1 = BarCode_link1.secure_url;
+
         var { data } = await createStream(
           {
             symbology: SymbologyType.CODE11,
@@ -83,9 +97,20 @@ module.exports = {
 
         let mrpBarCode = data;
 
-        detail.barcode = barcode;
+        const image1 = {
+          image: mrpBarCode,
+        };
+
+        let BarCode_link2 = await cloudinary.uploader.upload(image1.image, {
+          folder: "ukkens_Mrp_Code",
+        });
+
+        console.log(BarCode_link2.secure_url, "555555");
+        let BarCodelink2 = BarCode_link2.secure_url;
+
+        detail.barcodeUrl = BarCodelink1;
         detail.barcodepin = val;
-        detail.mrpBarCode = mrpBarCode;
+        detail.mrpBarCodeUrl = BarCodelink2;
         detail.mrpBarCodePin = mrpVal;
 
         let details = await product.create({
@@ -162,9 +187,10 @@ module.exports = {
       let id = req.query.id;
       let findPro = await product.findById(id);
 
-      productItemDetails[0].barcode = findPro.productItemDetails[0].barcode;
-      productItemDetails[0].mrpBarCode =
-        findPro.productItemDetails[0].mrpBarCode;
+      productItemDetails[0].barcodeUrl =
+        findPro.productItemDetails[0].barcodeUrl;
+      productItemDetails[0].mrpBarCodeUrl =
+        findPro.productItemDetails[0].mrpBarCodeUrl;
 
       productItemDetails[0].barcodepin =
         findPro.productItemDetails[0].barcodepin;
@@ -199,32 +225,21 @@ module.exports = {
 
   stockParchase: asyncHandler(async (req, res) => {
     try {
-      let purchaseData = await product.aggregate([
-        {
-          $project: {
-            productName: 1,
-            description: 1,
-            category: 1,
-            mainCategory: 1,
-            subCategory: 1,
-            brand: 1,
-            meterial: 1,
-            vendorName: 1,
-            vendoreDetails: 1,
-            productItemDetails: 1,
-          },
-        },
-        {
-          $unwind: "$productItemDetails",
-        },
-        {
-          $match: {
-            "productItemDetails.stocks": { $lt: "productItemDetails.MinQty" },
-          },
-        },
-      ]);
-      res.json(purchaseData);
+      console.log("hello try");
+      let purchaseData = await product.find({
+        // $gt: "$productItemDetails.stocks",
+        // $lt: "$productItemDetails.MinQty",
+      });
+
+      let parchaseDetails = purchaseData.filter(
+        (data) =>
+          data.productItemDetails[0].stocks < data.productItemDetails[0].MinQty
+      );
+
+      console.log(parchaseDetails, "8797979798");
+      res.json(parchaseDetails);
     } catch (err) {
+      console.log("hello", err);
       res.status(401);
       throw new Error(err);
     }
@@ -286,6 +301,105 @@ module.exports = {
     } catch (err) {
       res.status(401);
       throw new Error(err);
+    }
+  }),
+
+  increaseValueStock: asyncHandler(async (req, res) => {
+    let { value, id } = req.body;
+
+    value = parseInt(value);
+
+    let increseValue = await product.findById(id);
+
+    increseValue.productItemDetails[0].stocks += value;
+
+    await increseValue.save();
+
+    res.json(increseValue);
+  }),
+
+  setSubCategory: asyncHandler(async (req, res) => {
+    try {
+      const { value, mainValue } = req.body;
+
+      let isSub = await category.findOne({
+        categoryName: mainValue,
+      });
+
+      let subExist = isSub.subCategory.indexOf(value) !== -1;
+
+      if (subExist) {
+        res.status(401);
+        throw new Error("Sub Category Exist");
+      } else {
+        let updateSubCategory = await category.findOneAndUpdate(
+          { categoryName: mainValue },
+          {
+            $push: {
+              subCategory: value,
+            },
+          }
+        );
+        console.log(updateSubCategory);
+        res.json(updateSubCategory);
+      }
+    } catch (err) {
+      res.status(401);
+      throw new Error(err);
+    }
+  }),
+
+  getCategory: asyncHandler(async (req, res) => {
+    console.log("I am Hear");
+    try {
+      let showSubCate = await category.find({ mode: "Main_Category" });
+      res.json(showSubCate);
+    } catch (err) {
+      console.log(err);
+      res.status(401);
+      throw new Error(err);
+    }
+  }),
+
+  deleteSubCategory: asyncHandler(async (req, res) => {
+    try {
+      console.log(req.body);
+      const { value, sub } = req.body;
+
+      let delSubCat = await category.updateOne(
+        { categoryName: value },
+        { $pull: { subCategory: sub } }
+      );
+
+      res.json(delSubCat);
+    } catch (err) {
+      res.status(401);
+      throw new Error(err);
+    }
+  }),
+  downloadBarcode: asyncHandler(async (req, res) => {
+    try {
+      const { id } = req.body;
+      console.log(id, "dddddd");
+
+      let imgCode = await product.findById({ _id: id });
+
+      let url = imgCode.productItemDetails[0].barcodeUrl;
+
+      const options = {
+        url: url,
+        dest: "/home/raziq/Desktop/react/live_project/Backend/public", // will be saved to /path/to/dest/image.jpg
+      };
+
+      imageDownloader
+        .image(options)
+        .then(({ filename }) => {
+          console.log("Saved to", filename); // saved to /path/to/dest/image.jpg
+          res.json({ filename });
+        })
+        .catch((err) => console.error(err));
+    } catch (err) {
+      console.log(err);
     }
   }),
 };

@@ -4,7 +4,6 @@ const generatorToken = require("../util/jwtGenerator");
 const bcrypt = require("bcrypt");
 const res = require("express/lib/response");
 
-// @desc    Register a new user
 // @route   POST /api/staff
 // @access  Public
 module.exports = {

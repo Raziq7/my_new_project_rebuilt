@@ -28,6 +28,21 @@ import {
   CATEGORY_DELETE_REQUEST,
   CATEGORY_DELETE_SUCCESS,
   CATEGORY_DELETE_ERR,
+  INC_PURCHASE_VALUE_REQUEST,
+  INC_PURCHASE_VALUE_SUCCESS,
+  INC_PURCHASE_VALUE_ERR,
+  SUB_CATEGORY_REQUEST,
+  SUB_CATEGORY_SUCCESS,
+  SUB_CATEGORY_ERR,
+  GET_SUB_CATEGORY_REQUEST,
+  GET_SUB_CATEGORY_SUCCESS,
+  GET_SUB_CATEGORY_ERR,
+  DELETE_SUB_CATEGORY_REQUEST,
+  DELETE_SUB_CATEGORY_SUCCESS,
+  DELETE_SUB_CATEGORY_ERR,
+  DOWNLOAD_BAR_CODE_REQUEST,
+  DOWNLOAD_BAR_CODE_SUCCESS,
+  DOWNLOAD_BAR_CODE_ERR,
 } from "../constant/productConstant";
 
 export const addProductAction = (details) => async (dispatch, getState) => {
@@ -176,5 +191,87 @@ export const deleteCategory = (id) => async (dispatch, getState) => {
     dispatch({ type: CATEGORY_DELETE_SUCCESS, payload: data });
   } catch (err) {
     dispatch({ type: CATEGORY_DELETE_ERR, payload: err });
+  }
+};
+
+//increasStockValue
+export const increasStockValue = (value, id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: INC_PURCHASE_VALUE_REQUEST });
+
+    let { data } = await axios.post("/api/superAdmin/increasStock", {
+      value,
+      id,
+    });
+
+    dispatch({ type: INC_PURCHASE_VALUE_SUCCESS, payload: data });
+  } catch (err) {
+    dispatch({ type: INC_PURCHASE_VALUE_ERR });
+  }
+};
+
+//set Sub Category
+export const setSubCategoryAction =
+  ({ value, mainValue }) =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({ type: SUB_CATEGORY_REQUEST });
+
+      let { data } = await axios.post("/api/superAdmin/setSubCategory", {
+        value,
+        mainValue,
+      });
+
+      dispatch({ type: SUB_CATEGORY_SUCCESS, payload: data });
+    } catch (err) {
+      dispatch({ type: SUB_CATEGORY_ERR, payload: err });
+      console.log(err);
+    }
+  };
+
+//get Sub Category
+export const getSubCategory = () => async (dispatch, getState) => {
+  console.log("got it");
+  try {
+    dispatch({ type: GET_SUB_CATEGORY_REQUEST });
+
+    let { data } = await axios.get("/api/superAdmin/getCategory");
+
+    dispatch({ type: GET_SUB_CATEGORY_SUCCESS, payload: data });
+  } catch (err) {
+    dispatch({ type: GET_SUB_CATEGORY_ERR, payload: err });
+  }
+};
+
+//delete SubCat
+export const deleteSubCatAction =
+  ({ value, sub }) =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({ type: DELETE_SUB_CATEGORY_REQUEST });
+
+      let { data } = await axios.post("/api/superAdmin/deleteSubCategory", {
+        value,
+        sub,
+      });
+
+      dispatch({ type: DELETE_SUB_CATEGORY_SUCCESS, payload: data });
+    } catch (err) {
+      dispatch({ type: DELETE_SUB_CATEGORY_ERR, payload: err });
+      console.log(err);
+    }
+  };
+
+export const downloadBarCode = (id) => async (dispatch, getState) => {
+  try {
+    console.log("downloadClick", id);
+
+    dispatch({ type: DOWNLOAD_BAR_CODE_REQUEST });
+
+    let { data } = await axios.post("/api/superAdmin/downloadBarcode", { id });
+
+    dispatch({ type: DOWNLOAD_BAR_CODE_SUCCESS, payload: data });
+  } catch (err) {
+    dispatch({ type: DOWNLOAD_BAR_CODE_ERR, payload: err });
   }
 };

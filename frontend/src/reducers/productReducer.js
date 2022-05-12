@@ -15,18 +15,33 @@ import {
   DELETE_PRODUCT_ERR,
   DELETE_PRODUCT_REQUEST,
   DELETE_PRODUCT_SUCCESS,
+  DELETE_SUB_CATEGORY_ERR,
+  DELETE_SUB_CATEGORY_REQUEST,
+  DELETE_SUB_CATEGORY_SUCCESS,
+  DOWNLOAD_BAR_CODE_ERR,
+  DOWNLOAD_BAR_CODE_REQUEST,
+  DOWNLOAD_BAR_CODE_SUCCESS,
   EDIT_PRODUCT_ERROR,
   EDIT_PRODUCT_REQUEST,
   EDIT_PRODUCT_SUCCESS,
   EDIT_PRODUCT_TAKE_ERR,
   EDIT_PRODUCT_TAKE_REQUEST,
   EDIT_PRODUCT_TAKE_SUCCESS,
+  GET_SUB_CATEGORY_ERR,
+  GET_SUB_CATEGORY_REQUEST,
+  GET_SUB_CATEGORY_SUCCESS,
+  INC_PURCHASE_VALUE_ERR,
+  INC_PURCHASE_VALUE_REQUEST,
+  INC_PURCHASE_VALUE_SUCCESS,
   PURCHASE_STOCK_ERR,
   PURCHASE_STOCK_REQUEST,
   PURCHASE_STOCK_SUCCESS,
   SHOW_PRODUCT_ERR,
   SHOW_PRODUCT_REQUEST,
   SHOW_PRODUCT_SUCCESS,
+  SUB_CATEGORY_ERR,
+  SUB_CATEGORY_REQUEST,
+  SUB_CATEGORY_SUCCESS,
 } from "../constant/productConstant";
 
 export const addProductReducer = (state = {}, action) => {
@@ -246,6 +261,122 @@ export const deleteCategoryReducer = (state = {}, action) => {
       return {
         ...state,
         loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+//Sub Categoty
+export const subCategoryReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SUB_CATEGORY_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case SUB_CATEGORY_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        subCategoryData: action.payload,
+      };
+    case SUB_CATEGORY_ERR:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+//get SubCategory
+export const getSubCategoriesReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_SUB_CATEGORY_REQUEST:
+      return {
+        loading: true,
+      };
+    case GET_SUB_CATEGORY_SUCCESS:
+      return {
+        loading: false,
+        showSubCategory: action.payload,
+      };
+    case GET_SUB_CATEGORY_ERR:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+//delete SubCategory
+
+export const deleteSubCategoryReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DELETE_SUB_CATEGORY_REQUEST:
+      return {
+        loading: true,
+      };
+    case DELETE_SUB_CATEGORY_SUCCESS:
+      return {
+        loading: false,
+        deleteSubCat: action.payload,
+      };
+    case DELETE_SUB_CATEGORY_ERR:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+//increas Stock Value
+
+export const increasStockValueReducer = (state = {}, action) => {
+  switch (action.type) {
+    case INC_PURCHASE_VALUE_REQUEST:
+      return {
+        loading: true,
+      };
+    case INC_PURCHASE_VALUE_SUCCESS:
+      return {
+        loading: false,
+        increaseStock: action.payload,
+      };
+    case INC_PURCHASE_VALUE_ERR:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+//download BarCode
+
+export const downloadBarCodeReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DOWNLOAD_BAR_CODE_REQUEST:
+      return {
+        loading: true,
+      };
+    case DOWNLOAD_BAR_CODE_SUCCESS:
+      return {
+        loading: false,
+        download: action.payload,
+      };
+    case DOWNLOAD_BAR_CODE_ERR:
+      return {
+        loading: false.valueOf,
         error: action.payload,
       };
     default:

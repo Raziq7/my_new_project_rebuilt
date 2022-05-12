@@ -32,17 +32,28 @@ function UserManagment() {
 
   const dispatch = useDispatch();
   const toast = useToast();
+  const navigate = useNavigate();
 
   const [status, setStatus] = useState();
 
   const { changeStatus } = useSelector((state) => {
     return state.changeStatus;
   });
-  console.log(changeStatus, "changeStatus");
 
   useEffect(() => {
     dispatch(staffShow());
   }, [changeStatus]);
+
+  useEffect(() => {
+    let staffExit = localStorage.getItem("staffInfo")
+      ? JSON.parse(localStorage.getItem("staffInfo"))
+      : null;
+    console.log(staffExit.findStaff.isAdmin, "staffExit");
+
+    if (!staffExit.findStaff.isAdmin) {
+      navigate("/login");
+    }
+  }, []);
 
   //useSelector
   const { loading, viewStaff, error } = useSelector((state) => {
@@ -120,34 +131,35 @@ function UserManagment() {
               </Tr>
             </Thead>
             {viewStaff.map((staff) => {
-              return (
-                <Tbody key={staff._id}>
-                  <Tr>
-                    <Td>{staff.name}</Td>
-                    <Td>{staff.email}</Td>
-                    <Td>{staff.phone}</Td>
-                    <Td>{staff.status}</Td>
-                    <Td>
-                      <Select
-                        w="110px"
-                        name="status"
-                        onChange={(e) => {
-                          setStatus({
-                            status: e.target.value,
-                            id: staff._id,
-                          });
-                        }}
-                        placeholder="Select Status"
-                      >
-                        <option value="admin">Admin</option>
-                        <option value="staff">Staff</option>
-                        <option value="block">Block</option>
-                        <option value="UnBlock">UnBlock</option>
-                      </Select>
-                    </Td>
-                  </Tr>
-                </Tbody>
-              );
+              if (!staff.superAdmin)
+                return (
+                  <Tbody key={staff._id}>
+                    <Tr>
+                      <Td>{staff.name}</Td>
+                      <Td>{staff.email}</Td>
+                      <Td>{staff.phone}</Td>
+                      <Td>{staff.status}</Td>
+                      <Td>
+                        <Select
+                          w="110px"
+                          name="status"
+                          onChange={(e) => {
+                            setStatus({
+                              status: e.target.value,
+                              id: staff._id,
+                            });
+                          }}
+                          placeholder="Select Status"
+                        >
+                          <option value="admin">Admin</option>
+                          <option value="staff">Staff</option>
+                          <option value="block">Block</option>
+                          <option value="UnBlock">UnBlock</option>
+                        </Select>
+                      </Td>
+                    </Tr>
+                  </Tbody>
+                );
             })}
 
             <Tfoot>

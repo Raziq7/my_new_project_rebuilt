@@ -12,9 +12,13 @@ import {
   Select,
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { editProduct, editProductTake } from "../actions/productAction";
+import {
+  editProduct,
+  editProductTake,
+  getShowCategory,
+  getSubCategory,
+} from "../actions/productAction";
 import { useNavigate } from "react-router-dom";
 
 function EditProductForm() {
@@ -23,7 +27,16 @@ function EditProductForm() {
   const navigate = useNavigate();
   const [select, setSelect] = useState([]);
 
+  const { showSubCategory } = useSelector((state) => {
+    return state.getSubCategories;
+  });
+
   //useEffect
+
+  useEffect(() => {
+    dispatch(getSubCategory());
+  }, []);
+
   useEffect(() => {
     let staffExit = localStorage.getItem("staffInfo")
       ? JSON.stringify(localStorage.getItem("staffInfo"))
@@ -72,9 +85,19 @@ function EditProductForm() {
   const [selectQty, setSelectQty] = useState("");
   const [stocks, setStocks] = useState("");
   const [priceCode, setPriceCode] = useState("");
+  const [checkMeter, setCheckMetet] = useState(null);
+
+  useEffect(() => {
+    dispatch(getShowCategory());
+  }, []);
+
+  const categoryData = useSelector((state) => {
+    return state.getCategory;
+  });
+  let { showCategory } = categoryData;
+  // console.log(showCategory, "***************************************");
 
   const submitForm = (e) => {
-    console.log("***************************************");
     e.preventDefault();
     let obj = {
       proSize: proSize,
@@ -87,7 +110,7 @@ function EditProductForm() {
       priceCode: priceCode,
     };
     initialState.productItemDetails = [obj];
-
+    // console.log(initialState);
     dispatch(editProductTake(initialState));
     navigate("/home");
   };
@@ -147,7 +170,7 @@ function EditProductForm() {
             >
               <Box>
                 <Text>Product Size</Text>
-                <Input
+                {/* <Input
                   onChange={(e) => {
                     setProSize(e.target.value);
                   }}
@@ -155,12 +178,30 @@ function EditProductForm() {
                   name="proSize"
                   htmlSize={4}
                   width="auto"
-                />
+                /> */}
+                <Select
+                  mb="10px"
+                  name="proSize"
+                  onChange={(e) => {
+                    setProSize(e.target.value);
+                  }}
+                  value={proSize}
+                  placeholder="Product Size"
+                >
+                  {showCategory &&
+                    showCategory.map((data) => {
+                      if (data.size) {
+                        return data.size.map((size) => {
+                          return <option value={size}>{size}</option>;
+                        });
+                      }
+                    })}
+                </Select>
               </Box>
 
               <Box>
                 <Text>Product Color</Text>
-                <Input
+                {/* <Input
                   onChange={(e) => {
                     setProColor(e.target.value);
                   }}
@@ -168,7 +209,30 @@ function EditProductForm() {
                   name="proColor"
                   htmlSize={4}
                   width="auto"
-                />
+                /> */}
+                <Select
+                  w={{
+                    sm: "200px",
+                    md: "auto",
+                    lg: "auto",
+                    xl: "auto",
+                  }}
+                  name="proColor"
+                  placeholder="The Color"
+                  onChange={(e) => {
+                    setProColor(e.target.value);
+                  }}
+                  value={proColor}
+                >
+                  {showCategory &&
+                    showCategory.map((data) => {
+                      if (data.color) {
+                        return data.color.map((color) => {
+                          return <option value={color}>{color}</option>;
+                        });
+                      }
+                    })}
+                </Select>
               </Box>
 
               <Box>
@@ -178,6 +242,7 @@ function EditProductForm() {
                   name="qty"
                   onChange={(e) => {
                     setSelectQty(e.target.value);
+                    setCheckMetet(e.target.value);
                   }}
                   value={selectQty}
                   placeholder="Select Qty"
@@ -201,7 +266,11 @@ function EditProductForm() {
               </Box>
 
               <Box>
-                <Text>Market Price</Text>
+                <Text width="100px">
+                  {checkMeter == "Meters"
+                    ? "Per Meter. Market Price"
+                    : "Market Price"}
+                </Text>
                 <Input
                   onChange={(e) => {
                     setMarketPrice(e.target.value);
@@ -214,7 +283,11 @@ function EditProductForm() {
               </Box>
 
               <Box>
-                <Text>Selling Price</Text>
+                <Text width="100px">
+                  {checkMeter == "Meters"
+                    ? "Per Meter. Selling Price"
+                    : "Selling Price"}
+                </Text>
                 <Input
                   onChange={(e) => {
                     setSellPrice(e.target.value);
@@ -304,9 +377,14 @@ function EditProductForm() {
                   value={initialState.meterial}
                   placeholder="Product Meterial"
                 >
-                  <option value="Cotton">Cotton</option>
-                  <option value="Silk">Silk</option>
-                  <option value="Fabrics">Fabrics</option>
+                  {showCategory &&
+                    showCategory.map((data) => {
+                      if (data.material) {
+                        return data.material.map((meterial) => {
+                          return <option value={meterial}>{meterial}</option>;
+                        });
+                      }
+                    })}
                 </Select>
               </Box>
 
@@ -322,9 +400,16 @@ function EditProductForm() {
                   value={initialState.mainCategory}
                   placeholder="Main Category"
                 >
-                  <option value="TopWear">Top Wear</option>
-                  <option value="BottomWear">Bottom Wear</option>
-                  <option value="Linean">Linean</option>
+                  {showCategory &&
+                    showCategory.map((data) => {
+                      if (data.Main_Category) {
+                        return data.Main_Category.map((mainCategory) => {
+                          return (
+                            <option value={mainCategory}>{mainCategory}</option>
+                          );
+                        });
+                      }
+                    })}
                 </Select>
               </Box>
 
@@ -341,9 +426,17 @@ function EditProductForm() {
                   value={initialState.subCategory}
                   placeholder="Product subCategory"
                 >
-                  <option value="Tshirt">T-Shirt</option>
-                  <option value="shirt">Shirt</option>
-                  <option value="uniform">Uniform</option>
+                  {showSubCategory &&
+                    showSubCategory.map((data) => {
+                      console.log(data, "5555555555555");
+                      if (data.categoryName === initialState.mainCategory) {
+                        return data.subCategory.map((subCategory) => {
+                          return (
+                            <option value={subCategory}>{subCategory}</option>
+                          );
+                        });
+                      }
+                    })}
                 </Select>
               </Box>
 
@@ -359,9 +452,18 @@ function EditProductForm() {
                   value={initialState.category}
                   placeholder="Gender Category"
                 >
-                  <option value="Men">Men</option>
-                  <option value="Women">Women</option>
-                  <option value="Kids">Kids</option>
+                  {showCategory &&
+                    showCategory.map((data) => {
+                      if (data.Gender_Category) {
+                        return data.Gender_Category.map((GenderCategory) => {
+                          return (
+                            <option value={GenderCategory}>
+                              {GenderCategory}
+                            </option>
+                          );
+                        });
+                      }
+                    })}
                 </Select>
               </Box>
             </Box>
@@ -374,7 +476,7 @@ function EditProductForm() {
                 xl: "block",
               }}
             >
-              <Input
+              {/* <Input
                 mt="10px"
                 onChange={(e) => {
                   setInitialState({
@@ -385,7 +487,28 @@ function EditProductForm() {
                 value={initialState.vendorName}
                 name="vendorName"
                 placeholder="Enter The Vendor Name"
-              />
+              /> */}
+
+              <Select
+                name="vendorName"
+                onChange={(e) => {
+                  setInitialState({
+                    ...initialState,
+                    vendorName: e.target.value,
+                  });
+                }}
+                value={initialState.vendorName}
+                placeholder="The Vendor Name"
+              >
+                {showCategory &&
+                  showCategory.map((data) => {
+                    if (data.Vendor_Details) {
+                      return data.Vendor_Details.map((Vendor) => {
+                        return <option value={Vendor}>{Vendor}</option>;
+                      });
+                    }
+                  })}
+              </Select>
 
               {/* <Textarea
                 mt="10px"
