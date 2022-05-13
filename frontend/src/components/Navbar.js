@@ -42,7 +42,6 @@ export default function Navbar() {
     ? JSON.parse(localStorage.getItem("staffInfo"))
     : null;
 
-  console.log(staffExit.findStaff.email, "007");
   return (
     <>
       <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
