@@ -15,6 +15,7 @@ import UserManagment from "./screen/UserManagment";
 import Category from "./components/Category";
 import ParchaseStock from "./screen/ParchaseStock";
 import SettingComponent from "./components/SettingComponent";
+import Sample from "./screen/Sample";
 
 function App() {
   return (
@@ -43,6 +44,8 @@ function App() {
             <Route path="/usermanagment" element={<UserManagment />} />
 
             <Route path="/purchaseStock" element={<ParchaseStock />} />
+
+            <Route path="/sample" element={<Sample />} />
           </Routes>
         </Flex>
       </Routers>

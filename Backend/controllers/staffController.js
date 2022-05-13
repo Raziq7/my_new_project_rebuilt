@@ -46,7 +46,7 @@ module.exports = {
   staffLoginDetails: asyncHandler(async (req, res) => {
     // Admin Details
     try {
-      let { name, email, password } = req.body;
+      let { email, password } = req.body;
       const findStaff = await staffModel.findOne({ email, isBlock: false });
       if (findStaff) {
         bcrypt

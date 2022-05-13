@@ -9,7 +9,6 @@ import {
   MenuList,
   MenuItem,
   MenuDivider,
-  // useDisclosure,
   useColorModeValue,
   Stack,
   useColorMode,
@@ -35,9 +34,15 @@ export default function Navbar() {
     });
     localStorage.getItem("staffInfo")
       ? localStorage.removeItem("staffInfo")
-      : localStorage.removeItem("adminInfo");
+      : localStorage.removeItem("adminInf o");
     navigate("/login");
   };
+
+  let staffExit = localStorage.getItem("staffInfo")
+    ? JSON.parse(localStorage.getItem("staffInfo"))
+    : null;
+
+  console.log(staffExit.findStaff.email, "007");
   return (
     <>
       <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
@@ -86,7 +91,7 @@ export default function Navbar() {
                     </Center>
                     <br />
                     <Center>
-                      <p>Username</p>
+                      <p>{staffExit.findStaff.email}</p>
                     </Center>
                     <br />
                     <MenuDivider />

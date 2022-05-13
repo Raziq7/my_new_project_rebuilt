@@ -54,11 +54,11 @@ function Login() {
   const validate = (values) => {
     const errors = {};
 
-    if (!values.name) {
-      errors.name = "Required";
-    } else if (values.name.length < 3) {
-      errors.name = "Must be 4 characters or More";
-    }
+    // if (!values.name) {
+    //   errors.name = "Required";
+    // } else if (values.name.length < 3) {
+    //   errors.name = "Must be 4 characters or More";
+    // }
 
     if (!values.email) {
       errors.email = "Required";
@@ -78,7 +78,7 @@ function Login() {
 
   const formik = useFormik({
     initialValues: {
-      name: "",
+      // name: "",
       email: "",
       password: "",
     },
@@ -89,7 +89,6 @@ function Login() {
   });
   return (
     <div>
-      {error && <Messege variant="danger">{error}</Messege>}
       {loding ? (
         <h1>Loding......</h1>
       ) : (
@@ -103,11 +102,13 @@ function Login() {
         >
           <form onSubmit={formik.handleSubmit}>
             <Stack spacing={4}>
+              {error && <Messege variant="danger">{error}</Messege>}
+
               <VStack>
-                <FormControl isRequired>
-                  <InputGroup>
-                    <InputLeftElement children={<Icon name="info" />} />
-                    <Input
+                {/* <FormControl isRequired> */}
+                {/* <InputGroup> */}
+                {/* <InputLeftElement children={<Icon name="info" />} /> */}
+                {/* <Input
                       onChange={formik.handleChange}
                       value={formik.values.name}
                       onBlur={formik.handleBlur}
@@ -115,12 +116,12 @@ function Login() {
                       placeholder="Enter Your Name"
                       aria-label="name"
                       name="name"
-                    />
-                  </InputGroup>
-                </FormControl>
-                {formik.errors.name ? (
+                    /> */}
+                {/* </InputGroup>
+                </FormControl> */}
+                {/* {formik.errors.name ? (
                   <Text color="tomato">{formik.errors.name}</Text>
-                ) : null}
+                ) : null} */}
               </VStack>
 
               <VStack>
@@ -138,7 +139,7 @@ function Login() {
                     />
                   </InputGroup>
                 </FormControl>
-                {formik.errors.name ? (
+                {formik.errors.email ? (
                   <Text color="tomato">{formik.errors.email}</Text>
                 ) : null}
               </VStack>
@@ -158,7 +159,7 @@ function Login() {
                     />
                   </InputGroup>
                 </FormControl>
-                {formik.errors.name ? (
+                {formik.errors.password ? (
                   <Text color="tomato">{formik.errors.password}</Text>
                 ) : null}
               </VStack>
