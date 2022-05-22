@@ -16,16 +16,21 @@ import {
   FiSettings,
   FiUser,
 } from "react-icons/fi";
-import { MdProductionQuantityLimits, MdCategory } from "react-icons/md";
+import { MdProductionQuantityLimits } from "react-icons/md";
 import { BsBoxSeam } from "react-icons/bs";
 import NavItems from "./NavItems";
 import { useSelector } from "react-redux";
+import { BiPurchaseTagAlt } from "react-icons/bi";
 
 function SideNav() {
   const [navSize, setNavSize] = useState("large");
   const { staffInfo } = useSelector((state) => {
     return state.staffLginData;
   });
+
+  let staffExit = localStorage.getItem("staffInfo")
+    ? JSON.parse(localStorage.getItem("staffInfo"))
+    : null;
 
   return (
     <>
@@ -35,6 +40,7 @@ function SideNav() {
           left="5"
           h="135vh"
           marginTop="2.5vh"
+          marginBottom="auto"
           box
           boxShadow="0 4px 12px 0 rgba(0,0,0, 0.05)"
           borderRadius={navSize == "small" ? "15px" : "30px"}
@@ -83,17 +89,19 @@ function SideNav() {
               />
             </Link>
 
-            <Link
-              style={{ marginRight: "100%", textDecoration: "none" }}
-              as={ReachLink}
-              to="/usermanagment"
-            >
-              <NavItems
-                navSize={navSize}
-                icon={FiUser}
-                title="User Managment"
-              />
-            </Link>
+            {staffExit.findStaff.status == "admin" && (
+              <Link
+                style={{ marginRight: "100%", textDecoration: "none" }}
+                as={ReachLink}
+                to="/usermanagment"
+              >
+                <NavItems
+                  navSize={navSize}
+                  icon={FiUser}
+                  title="User Managment"
+                />
+              </Link>
+            )}
 
             <Link
               style={{ marginRight: "100%", textDecoration: "none" }}
@@ -110,12 +118,12 @@ function SideNav() {
             <Link
               style={{ marginRight: "100%", textDecoration: "none" }}
               as={ReachLink}
-              to="/categorymanagment"
+              to="/billing"
             >
               <NavItems
                 navSize={navSize}
-                icon={MdCategory}
-                title="Category Managment"
+                icon={BiPurchaseTagAlt}
+                title="Billing Managment"
               />
             </Link>
 

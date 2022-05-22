@@ -26,7 +26,6 @@ export default function Navbar() {
   console.log(staffInfo);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const { isOpen, onOpen, onClose } = useDisclosure();
 
   const logOut = () => {
     dispatch({

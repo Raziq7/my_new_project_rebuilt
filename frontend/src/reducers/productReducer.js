@@ -3,21 +3,17 @@ import {
   ADD_PRODUCT_FAILED,
   ADD_PRODUCT_REQUEST,
   ADD_PRODUCT_SUCCESS,
-  CATEGORY_DELETE_ERR,
-  CATEGORY_DELETE_REQUEST,
-  CATEGORY_DELETE_SUCCESS,
-  CATEGORY_GET_ERR,
-  CATEGORY_GET_REQUEST,
-  CATEGORY_GET_SUCCESS,
-  CATEGORY_SET_ERR,
-  CATEGORY_SET_REQUEST,
-  CATEGORY_SET_SUCCESS,
+  BILLING_DETAILS_REQUEST,
+  BILLING_DETAILS_SUCCESS,
+  BILLING_VALUE_ERR,
+  BILLING_VALUE_REQUEST,
+  BILLING_VALUE_SUCCESS,
+  DECREAS_BILLING_QTY_ERR,
+  DECREAS_BILLING_QTY_REQUEST,
+  DECREAS_BILLING_QTY_SUCCESS,
   DELETE_PRODUCT_ERR,
   DELETE_PRODUCT_REQUEST,
   DELETE_PRODUCT_SUCCESS,
-  DELETE_SUB_CATEGORY_ERR,
-  DELETE_SUB_CATEGORY_REQUEST,
-  DELETE_SUB_CATEGORY_SUCCESS,
   DOWNLOAD_BAR_CODE_ERR,
   DOWNLOAD_BAR_CODE_REQUEST,
   DOWNLOAD_BAR_CODE_SUCCESS,
@@ -27,9 +23,9 @@ import {
   EDIT_PRODUCT_TAKE_ERR,
   EDIT_PRODUCT_TAKE_REQUEST,
   EDIT_PRODUCT_TAKE_SUCCESS,
-  GET_SUB_CATEGORY_ERR,
-  GET_SUB_CATEGORY_REQUEST,
-  GET_SUB_CATEGORY_SUCCESS,
+  INCREAS_BILLING_QTY_ERR,
+  INCREAS_BILLING_QTY_REQUEST,
+  INCREAS_BILLING_QTY_SUCCESS,
   INC_PURCHASE_VALUE_ERR,
   INC_PURCHASE_VALUE_REQUEST,
   INC_PURCHASE_VALUE_SUCCESS,
@@ -39,12 +35,9 @@ import {
   SHOW_PRODUCT_ERR,
   SHOW_PRODUCT_REQUEST,
   SHOW_PRODUCT_SUCCESS,
-  SUB_CATEGORY_ERR,
-  SUB_CATEGORY_REQUEST,
-  SUB_CATEGORY_SUCCESS,
 } from "../constant/productConstant";
 
-export const addProductReducer = (state = {}, action) => {
+export const addProductExcelReducer = (state = {}, action) => {
   switch (action.type) {
     case ADD_PRODUCT_REQUEST:
       return {
@@ -194,150 +187,6 @@ export const purchaseStockProductReducer = (
   }
 };
 
-//category add
-
-export const addCategoryReducer = (state = {}, action) => {
-  switch (action.type) {
-    case CATEGORY_SET_REQUEST:
-      return {
-        loading: true,
-      };
-    case CATEGORY_SET_SUCCESS:
-      return {
-        loading: false,
-        setcategory: action.payload,
-      };
-    case CATEGORY_SET_ERR:
-      return {
-        loading: false,
-        error: action.payload,
-      };
-    default:
-      return state;
-  }
-};
-
-//getCategory
-export const getCategoryReducer = (state = {}, action) => {
-  switch (action.type) {
-    case CATEGORY_GET_REQUEST:
-      return {
-        ...state,
-        loading: true,
-      };
-    case CATEGORY_GET_SUCCESS:
-      return {
-        ...state,
-        showCategory: action.payload,
-        loading: false,
-      };
-    case CATEGORY_GET_ERR:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      };
-    default:
-      return state;
-  }
-};
-
-// Delete Category
-
-export const deleteCategoryReducer = (state = {}, action) => {
-  switch (action.type) {
-    case CATEGORY_DELETE_REQUEST:
-      return {
-        ...state,
-        loading: true,
-      };
-    case CATEGORY_DELETE_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        deleteCatData: action.payload,
-      };
-    case CATEGORY_DELETE_ERR:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      };
-    default:
-      return state;
-  }
-};
-
-//Sub Categoty
-export const subCategoryReducer = (state = {}, action) => {
-  switch (action.type) {
-    case SUB_CATEGORY_REQUEST:
-      return {
-        ...state,
-        loading: true,
-      };
-    case SUB_CATEGORY_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        subCategoryData: action.payload,
-      };
-    case SUB_CATEGORY_ERR:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      };
-    default:
-      return state;
-  }
-};
-
-//get SubCategory
-export const getSubCategoriesReducer = (state = {}, action) => {
-  switch (action.type) {
-    case GET_SUB_CATEGORY_REQUEST:
-      return {
-        loading: true,
-      };
-    case GET_SUB_CATEGORY_SUCCESS:
-      return {
-        loading: false,
-        showSubCategory: action.payload,
-      };
-    case GET_SUB_CATEGORY_ERR:
-      return {
-        loading: false,
-        error: action.payload,
-      };
-    default:
-      return state;
-  }
-};
-
-//delete SubCategory
-
-export const deleteSubCategoryReducer = (state = {}, action) => {
-  switch (action.type) {
-    case DELETE_SUB_CATEGORY_REQUEST:
-      return {
-        loading: true,
-      };
-    case DELETE_SUB_CATEGORY_SUCCESS:
-      return {
-        loading: false,
-        deleteSubCat: action.payload,
-      };
-    case DELETE_SUB_CATEGORY_ERR:
-      return {
-        loading: false,
-        error: action.payload,
-      };
-    default:
-      return state;
-  }
-};
-
 //increas Stock Value
 
 export const increasStockValueReducer = (state = {}, action) => {
@@ -383,3 +232,93 @@ export const downloadBarCodeReducer = (state = {}, action) => {
       return state;
   }
 };
+
+export const billingReducer = (state = {}, action) => {
+  switch (action.type) {
+    case BILLING_VALUE_REQUEST:
+      return {
+        loading: true,
+      };
+    case BILLING_VALUE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        BillDetail: action.payload,
+      };
+    case BILLING_VALUE_ERR:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const increasQtyValueReducer = (state = {}, action) => {
+  switch (action.type) {
+    case INCREAS_BILLING_QTY_REQUEST:
+      return {
+        loading: true,
+      };
+    case INCREAS_BILLING_QTY_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        Billinc: action.payload,
+      };
+    case INCREAS_BILLING_QTY_ERR:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const decreasBillingQtyReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DECREAS_BILLING_QTY_REQUEST:
+      return {
+        loading: true,
+      };
+    case DECREAS_BILLING_QTY_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        Billdec: action.payload,
+      };
+    case DECREAS_BILLING_QTY_ERR:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+// export const billingDetailsReducer = (state = {}, action) => {
+//   switch (action.type) {
+//     case BILLING_DETAILS_REQUEST:
+//       return {
+//         loading: true,
+//       };
+//     case BILLING_DETAILS_SUCCESS:
+//       return {
+//         loading: false,
+//         billing: action.payload,
+//       };
+//     case BILLING_VALUE_ERR:
+//       return {
+//         loading: false,
+//         error: action.payload,
+//       };
+//     default:
+//       return state;
+//   }
+// };

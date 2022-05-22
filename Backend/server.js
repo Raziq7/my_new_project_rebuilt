@@ -9,6 +9,7 @@ const connectDb = require("./config/connect");
 dotenv.config();
 
 const app = require("./app.js");
+
 const { setupSocket } = require("./Socket/socket.route");
 const server = createServer(app);
 
@@ -23,7 +24,7 @@ connectDb();
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
   console.log(`===========================================`.red);
-  console.log(` ======= ENV: ${process.env.NODE_ENV} =======`.red);
+  console.log(` ======= ENV: ${process.env.NODE_ENV} ======`.red);
   console.log(` App listening on the port ${PORT}`.red);
   console.log(`============================================`.red);
 });

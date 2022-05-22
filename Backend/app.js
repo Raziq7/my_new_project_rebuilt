@@ -1,8 +1,13 @@
 let path = require("path");
 
+// var fileupload = require("express-fileupload");
+const bodyParser = require("body-parser");
 const express = require("express");
 const app = express();
 const cors = require("cors");
+
+//static folder path
+app.use(express.static(path.resolve(__dirname, "public")));
 
 const dashBoard = require("./router/dashBoard.js");
 const staff = require("./router/staff");
@@ -17,6 +22,9 @@ app.use(
     optionsSuccessStatus: 200,
   })
 );
+app.use(bodyParser.json());
+// app.use(fileupload());
+
 app.use("/", dashBoard);
 app.use("/api/staff", staff);
 app.use("/api/superAdmin", Sadmin);

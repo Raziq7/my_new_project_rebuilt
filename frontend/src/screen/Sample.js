@@ -1,171 +1,111 @@
-import React, { useEffect, useState } from "react";
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-  Skeleton,
-  Stack,
-  Box,
-  Center,
-  Checkbox,
-  Button,
-  Input,
-} from "@chakra-ui/react";
-import { useDispatch, useSelector } from "react-redux";
-import { getPurchaseData, increasStockValue } from "../actions/productAction";
+// import MaterialTable from "material-table";
+// import {
+//   AddBox,
+//   ArrowDownward,
+//   Check,
+//   ChevronLeft,
+//   ChevronRight,
+//   Clear,
+//   DeleteOutline,
+//   Edit,
+//   FilterList,
+//   FirstPage,
+//   LastPage,
+//   Remove,
+//   SaveAlt,
+//   Search,
+//   ViewColumn,
+// } from "@material-ui/icons";
+// import { forwardRef, useEffect } from "react";
+// import { getPurchaseData } from "../actions/productAction";
+// import { useDispatch, useSelector } from "react-redux";
 
-function Sample() {
-  const dispatch = useDispatch();
-  const [check, setCheck] = useState(false);
-  const [increasStock, setincreasStock] = useState();
-  const [dataId, setDataId] = useState();
+// const tableIcons = {
+//   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+//   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
+//   Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+//   Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+//   DetailPanel: forwardRef((props, ref) => (
+//     <ChevronRight {...props} ref={ref} />
+//   )),
+//   Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+//   Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
+//   Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
+//   FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
+//   LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
+//   NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+//   PreviousPage: forwardRef((props, ref) => (
+//     <ChevronLeft {...props} ref={ref} />
+//   )),
+//   ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+//   Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
+//   SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
+//   ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
+//   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
+// };
 
-  let { loading, purchaseData } = useSelector((state) => {
-    return state.purcaseDetails;
-  });
+// function Sample() {
+//   const dispatch = useDispatch();
+//   let { loading, purchaseData } = useSelector((state) => {
+//     return state.purcaseDetails;
+//   });
 
-  const { increaseStock } = useSelector((state) => {
-    return state.increasStockValue;
-  });
+//   console.log(purchaseData, "123456787");
+//   useEffect(() => {
+//     dispatch(getPurchaseData());
+//   }, []);
 
-  useEffect(() => {
-    dispatch(getPurchaseData());
-  }, [increaseStock]);
+//   const columns = [
+//     { title: "Name", field: "name" },
+//     { title: "Size", field: "Size" },
+//     { title: "Color", field: "Color" },
+//     { title: "Brand", field: "Brand" },
+//     { title: "Material", field: "Material" },
+//     { title: "Max Qty", field: "Max Qty" },
+//     { title: "Qty", field: "Qty" },
+//     { title: "Material Type", field: "Material Type" },
+//     { title: "vendor Name", field: "vendor Name" },
+//     { title: "Action", field: "Action" },
 
-  const incStock = (e) => {
-    e.preventDefault();
-    dispatch(increasStockValue(increasStock, dataId));
-  };
-  return (
-    <>
-      {loading ? (
-        <Stack>
-          <Skeleton height="20px" />
-          <Skeleton height="20px" />
-          <Skeleton height="20px" />
-          <Skeleton height="20px" />
-          <Skeleton height="20px" />
-          <Skeleton height="20px" />
-          <Skeleton height="20px" />
-          <Skeleton height="20px" />
-          <Skeleton height="20px" />
-          <Skeleton height="20px" />
-          <Skeleton height="20px" />
-          <Skeleton height="20px" />
-        </Stack>
-      ) : (
-        <Box overflowY="auto" mb="auto">
-          <Center fontSize="40px" color="teal">
-            Purchase Stock
-          </Center>
-          <TableContainer
-            ml="auto"
-            mr="auto"
-            width={{
-              sm: "60%",
-              md: "650px",
-              lg: "800px",
-              xl: "70%",
-            }}
-          >
-            <Table variant="simple">
-              <TableCaption>Ukkens Vastralaya Parchase Stocks</TableCaption>
-              <Thead>
-                <Tr>
-                  <Th>Product Name</Th>
-                  <Th>Size</Th>
-                  <Th>Color</Th>
-                  <Th>Brand</Th>
-                  <Th>Material</Th>
-                  <Th>Max Qty</Th>
-                  <Th>Qty</Th>
-                  <Th>Material Type</Th>
-                  <Th>vendor Name</Th>
-                  <Th>Action</Th>
-                </Tr>
-              </Thead>
+//     {
+//       title: "Birth Place",
+//       field: "birthCity",
+//       lookup: { 34: "İstanbul", 63: "Şanlıurfa" },
+//     },
+//   ];
 
-              {purchaseData !== null &&
-                purchaseData.map((data) => {
-                  console.log(data, "455555555");
-                  return (
-                    <Tbody>
-                      <Tr>
-                        <Td>{data.productName ? data.productName : null}</Td>
+//   const data = purchaseData.map((purc) => {
+//     return {
+//       Name: purc.productName,
+//       // Size = purc.description,
+//       // category: purc.Size,
+//     };
+//   });
+//   // options = {
+//   //   exportButton: true,
+//   //   exportCsv: (columns, data) => {
+//   //     alert("You should develop a code to export " + data.length + " rows");
+//   //   },
+//   // };
+//   return (
+//     <>
+//       <MaterialTable
+//         style={{ marginLeft: "100px" }}
+//         w="100"
+//         icons={tableIcons}
+//         data={data}
+//         columns={columns}
+//         title="Overriding Export Function Preview"
+//         options={{
+//           filtering: true,
+//           pageSize: 10,
+//           pageSizeOptions: [10, 20, 30, 40, 50],
+//           exportButton: true,
+//           exportAllData: false,
+//         }}
+//       />
+//     </>
+//   );
+// }
 
-                        <Td>
-                          {data.productItemDetails[0].proSize
-                            ? data.productItemDetails[0].proSize
-                            : null}
-                        </Td>
-                        <Td>
-                          {data.productItemDetails[0].proColor
-                            ? data.productItemDetails[0].proColor
-                            : null}
-                        </Td>
-                        <Td>{data.brand ? data.brand : null}</Td>
-                        <Td>{data.meterial}</Td>
-                        <Td>
-                          {data.productItemDetails[0].MaxQty
-                            ? data.productItemDetails[0].MaxQty
-                            : null}
-                        </Td>
-
-                        <Td>
-                          {data.productItemDetails[0].qty
-                            ? data.productItemDetails[0].qty
-                            : null}
-                        </Td>
-
-                        <Td>{data.productItemDetails[0].selectQty}</Td>
-                        <Td>{data.vendorName ? data.vendorName : null}</Td>
-                        <Td>
-                          <Button
-                            onClick={() => {
-                              setCheck(true);
-                              console.log(check);
-                            }}
-                          >
-                            Update Product
-                          </Button>
-                        </Td>
-                        {check == true ? (
-                          <Td>
-                            <form onSubmit={incStock}>
-                              <Input
-                                onChange={(e) => {
-                                  setincreasStock(e.target.value);
-                                  setDataId(data._id);
-                                }}
-                                htmlSize={4}
-                                width="auto"
-                                name="incStock"
-                              />
-                              <Button
-                                colorScheme="teal"
-                                size="sm"
-                                type="submit"
-                              >
-                                Add
-                              </Button>
-                            </form>
-                          </Td>
-                        ) : null}
-                      </Tr>
-                    </Tbody>
-                  );
-                })}
-            </Table>
-          </TableContainer>
-        </Box>
-      )}
-    </>
-  );
-}
-
-export default Sample;
+// export default Sample;

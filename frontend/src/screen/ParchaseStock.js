@@ -59,7 +59,7 @@ function ParchaseStock() {
           <Skeleton height="20px" />
         </Stack>
       ) : (
-        <Box overflowY="auto" mb="auto">
+        <Box overflowY="auto" mb="auto" ml="auto" mr="auto">
           <Center fontSize="40px" color="teal">
             Purchase Stock
           </Center>
@@ -83,47 +83,30 @@ function ParchaseStock() {
                   <Th>Brand</Th>
                   <Th>Material</Th>
                   <Th>Max Qty</Th>
-                  <Th>Qty</Th>
-                  <Th>Material Type</Th>
+                  <Th>Min Stock</Th>
+                  <Th>Price</Th>
                   <Th>vendor Name</Th>
                   <Th>Action</Th>
                 </Tr>
               </Thead>
 
-              {purchaseData !== null &&
+              {purchaseData &&
                 purchaseData.map((data) => {
-                  console.log(data, "455555555");
                   return (
                     <Tbody>
                       <Tr>
-                        <Td>{data.productName ? data.productName : null}</Td>
+                        <Td>{data.ProductName ? data.ProductName : "null"}</Td>
 
-                        <Td>
-                          {data.productItemDetails[0].proSize
-                            ? data.productItemDetails[0].proSize
-                            : null}
-                        </Td>
-                        <Td>
-                          {data.productItemDetails[0].proColor
-                            ? data.productItemDetails[0].proColor
-                            : null}
-                        </Td>
-                        <Td>{data.brand ? data.brand : null}</Td>
-                        <Td>{data.meterial}</Td>
-                        <Td>
-                          {data.productItemDetails[0].MaxQty
-                            ? data.productItemDetails[0].MaxQty
-                            : null}
-                        </Td>
+                        <Td>{data.Size ? data.Size : "null"}</Td>
+                        <Td>{data.Color ? data.Color : "null"}</Td>
+                        <Td>{data.Brand ? data.Brand : "null"}</Td>
+                        <Td>{data.MaterialType}</Td>
+                        <Td>{data.MaxStock ? data.MaxStock : "null"}</Td>
 
-                        <Td>
-                          {data.productItemDetails[0].qty
-                            ? data.productItemDetails[0].qty
-                            : null}
-                        </Td>
+                        <Td>{data.MinStock ? data.MinStock : "null"}</Td>
 
-                        <Td>{data.productItemDetails[0].selectQty}</Td>
-                        <Td>{data.vendorName ? data.vendorName : null}</Td>
+                        <Td>{data.SellingPrice}</Td>
+                        <Td>{data.VendorName ? data.VendorName : "null"}</Td>
                         <Td>
                           <Button
                             onClick={() => {
@@ -134,7 +117,7 @@ function ParchaseStock() {
                             Update Product
                           </Button>
                         </Td>
-                        {check == true ? (
+                        {check == true && (
                           <Td>
                             <form onSubmit={incStock}>
                               <Input
@@ -155,7 +138,7 @@ function ParchaseStock() {
                               </Button>
                             </form>
                           </Td>
-                        ) : null}
+                        )}
                       </Tr>
                     </Tbody>
                   );

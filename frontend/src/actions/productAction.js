@@ -19,45 +19,39 @@ import {
   SHOW_PRODUCT_ERR,
   SHOW_PRODUCT_REQUEST,
   SHOW_PRODUCT_SUCCESS,
-  CATEGORY_SET_REQUEST,
-  CATEGORY_SET_SUCCESS,
-  CATEGORY_SET_ERR,
-  CATEGORY_GET_SUCCESS,
-  CATEGORY_GET_ERR,
-  CATEGORY_GET_REQUEST,
-  CATEGORY_DELETE_REQUEST,
-  CATEGORY_DELETE_SUCCESS,
-  CATEGORY_DELETE_ERR,
   INC_PURCHASE_VALUE_REQUEST,
   INC_PURCHASE_VALUE_SUCCESS,
   INC_PURCHASE_VALUE_ERR,
-  SUB_CATEGORY_REQUEST,
-  SUB_CATEGORY_SUCCESS,
-  SUB_CATEGORY_ERR,
-  GET_SUB_CATEGORY_REQUEST,
-  GET_SUB_CATEGORY_SUCCESS,
-  GET_SUB_CATEGORY_ERR,
-  DELETE_SUB_CATEGORY_REQUEST,
-  DELETE_SUB_CATEGORY_SUCCESS,
-  DELETE_SUB_CATEGORY_ERR,
   DOWNLOAD_BAR_CODE_REQUEST,
   DOWNLOAD_BAR_CODE_SUCCESS,
   DOWNLOAD_BAR_CODE_ERR,
+  BILLING_VALUE_REQUEST,
+  BILLING_VALUE_SUCCESS,
+  BILLING_VALUE_ERR,
+  INCREAS_BILLING_QTY_REQUEST,
+  INCREAS_BILLING_QTY_SUCCESS,
+  INCREAS_BILLING_QTY_ERR,
+  DECREAS_BILLING_QTY_REQUEST,
+  DECREAS_BILLING_QTY_SUCCESS,
+  DECREAS_BILLING_QTY_ERR,
+  DELETE_BILLING_PRO_REQUEST,
+  DELETE_BILLING_PRO_SUCCESS,
+  DELETE_BILLING_PRO_ERR,
 } from "../constant/productConstant";
 
-export const addProductAction = (details) => async (dispatch, getState) => {
-  try {
-    dispatch({ type: ADD_PRODUCT_REQUEST });
+// export const addProductAction = (details) => async (dispatch, getState) => {
+//   try {
+//     dispatch({ type: ADD_PRODUCT_REQUEST });
 
-    let { data } = await axios.post("/api/superAdmin", details);
+//     let { data } = await axios.post("/api/superAdmin", details);
 
-    dispatch({ type: ADD_PRODUCT_SUCCESS, payload: details });
+//     dispatch({ type: ADD_PRODUCT_SUCCESS, payload: details });
 
-    localStorage.setItem("productInfo", JSON.stringify(data));
-  } catch (err) {
-    dispatch({ type: ADD_PRODUCT_FAILED });
-  }
-};
+//     localStorage.setItem("productInfo", JSON.stringify(data));
+//   } catch (err) {
+//     dispatch({ type: ADD_PRODUCT_FAILED });
+//   }
+// };
 
 export const showProductAction = () => async (dispatch, getState) => {
   try {
@@ -119,9 +113,7 @@ export const editProductTake = (detail) => async (dispatch, getState) => {
 
     let { data } = await axios.put(
       `/api/superAdmin/editProTake?id=${detail._id}`,
-      {
-        detail,
-      }
+      detail
     );
 
     dispatch({ type: EDIT_PRODUCT_TAKE_SUCCESS, payload: data });
@@ -145,55 +137,6 @@ export const getPurchaseData = () => async (dispatch, getState) => {
   }
 };
 
-// Category Setting
-
-export const setCategoryAction =
-  (category, mode) => async (dispatch, getState) => {
-    try {
-      dispatch({ type: CATEGORY_SET_REQUEST });
-
-      let { data } = await axios.post("/api/superAdmin/categorySet", {
-        categoryName: category,
-        mode,
-      });
-
-      dispatch({ type: CATEGORY_SET_SUCCESS, payload: data });
-    } catch (err) {
-      console.log(err);
-      dispatch({ type: CATEGORY_SET_ERR });
-    }
-  };
-
-//Category Showing
-
-export const getShowCategory = () => async (dispatch, getState) => {
-  try {
-    dispatch({ type: CATEGORY_GET_REQUEST });
-
-    let { data } = await axios.get("/api/superAdmin/getCategories");
-
-    dispatch({ type: CATEGORY_GET_SUCCESS, payload: data });
-  } catch (err) {
-    dispatch({ type: CATEGORY_GET_ERR, payload: err });
-  }
-};
-
-//delete Category
-
-export const deleteCategory = (id) => async (dispatch, getState) => {
-  try {
-    dispatch({ type: CATEGORY_DELETE_REQUEST });
-
-    let { data } = await axios.delete(
-      `/api/superAdmin/deleteCategory?id=${id}`
-    );
-
-    dispatch({ type: CATEGORY_DELETE_SUCCESS, payload: data });
-  } catch (err) {
-    dispatch({ type: CATEGORY_DELETE_ERR, payload: err });
-  }
-};
-
 //increasStockValue
 export const increasStockValue = (value, id) => async (dispatch, getState) => {
   try {
@@ -210,58 +153,6 @@ export const increasStockValue = (value, id) => async (dispatch, getState) => {
   }
 };
 
-//set Sub Category
-export const setSubCategoryAction =
-  ({ value, mainValue }) =>
-  async (dispatch, getState) => {
-    try {
-      dispatch({ type: SUB_CATEGORY_REQUEST });
-
-      let { data } = await axios.post("/api/superAdmin/setSubCategory", {
-        value,
-        mainValue,
-      });
-
-      dispatch({ type: SUB_CATEGORY_SUCCESS, payload: data });
-    } catch (err) {
-      dispatch({ type: SUB_CATEGORY_ERR, payload: err });
-      console.log(err);
-    }
-  };
-
-//get Sub Category
-export const getSubCategory = () => async (dispatch, getState) => {
-  console.log("got it");
-  try {
-    dispatch({ type: GET_SUB_CATEGORY_REQUEST });
-
-    let { data } = await axios.get("/api/superAdmin/getCategory");
-
-    dispatch({ type: GET_SUB_CATEGORY_SUCCESS, payload: data });
-  } catch (err) {
-    dispatch({ type: GET_SUB_CATEGORY_ERR, payload: err });
-  }
-};
-
-//delete SubCat
-export const deleteSubCatAction =
-  ({ value, sub }) =>
-  async (dispatch, getState) => {
-    try {
-      dispatch({ type: DELETE_SUB_CATEGORY_REQUEST });
-
-      let { data } = await axios.post("/api/superAdmin/deleteSubCategory", {
-        value,
-        sub,
-      });
-
-      dispatch({ type: DELETE_SUB_CATEGORY_SUCCESS, payload: data });
-    } catch (err) {
-      dispatch({ type: DELETE_SUB_CATEGORY_ERR, payload: err });
-      console.log(err);
-    }
-  };
-
 export const downloadBarCode = (id) => async (dispatch, getState) => {
   try {
     console.log("downloadClick", id);
@@ -275,3 +166,112 @@ export const downloadBarCode = (id) => async (dispatch, getState) => {
     dispatch({ type: DOWNLOAD_BAR_CODE_ERR, payload: err });
   }
 };
+
+export const addProductExcel = (file) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ADD_PRODUCT_REQUEST });
+
+    console.log(file, "22222222222222");
+    let { data } = await axios.post("/api/superAdmin/addProductPost", file);
+    dispatch({ type: ADD_PRODUCT_SUCCESS, payload: data });
+  } catch (err) {
+    dispatch({ type: ADD_PRODUCT_FAILED, payload: err });
+  }
+};
+
+export const billingAction = (value) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: BILLING_VALUE_REQUEST });
+
+    let { data } = await axios.post("/api/superAdmin/billing", { value });
+
+    dispatch({ type: BILLING_VALUE_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: BILLING_VALUE_ERR,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+//increas Qty Value
+
+export const increasQtyValue = (qty, id) => async (dispacth, getState) => {
+  try {
+    dispacth({ type: INCREAS_BILLING_QTY_REQUEST });
+
+    let { data } = await axios.post("/api/superAdmin/increasBillingQty", {
+      qty,
+      id,
+    });
+
+    dispacth({ type: INCREAS_BILLING_QTY_SUCCESS, payload: data });
+  } catch (error) {
+    dispacth({
+      type: INCREAS_BILLING_QTY_ERR,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+//decreasBillingQty
+
+export const decreasBillingQty = (id) => async (dispacth, getState) => {
+  try {
+    dispacth({ type: DECREAS_BILLING_QTY_REQUEST });
+
+    let { data } = await axios.post("/api/superAdmin/decreasBillingQty", {
+      id,
+    });
+
+    dispacth({ type: DECREAS_BILLING_QTY_SUCCESS, payload: data });
+  } catch (error) {
+    dispacth({
+      type: DECREAS_BILLING_QTY_ERR,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+//deleteBillingPro
+
+export const deleteBillingPro = (id) => async (dispacth, getState) => {
+  try {
+    dispacth({ type: DELETE_BILLING_PRO_REQUEST });
+
+    let { data } = await axios.post("/api/superAdmin/deleteBillingPro", {
+      id,
+    });
+
+    dispacth({ type: DELETE_BILLING_PRO_SUCCESS, payload: data });
+  } catch (error) {
+    dispacth({
+      type: DELETE_BILLING_PRO_ERR,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// export const billingDetailsAction = () => async (dispatch, getState) => {
+//   try {
+//     dispatch({ type: BILLING_DETAILS_REQUEST });
+
+//     let { data } = await axios.get("/api/superAdmin/getBillingDetails");
+
+//     dispatch({ type: BILLING_DETAILS_SUCCESS, payload: data });
+//   } catch (err) {
+//     dispatch({ type: BILLING_DETAILS_ERR, payload: err });
+//   }
+// };

@@ -6,20 +6,18 @@ import {
   staffStatusChangeReducer,
 } from "./reducers/staffReducer";
 import {
-  addProductReducer,
   deleteProReducer,
   getProductReducer,
   editProduct,
   editProductTakeReducer,
   purchaseStockProductReducer,
-  addCategoryReducer,
-  getCategoryReducer,
-  deleteCategoryReducer,
-  subCategoryReducer,
-  getSubCategoriesReducer,
-  deleteSubCategoryReducer,
   increasStockValueReducer,
   downloadBarCodeReducer,
+  addProductExcelReducer,
+  billingReducer,
+  billingDetailsReducer,
+  increasQtyValueReducer,
+  decreasBillingQtyReducer,
 } from "./reducers/productReducer";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
@@ -28,7 +26,7 @@ import { ProductManageColomnHideAndVisibleReducer } from "./reducers/SettingRedu
 const appReducer = combineReducers({
   staffData: staffRegsterReducer,
   staffLginData: staffLoginReducer,
-  productDetails: addProductReducer,
+  productDetails: addProductExcelReducer,
   showProInfo: getProductReducer,
   deleteInfo: deleteProReducer,
   editData: editProduct,
@@ -36,15 +34,13 @@ const appReducer = combineReducers({
   changeStatus: staffStatusChangeReducer,
   editSuccess: editProductTakeReducer,
   purcaseDetails: purchaseStockProductReducer,
-  addCategory: addCategoryReducer,
-  getCategory: getCategoryReducer,
-  deleteCategory: deleteCategoryReducer,
-  subCategory: subCategoryReducer,
-  getSubCategories: getSubCategoriesReducer,
-  deleteSubCategory: deleteSubCategoryReducer,
   increasStockValue: increasStockValueReducer,
   ProductManageColomnHideAndVisible: ProductManageColomnHideAndVisibleReducer,
   downloadBarCode: downloadBarCodeReducer,
+  billing: billingReducer,
+  increasQtyValue: increasQtyValueReducer,
+  decreasBillingQty: decreasBillingQtyReducer,
+  // billingDetails: billingDetailsReducer,
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

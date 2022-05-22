@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const productSchema = mongoose.Schema(
+const BillingSchema = mongoose.Schema(
   {
     PID: {
       type: Number,
@@ -63,9 +63,6 @@ const productSchema = mongoose.Schema(
     Qty: {
       type: Number,
     },
-    qtyVal: {
-      type: Number,
-    },
 
     MaxStockMeter: {
       type: String,
@@ -100,5 +97,5 @@ const productSchema = mongoose.Schema(
   }
 );
 
-const Product = mongoose.model("productModel", productSchema);
-module.exports = Product;
+const Billing = mongoose.model("Billing", BillingSchema);
+module.exports = Billing;

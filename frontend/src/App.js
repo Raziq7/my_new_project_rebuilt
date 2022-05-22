@@ -12,10 +12,11 @@ import Dashboard from "./screen/Dashboard";
 // import Smple from "./screen/Smple";
 import EditProductForm from "./screen/EditProductForm";
 import UserManagment from "./screen/UserManagment";
-import Category from "./components/Category";
 import ParchaseStock from "./screen/ParchaseStock";
 import SettingComponent from "./components/SettingComponent";
 import Sample from "./screen/Sample";
+import Test from "./screen/Test";
+import Billing from "./screen/Billing";
 
 function App() {
   return (
@@ -35,7 +36,7 @@ function App() {
 
             <Route path="/" element={<Dashboard />} />
 
-            <Route path="/categorymanagment" element={<Category />} />
+            <Route path="/billing" element={<Billing />} />
 
             <Route path="/Setting" element={<SettingComponent />} />
 
@@ -45,7 +46,9 @@ function App() {
 
             <Route path="/purchaseStock" element={<ParchaseStock />} />
 
-            <Route path="/sample" element={<Sample />} />
+            {/* <Route path="/sample" element={<Sample />} /> */}
+
+            {/* <Route path="/test" element={<Test />} /> */}
           </Routes>
         </Flex>
       </Routers>

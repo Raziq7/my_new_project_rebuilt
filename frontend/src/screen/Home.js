@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+// import JsBarcode from "";
 import {
   Table,
   Thead,
@@ -54,6 +55,8 @@ function Home() {
   });
   let { loading, showProduct, error } = productDetail;
 
+  console.log(showProduct, "555555555");
+
   const { deleteDetail } = useSelector((state) => {
     return state.deleteInfo;
   });
@@ -89,8 +92,6 @@ function Home() {
   }, [download]);
 
   useEffect(() => {
-    console.log(columnExist, "*****************");
-
     if (!columnExist) {
       columnExist.id = true;
     }
@@ -150,11 +151,6 @@ function Home() {
       // enabled: columnExist ? columnExist.status : true,
     },
     {
-      column_name: "Vendor Name",
-      enabled: columnExist.name == "Vendor Name" ? columnExist.status : true,
-      // enabled: columnExist ? columnExist.status : true,
-    },
-    {
       column_name: "Size",
       enabled: columnExist.name == "Size" ? columnExist.status : true,
       // enabled: columnExist ? columnExist.status : true,
@@ -164,34 +160,56 @@ function Home() {
       enabled: columnExist.name == "Color" ? columnExist.status : true,
       // enabled: columnExist ? columnExist.status : true,
     },
+
+    {
+      column_name: "Gender",
+      enabled: columnExist.name == "Gender" ? columnExist.status : true,
+      // enabled: columnExist ? columnExist.status : true,
+    },
+
+    {
+      column_name: "Brand",
+      enabled: columnExist.name == "Brand" ? columnExist.status : true,
+      // enabled: columnExist ? columnExist.status : true,
+    },
+
+    {
+      column_name: "MaterialType",
+      enabled: columnExist.name == "MaterialType" ? columnExist.status : true,
+      // enabled: columnExist ? columnExist.status : true,
+    },
+
+    {
+      column_name: "Market Price",
+      enabled: columnExist.name == "Market Price" ? columnExist.status : true,
+      // enabled: columnExist ? columnExist.status : true,
+    },
+
+    {
+      column_name: "Selling Price",
+      enabled: columnExist.name == "Selling Price" ? columnExist.status : true,
+      // enabled: columnExist ? columnExist.status : true,
+    },
+
+    {
+      column_name: "Price Code",
+      enabled: columnExist.name == "Price Code" ? columnExist.status : true,
+      // enabled: columnExist ? columnExist.status : true,
+    },
+
+    {
+      column_name: "Discount",
+      enabled: columnExist.name == "Discount" ? columnExist.status : true,
+      // enabled: columnExist ? columnExist.status : true,
+    },
     {
       column_name: "Stocks",
       enabled: columnExist.name == "Stocks" ? columnExist.status : true,
       // enabled: columnExist ? columnExist.status : true,
     },
     {
-      column_name: "Qty Type",
-      enabled: columnExist.name == "Qty Type" ? columnExist.status : true,
-      // enabled: columnExist ? columnExist.status : true,
-    },
-    {
-      column_name: "Qty",
-      enabled: columnExist.name == "Qty" ? columnExist.status : true,
-      // enabled: columnExist ? columnExist.status : true,
-    },
-    {
-      column_name: "Market Price",
-      enabled: columnExist.name == "Market Price" ? columnExist.status : true,
-      // enabled: columnExist ? columnExist.status : true,
-    },
-    {
-      column_name: "Selling Price",
-      enabled: columnExist.name == "Selling Price" ? columnExist.status : true,
-      // enabled: columnExist ? columnExist.status : true,
-    },
-    {
-      column_name: "Price Code",
-      enabled: columnExist.name == "Price Code" ? columnExist.status : true,
+      column_name: "Vendor Name",
+      enabled: columnExist.name == "Vendor Name" ? columnExist.status : true,
       // enabled: columnExist ? columnExist.status : true,
     },
     {
@@ -257,13 +275,13 @@ function Home() {
               <Button left="60%">Add Product</Button>
             </Link>
             <TableContainer
-              ml="auto"
+              ml="150px"
               mr="auto"
               width={{
                 sm: "60%",
                 md: "650px",
                 lg: "800px",
-                xl: "70%",
+                xl: "75%",
               }}
             >
               <Table variant="simple">
@@ -283,121 +301,115 @@ function Home() {
                       <Tr>
                         {columnExist.name == "Product Name" &&
                         !columnExist.status ? null : (
-                          <Td>{data.productName}</Td>
+                          <Td>{data.ProductName}</Td>
                         )}
 
                         {columnExist.name == "Description" ? null : (
-                          <Td>{data.description}</Td>
+                          <Td>{data.Description}</Td>
                         )}
 
                         {columnExist.name == "Main Category" ? null : (
-                          <Td>{data.mainCategory}</Td>
+                          <Td>{data.MainCategory}</Td>
                         )}
 
                         {columnExist.name == "Sub Category" ? null : (
-                          <Td>{data.subCategory}</Td>
+                          <Td>{data.SubCategory}</Td>
                         )}
 
+                        {columnExist.name == "Size" ? null : (
+                          <Td>{data.Size}</Td>
+                        )}
+
+                        {columnExist.name == "Color" ? null : (
+                          <Td>{data.Color}</Td>
+                        )}
+
+                        {columnExist.name == "Gender" ? null : (
+                          <Td>{data.GenderWear}</Td>
+                        )}
+
+                        {columnExist.name == "Brand" ? null : (
+                          <Td>{data.Brand}</Td>
+                        )}
+
+                        {columnExist.name == "MaterialType" ? null : (
+                          <Td>{data.MaterialType}</Td>
+                        )}
+
+                        {columnExist.name == "Market Price" ? null : (
+                          <Td isNumeric>{data.MarketPrice}</Td>
+                        )}
+
+                        {columnExist.name == "Selling Price" ? null : (
+                          <Td>{data.SellingPrice}</Td>
+                        )}
+
+                        {columnExist.name == "Price Code" ? null : (
+                          <Td>{data.priceCode}</Td>
+                        )}
+                        {columnExist.name == "Discount" ? null : (
+                          <Td>{data.Discount}</Td>
+                        )}
+
+                        {columnExist.name == "Stocks" ? null : (
+                          <Td>{data.Qty}</Td>
+                        )}
                         {columnExist.name == "Vendor Name" ? null : (
-                          <Td>{data.vendorName}</Td>
+                          <Td>{data.VendorName}</Td>
                         )}
 
-                        {data.productItemDetails.map((details) => {
-                          return (
-                            <>
-                              {columnExist.name == "Size" ? null : (
-                                <Td>{details.proSize}</Td>
-                              )}
+                        {/* {columnExist.name == "Qty Type" ? null : (
+                          <Td>{data.selectQty}</Td>
+                        )} */}
 
-                              {columnExist.name == "Color" ? null : (
-                                <Td>{details.proColor}</Td>
-                              )}
-
-                              {columnExist.name == "Stocks" ? null : (
-                                <Td>{details.stocks}</Td>
-                              )}
-
-                              {columnExist.name == "Qty Type" ? null : (
-                                <Td>{details.selectQty}</Td>
-                              )}
-
-                              {columnExist.name == "Qty" ? null : (
-                                <Td>{details.qty}</Td>
-                              )}
-
-                              {columnExist.name == "Market Price" ? null : (
-                                <Td isNumeric>{details.marketPrice}</Td>
-                              )}
-
-                              {columnExist.name == "Selling Price" ? null : (
-                                <Td>{details.sellingPrice}</Td>
-                              )}
-
-                              {columnExist.name == "Price Code" ? null : (
-                                <Td>{details.priceCode}</Td>
-                              )}
-
-                              {columnExist.name == "Bar Code" ? null : (
-                                <Td>
-                                  <Image
-                                    src={details.barcodeUrl}
-                                    alt="Bar Code"
-                                  />
-                                  <Button
-                                    size="sm"
-                                    colorScheme="teal"
-                                    mt="10px"
-                                    onClick={() => {
-                                      downloadClick(data._id);
-                                    }}
-                                  >
-                                    Download
-                                  </Button>
-                                </Td>
-                              )}
-
-                              {columnExist.name == "MRP Bar Code" ? null : (
-                                <Td>
-                                  <Image
-                                    src={details.mrpBarCodeUrl}
-                                    alt="MRP Barcode"
-                                  />
-                                  <Button
-                                    size="sm"
-                                    colorScheme="teal"
-                                    mt="10px"
-                                  >
-                                    Download
-                                  </Button>
-                                </Td>
-                              )}
-                            </>
-                          );
-                        })}
-                        {columnExist.name == "Action" ? null : (
+                        {columnExist.name == "Bar Code" ? null : (
                           <Td>
+                            <Image src={data.BarCodeLink} alt="Bar Code" />
                             <Button
-                              onClick={() => {
-                                editPro(data._id);
-                              }}
+                              size="sm"
                               colorScheme="teal"
-                              size="sm"
-                            >
-                              Edit
-                            </Button>
-                            <Spacer />
-                            <Divider />
-                            <Button
+                              mt="10px"
                               onClick={() => {
-                                deletePro(data._id);
+                                downloadClick(data._id);
                               }}
-                              colorScheme="red"
-                              size="sm"
                             >
-                              Delete
+                              Download
                             </Button>
                           </Td>
                         )}
+
+                        <Td>
+                          <Image
+                            src={`copy/${data.BarCodePin}.png`}
+                            alt="MRP Barcode"
+                          />
+                          <Button size="sm" colorScheme="teal" mt="10px">
+                            Download
+                          </Button>
+                        </Td>
+
+                        <Td>
+                          <Button
+                            onClick={() => {
+                              editPro(data._id);
+                            }}
+                            colorScheme="teal"
+                            size="sm"
+                          >
+                            Edit
+                          </Button>
+                          <Spacer />
+                          <Divider />
+                          <Button
+                            onClick={() => {
+                              deletePro(data._id);
+                            }}
+                            colorScheme="red"
+                            size="sm"
+                          >
+                            Delete
+                          </Button>
+                        </Td>
                       </Tr>
                     </Tbody>
                   );
