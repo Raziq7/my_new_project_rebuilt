@@ -6,10 +6,7 @@
   "author": "raziq",
   "license": "ISC",
   "type": "commonjs",
-  "engines": {
-    "npm": ">=8.1.2",
-    "node": ">=v16.13.2"
-  },
+
 
 
   "scripts": {
