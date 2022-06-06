@@ -6,6 +6,12 @@
   "author": "raziq",
   "license": "ISC",
   "type": "commonjs",
+  "engines": {
+    "npm": ">=6.0.0",
+    "node": ">=10.0.0"
+  },
+
+
   "scripts": {
     "start": "node Backend/server.js",
     "start:dev": "nodemon Backend/server.js",
