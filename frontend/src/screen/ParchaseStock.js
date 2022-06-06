@@ -15,15 +15,21 @@ import {
   Checkbox,
   Button,
   Input,
+  Flex,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPurchaseData, increasStockValue } from "../actions/productAction";
+import { PurchasPdf } from "./PurchasPdf";
 
 function ParchaseStock() {
+  console.log("render");
   const dispatch = useDispatch();
   const [check, setCheck] = useState(false);
   const [increasStock, setincreasStock] = useState();
+  const [search, setSearch] = useState("");
   const [dataId, setDataId] = useState();
+  const [dataFilter, setDataFilter] = useState([]);
+  const [pdf, setPdf] = useState(false);
 
   let { loading, purchaseData } = useSelector((state) => {
     return state.purcaseDetails;
@@ -34,12 +40,33 @@ function ParchaseStock() {
   });
 
   useEffect(() => {
+    if (purchaseData) {
+      setDataFilter(purchaseData);
+      console.log(dataFilter, "54654646654654");
+    }
+  }, [purchaseData]);
+
+  useEffect(() => {
     dispatch(getPurchaseData());
   }, [increaseStock]);
 
   const incStock = (e) => {
     e.preventDefault();
     dispatch(increasStockValue(increasStock, dataId));
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    const filteredRows = dataFilter.filter((row) => {
+      return row.ProductName.toString()
+        .toLowerCase()
+        .includes(search.toString().toLowerCase());
+    });
+    if (search.length < 1) {
+      setDataFilter(dataFilter);
+    } else {
+      setDataFilter(filteredRows);
+    }
   };
   return (
     <>
@@ -58,11 +85,37 @@ function ParchaseStock() {
           <Skeleton height="20px" />
           <Skeleton height="20px" />
         </Stack>
-      ) : (
+      ) : !pdf ? (
         <Box overflowY="auto" mb="auto" ml="auto" mr="auto">
           <Center fontSize="40px" color="teal">
             Purchase Stock
           </Center>
+          <Flex justifyContent="space-between">
+            <Box ml="200px">
+              <Button
+                on
+                onClick={() => {
+                  setPdf(true);
+                }}
+              >
+                Download PDF
+              </Button>
+            </Box>
+            <Box mr="200px">
+              <form onSubmit={submitHandler}>
+                <Input
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                  }}
+                  placeholder="Search"
+                  w="auto"
+                />
+                <Button ml="5px" type="submit">
+                  Search
+                </Button>
+              </form>
+            </Box>
+          </Flex>
           <TableContainer
             ml="auto"
             mr="auto"
@@ -90,8 +143,8 @@ function ParchaseStock() {
                 </Tr>
               </Thead>
 
-              {purchaseData &&
-                purchaseData.map((data) => {
+              {dataFilter &&
+                dataFilter.map((data) => {
                   return (
                     <Tbody>
                       <Tr>
@@ -146,6 +199,8 @@ function ParchaseStock() {
             </Table>
           </TableContainer>
         </Box>
+      ) : (
+        <PurchasPdf dataFilter={dataFilter} />
       )}
     </>
   );

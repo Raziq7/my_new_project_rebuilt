@@ -8,6 +8,12 @@ const protect = require("../Middleware/auth");
 const cloudinary = require("cloudinary").v2;
 const imageDownloader = require("image-downloader");
 const { json } = require("body-parser");
+const fs = require("fs");
+
+const { createCanvas, loadImage } = require("canvas");
+const LadgerBook = require("../Models/ladgerBookModel");
+const LadgerCategory = require("../Models/categorySetModel");
+const ProductColumns = require("../Models/ProductColumnsModel");
 
 //cloudinary
 cloudinary.config({
@@ -224,41 +230,6 @@ module.exports = {
 
       console.log(priceCoded, "char-");
 
-      // const fs = require("fs");
-      // const { createCanvas, loadImage } = require("canvas");
-
-      // const width = 1200;
-      // const height = 800;
-
-      // const canvas = createCanvas(width, height);
-      // const context = canvas.getContext("2d");
-
-      // context.fillStyle = "#fff";
-      // context.fillRect(0, 0, width, height);
-
-      // context.font = "bold 70pt Menlo";
-      // context.textAlign = "center";
-      // context.textBaseline = "top";
-      // context.fillStyle = "#3574d4";
-
-      // const text = "Hello, World!";
-
-      // const textWidth = context.measureText(text).width;
-      // context.fillRect(600 - textWidth / 2 - 10, 170 - 5, textWidth + 20, 120);
-      // context.fillStyle = "red";
-      // context.fillText(text, 600, 170);
-
-      // context.fillStyle = "black";
-      // context.font = "bold 60pt Menlo";
-      // context.fillText(`MRP ${SellingPrice}`, 600, 530);
-
-      // loadImage(BarCodeMrpLink.secure_url).then((image) => {
-      //   context.drawImage(image, 0, 0, 1200, 630);
-      //   context.fillText(`MRP ${pro.SellingPrice}`, 600, 680);
-      //   const buffer = canvas.toBuffer("image/png");
-      //   fs.writeFileSync(`./frontend/public/copy/${BarCodePinMrp}.png`, buffer);
-      // });
-
       let proSuccess = await Product.updateOne(
         { _id: req.query.id },
         {
@@ -452,23 +423,6 @@ module.exports = {
     try {
       const { id } = req.body;
       console.log(id, "dddddd");
-
-      let imgCode = await Product.findById({ _id: id });
-
-      let url = imgCode.productItemDetails[0].barcodeUrl;
-
-      const options = {
-        url: url,
-        dest: "/home/raziq/Desktop/react/live_project/Backend/public", // will be saved to /path/to/dest/image.jpg
-      };
-
-      imageDownloader
-        .image(options)
-        .then(({ filename }) => {
-          console.log("Saved to", filename); // saved to /path/to/dest/image.jpg
-          res.json({ filename });
-        })
-        .catch((err) => console.error(err));
     } catch (err) {
       console.log(err);
     }
@@ -492,43 +446,19 @@ module.exports = {
     };
 
     Products.map(async (pro) => {
-      console.log(typeof pro.SellingPrice);
       let priceCoded = "";
       let price = pro.SellingPrice + "";
-      console.log(typeof price);
       for (let i = 0; i < price.length; i++) {
         let char = Number(price[i]);
         priceCoded = priceCoded + vendorCode[char];
       }
       pro.priceCode = priceCoded;
 
-      console.log(priceCoded, "priceCoded");
-
       pro.SellingPrice = parseInt(pro.SellingPrice);
-
-      console.log(typeof pro.SellingPrice, "****");
 
       var val = Math.floor(100000 + Math.random() * 900000);
 
-      var { data } = await createStream(
-        {
-          symbology: SymbologyType.CODE11,
-        },
-        val
-      );
-      let barcode = data;
-
-      const image = {
-        image: barcode,
-      };
-
-      let BarCode_link1 = await cloudinary.uploader.upload(image.image, {
-        folder: "ukkens_Bar_Code",
-      });
-
-      let BarCodelink1 = BarCode_link1.secure_url;
-
-      //MRP
+      //barcode 2
       var { data } = await createStream(
         {
           symbology: SymbologyType.CODE11,
@@ -538,102 +468,180 @@ module.exports = {
 
       let mrpBarCode = data;
 
-      const image1 = {
+      let image1 = {
         image: mrpBarCode,
       };
 
       let BarCode_link2 = await cloudinary.uploader.upload(image1.image, {
-        folder: "ukkens_Mrp_Code",
+        folder: "ukkens_Bar_Code",
       });
 
-      const fs = require("fs");
-      const { createCanvas, loadImage } = require("canvas");
+      // ============without MRP ==============
 
-      const width = 1200;
-      const height = 800;
+      const width1 = 1200;
+      const height1 = 1000;
 
-      const canvas = createCanvas(width, height);
-      const context = canvas.getContext("2d");
+      const canvas1 = createCanvas(width1, height1);
+      const context1 = canvas1.getContext("2d");
 
-      context.fillStyle = "#fff";
-      context.fillRect(0, 0, width, height);
+      context1.fillStyle = "#fff";
+      context1.fillRect(0, 20, width1, height1);
 
-      context.font = "bold 70pt Menlo";
-      context.textAlign = "center";
-      context.textBaseline = "top";
-      context.fillStyle = "#3574d4";
+      context1.font = "bold 70pt Menlo";
+      context1.textAlign = "center";
+      context1.textBaseline = "top";
+      // context.fillStyle = "#3574d4";
 
-      const text = "Hello, World!";
+      const text1 = "";
 
-      const textWidth = context.measureText(text).width;
-      context.fillRect(600 - textWidth / 2 - 10, 170 - 5, textWidth + 20, 120);
-      context.fillStyle = "red";
-      context.fillText(text, 600, 170);
+      const textWidth1 = context1.measureText(text1).width;
+      context1.fillRect(
+        600 - textWidth1 / 2 - 10,
+        170 - 5,
+        textWidth1 + 20,
+        120
+      );
+      context1.fillStyle = "red";
+      context1.fillText(text1, 600, 170);
 
-      context.fillStyle = "black";
-      context.font = "bold 60pt Menlo";
-      context.fillText(`MRP ${pro.SellingPrice}`, 600, 530);
+      context1.fillStyle = "black";
+      context1.font = "bold 60pt Menlo";
 
-      loadImage(BarCode_link2.secure_url).then((image) => {
-        context.drawImage(image, 0, 0, 1200, 630);
-        context.fillText(`MRP ${pro.SellingPrice}`, 600, 680);
-        const buffer = canvas.toBuffer("image/png");
-        fs.writeFileSync(`./frontend/public/copy/${val}.png`, buffer);
-      });
+      loadImage(BarCode_link2.secure_url).then(async (image) => {
+        context1.drawImage(image, 50, 320, 1100, 380);
+        context1.fillText(pro.ProductName, 500, 45);
+        context1.fillText(`QTY - ${pro.Qty}`, 259, 135);
+        context1.fillText(`Sort No: ${val}`, 460, 205);
+        context1.fillText(pro.priceCode, 320, 720);
 
-      let BarCodelink2 = BarCode_link2.secure_url;
+        const buffer1 = canvas1.toBuffer("image/png");
+        fs.writeFileSync(`./frontend/public/copy/${val}OUT.png`, buffer1);
 
-      let proAdded = await Product.create({
-        PID: val,
-        ProductName: pro.ProductName,
-        Description: pro.ProductDescriptions,
-        MainCategory: pro.MainCategory,
-        SubCategory: pro.SubCategory,
-        Size: pro.Size,
-        Color: pro.Color,
-        GenderWear: pro.GenderWear,
-        Brand: pro.Brand,
-        MaterialType: pro.MaterialType,
-        MarketPrice: pro.MarketPrice,
-        SellingPrice: pro.SellingPrice,
-        Discount: pro.Discount,
-        MaxStock: pro.MaxStock,
-        MinStock: pro.MinStock,
-        Qty: pro.Qty,
-        MaxStockMeter: pro.MaxStockMeter,
-        MinStockMeter: pro.MinStockMeter,
-        VendorName: pro.VendorName,
-        priceCode: priceCoded,
-        BarCodeLink: BarCodelink1,
-        BarCodePin: val,
-        BarCodeMrpLink: BarCodelink2,
+        image = {
+          image: `./frontend/public/copy/${val}OUT.png`,
+        };
+
+        let BarCode_update_link = await cloudinary.uploader.upload(
+          image.image,
+          {
+            folder: "ukkens_withoutMRPBar_Code",
+          }
+        );
+
+        ///dfgdsfgsdfgsdfgdsfgdsfgdf
+        var BarCodelink1 = BarCode_update_link.secure_url;
+
+        //=*=*=*=*=*=*=*= without MRP =*=*=*=*=*=*=*=*=*=*=*=*
+        // =========MRP BAR CODE ====================
+
+        const width = 1200;
+        const height = 1000;
+
+        const canvas = createCanvas(width, height);
+        const context = canvas.getContext("2d");
+
+        context.fillStyle = "#fff";
+        context.fillRect(0, 20, width, height);
+
+        context.font = "bold 70pt Menlo";
+        context.textAlign = "center";
+        context.textBaseline = "top";
+        // context.fillStyle = "#3574d4";
+
+        const text = "";
+
+        const textWidth = context.measureText(text).width;
+        context.fillRect(
+          600 - textWidth / 2 - 10,
+          170 - 5,
+          textWidth + 20,
+          120
+        );
+        context.fillStyle = "red";
+        context.fillText(text, 600, 170);
+
+        context.fillStyle = "black";
+        context.font = "bold 60pt Menlo";
+        context.fillText(`MRP ${pro.SellingPrice}`, 600, 530);
+        // context.fillText(pro.ProductName, 455, 50);
+
+        loadImage(BarCode_link2.secure_url).then(async (image) => {
+          context.drawImage(image, 50, 320, 1100, 380);
+          context.fillText(pro.ProductName, 500, 45);
+          context.fillText(`QTY - ${pro.Qty}`, 259, 135);
+          context.fillText(`Sort No: ${val}`, 460, 205);
+          context.fillText(pro.priceCode, 320, 720);
+          context.fillText(`MRP ${pro.SellingPrice}`, 620, 810);
+
+          const buffer = canvas.toBuffer("image/png");
+          fs.writeFileSync(`./frontend/public/copy/${val}.png`, buffer);
+
+          image1 = {
+            image: `./frontend/public/copy/${val}.png`,
+          };
+
+          let BarCode_MRPUPDATE_link = await cloudinary.uploader.upload(
+            image1.image,
+            {
+              folder: "ukkens_Mrp_Code",
+            }
+          );
+
+          console.log(
+            BarCode_MRPUPDATE_link,
+            "BarCode_link2BarCode_link2BarCode_link2"
+          );
+          var BarCodelink2 = BarCode_MRPUPDATE_link.secure_url;
+
+          let proAdded = await Product.create({
+            PID: val,
+            ProductName: pro.ProductName,
+            Description: pro.ProductDescriptions,
+            MainCategory: pro.MainCategory,
+            SubCategory: pro.SubCategory,
+            Size: pro.Size,
+            Color: pro.Color,
+            GenderWear: pro.GenderWear,
+            Brand: pro.Brand,
+            MaterialType: pro.MaterialType,
+            MarketPrice: pro.MarketPrice,
+            SellingPrice: pro.SellingPrice,
+            Discount: pro.Discount,
+            MaxStock: pro.MaxStock,
+            MinStock: pro.MinStock,
+            Qty: pro.Qty,
+            MaxStockMeter: pro.MaxStockMeter,
+            MinStockMeter: pro.MinStockMeter,
+            VendorName: pro.VendorName,
+            priceCode: priceCoded,
+            BarCodeLink: BarCodelink1,
+            BarCodePin: val,
+            BarCodeMrpLink: BarCodelink2,
+          });
+        });
+        // =========MRP BAR CODE ====================
       });
     });
     res.json(proAdded);
 
     try {
     } catch (err) {
+      res.status(401);
+      throw new Error(err);
       console.log(err);
     }
   }),
 
   billing: asyncHandler(async (req, res) => {
+    console.log("nokkkkkkkkkkkkkkkkia");
     let { value } = req.body;
     value = parseInt(value);
 
     let billDetails = await Product.findOne({ PID: value });
     if (billDetails) {
-      let decreaseQty = await Product.updateOne(
-        { PID: value },
-        {
-          $inc: {
-            Qty: -1,
-          },
-        }
-      );
       billDetails.qtyVal = 1;
 
-      console.log(billDetails);
+      console.log(billDetails, "=======================================");
 
       res.json(billDetails);
     } else {
@@ -642,17 +650,26 @@ module.exports = {
     }
   }),
 
-  increasBillingQty: asyncHandler(async (req, res) => {
+  checkoutBillingQty: asyncHandler(async (req, res) => {
     try {
-      const { qty, id } = req.body;
-      let increaseQty = await Product.updateOne(
-        { _id: id },
-        {
-          $inc: {
-            Qty: 1,
-          },
-        }
-      );
+      const { billInfo, grandTotal } = req.body;
+      console.log(grandTotal, "5454545454");
+
+      billInfo.map(async (data) => {
+        console.log(data.qtyVal, "data.qtyValdata.qtyVal");
+
+        let increaseQty = await Product.updateOne(
+          { _id: data._id },
+          {
+            $inc: {
+              Qty: -data.qtyVal,
+            },
+          }
+        );
+      });
+      let insertBilling = await Billing.insertMany({
+        grandTotal,
+      });
       res, json(increaseQty);
     } catch (err) {
       res.status(401);
@@ -660,23 +677,23 @@ module.exports = {
     }
   }),
 
-  decreasBillingQty: asyncHandler(async (req, res) => {
-    try {
-      const { id } = req.body;
-      let decreaseQty = await Product.updateOne(
-        { _id: id },
-        {
-          $inc: {
-            Qty: 1,
-          },
-        }
-      );
-      res.json(decreaseQty);
-    } catch (err) {
-      res.status(401);
-      throw new Error("Something Went Wrong");
-    }
-  }),
+  // decreasBillingQty: asyncHandler(async (req, res) => {
+  //   try {
+  //     const { id } = req.body;
+  //     let decreaseQty = await Product.updateOne(
+  //       { _id: id },
+  //       {
+  //         $inc: {
+  //           Qty: 1,
+  //         },
+  //       }
+  //     );
+  //     res.json(decreaseQty);
+  //   } catch (err) {
+  //     res.status(401);
+  //     throw new Error("Something Went Wrong");
+  //   }
+  // }),
 
   deleteBillingPro: asyncHandler(async (req, res) => {
     try {
@@ -696,16 +713,112 @@ module.exports = {
     }
   }),
 
-  // getBillingDetails: asyncHandler(async (req, res) => {
-  //   try {
-  //     let getDetails = await Billing.find({});
-  //     console.log(getDetails, "getDetailsgetDetails");
+  AddladgerBook: asyncHandler(async (req, res) => {
+    try {
+      let { category, details, credit, debit } = req.body.details;
+      let decreaseGrand = await Billing.aggregate([
+        { $group: { _id: null, total: { $sum: "$grandTotal" } } },
+      ]);
 
-  //     res.json(getDetails);
-  //   } catch (err) {
-  //     console.log(err);
-  //     res.status(401);
-  //     throw new Error("something Went Wrong", err);
-  //   }
-  // }),
+      if (debit) {
+        credit = 0;
+      } else {
+        debit = 0;
+      }
+      let balance = 0;
+      let isExist = await LadgerBook.find().sort({ _id: -1 }).limit(1);
+      credit = parseInt(credit);
+      debit = parseInt(debit);
+      console.log(isExist, "=========================");
+
+      if (isExist[0]) {
+        console.log(isExist[0].balance, "=========================");
+
+        balance =
+          credit == 0
+            ? isExist[0].balance - debit
+            : isExist[0].balance + credit;
+      } else {
+        balance = debit
+          ? decreaseGrand[0].total - debit
+          : decreaseGrand[0].total + credit;
+      }
+
+      balance = parseInt(balance);
+
+      console.log(balance, "balancebalancebalancebalancebalancebalance");
+
+      let ladger = await LadgerBook.create({
+        category,
+        details,
+        credit,
+        debit,
+        balance,
+      });
+      res.json(ladger);
+    } catch (err) {
+      console.log(err);
+      res.status(401);
+      throw new Error("something Went Wrong", err);
+    }
+  }),
+
+  ladgerBook: asyncHandler(async (req, res) => {
+    console.log("ladgerDaetailsladgerDaetails");
+
+    try {
+      let ladgerDaetails = await LadgerBook.find({});
+      console.log(ladgerDaetails, "ladgerDaetailsladgerDaetails");
+      res.json(ladgerDaetails);
+    } catch (err) {
+      console.log(err);
+      res.status(401);
+      throw new Error("something Went Wrong", err);
+    }
+  }),
+
+  categoryAdd: asyncHandler(async (req, res) => {
+    const { category } = req.body;
+    let categoryFind = await LadgerCategory.findOne({ category });
+
+    if (categoryFind) {
+      console.log("Category Already Exis");
+      res.status(401);
+      throw new Error("Category Already Exist");
+    } else {
+      let categorycheck = await LadgerCategory.create({ category });
+      res.json(categorycheck);
+    }
+  }),
+
+  ladgerBookshow: asyncHandler(async (req, res) => {
+    let categoryFind = await LadgerCategory.find({});
+
+    res.json(categoryFind);
+  }),
+
+  ProductManageColomnHideAndVisible: asyncHandler(async (req, res) => {
+    const { id, title } = req.body;
+    console.log(title, "sfggdf");
+    console.log(id, "sfggdf");
+
+    let set = await ProductColumns.updateOne(
+      { title: title },
+      { $set: { status: id } }
+    );
+    console.log(set, "setsetset");
+
+    res.json(set);
+  }),
+
+  ProductManageColomnHideAndVisibleShow: asyncHandler(async (req, res) => {
+    const { id, title } = req.body;
+    console.log(title, "sfggdf");
+    console.log(id, "sfggdf");
+
+    let show = await ProductColumns.find({});
+    console.log(show, "setsetset");
+
+    res.json(show);
+  }),
 };

@@ -89,7 +89,7 @@ function SideNav() {
               />
             </Link>
 
-            {staffExit.findStaff.status == "admin" && (
+            {staffExit.findStaff.status == "admin" && "superAdmin" && (
               <Link
                 style={{ marginRight: "100%", textDecoration: "none" }}
                 as={ReachLink}
@@ -133,9 +133,13 @@ function SideNav() {
                 textDecoration: "none",
               }}
               as={ReachLink}
-              to="/Report"
+              to="/LadgerBook"
             >
-              <NavItems navSize={navSize} icon={FiBriefcase} title="Reports" />
+              <NavItems
+                navSize={navSize}
+                icon={FiBriefcase}
+                title="Ladger Book"
+              />
             </Link>
 
             <Link

@@ -45,32 +45,28 @@ module.exports = {
 
   staffLoginDetails: asyncHandler(async (req, res) => {
     // Admin Details
-    try {
-      let { email, password } = req.body;
-      const findStaff = await staffModel.findOne({ email, isBlock: false });
-      if (findStaff) {
-        bcrypt
-          .compare(password, findStaff.password)
-          .then((currectPassword) => {
-            if (currectPassword) {
-              console.log("hello");
-              res.json({ findStaff, Token: generatorToken(findStaff) });
-            } else {
-              res.status(401);
-              throw new Error("Password is incorrect");
-            }
-          })
-          .catch((err) => {
+
+    let { email, password } = req.body;
+    const findStaff = await staffModel.findOne({ email, isBlock: false });
+    if (findStaff) {
+      bcrypt
+        .compare(password, findStaff.password)
+        .then((currectPassword) => {
+          if (currectPassword) {
+            console.log("hello");
+            res.json({ findStaff, Token: generatorToken(findStaff) });
+          } else {
             res.status(401);
             throw new Error("Password is incorrect");
-          });
-      } else {
-        res.status(401);
-        throw new Error("Staff does not exist");
-      }
-    } catch (err) {
+          }
+        })
+        .catch((err) => {
+          res.status(401);
+          throw new Error("Password is incorrect");
+        });
+    } else {
       res.status(401);
-      throw new Error("Try Again");
+      throw new Error("Staff does not exist OR Admin Bloked You");
     }
   }),
 

@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-// import JsBarcode from "";
+import React, { useEffect, useState } from "react";
+// import JsBarcode from "../../public/copy";
 import {
   Table,
   Thead,
@@ -18,7 +18,13 @@ import {
   Center,
   HStack,
   useToast,
+  Checkbox,
+  Flex,
 } from "@chakra-ui/react";
+import { saveAs } from "file-saver";
+import JSZip from "jszip";
+import JSZipUtils from "jszip-utils";
+
 import { useDispatch, useSelector } from "react-redux";
 import {
   addOneProduct,
@@ -29,11 +35,18 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import useSocket from "../CustomHook/useSocket";
 import { Link as ReachLink } from "react-router-dom";
+import { ProductManageColomnHideAndVisibleShow } from "../actions/SettingAction";
 
 function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const toast = useToast();
+
+  const [zip, setZip] = useState([]);
+  const [zipMrp, setZipMrp] = useState([]);
+
+  const [zipFolder, setZipFolder] = useState();
+  const [zipFolder1, setZipFolder1] = useState();
 
   //socket io
   const socket = useSocket((socket) => {
@@ -65,36 +78,26 @@ function Home() {
     return state.editSuccess;
   });
 
-  const { download } = useSelector((state) => {
-    return state.downloadBarCode;
+  const { columnHideAndVisibleShow } = useSelector((state) => {
+    return state.ProductManageColomnHideAndVisibleShow;
   });
-  console.log(download, "download");
-  // const { columnHideAndVisible } = useSelector((state) => {
-  //   return state.ProductManageColomnHideAndVisible;
-  // });
+  console.log(
+    columnHideAndVisibleShow,
+    "columnHideAndVisibleShowcolumnHideAndVisibleShowyyyyyyyyyyyyyyyyyyyyyyy"
+  );
 
-  let columnExist;
+  // let columnExist;
 
-  columnExist = localStorage.getItem("productColumn")
-    ? JSON.parse(localStorage.getItem("productColumn"))
-    : { id: true, name: "null" };
-
-  useEffect(() => {
-    if (download) {
-      toast({
-        title: "Download Success.",
-        description: "Barcode Downloaded Successfully.",
-        status: "success",
-        duration: 9000,
-        isClosable: true,
-      });
-    }
-  }, [download]);
+  // columnExist = localStorage.getItem("productColumn")
+  //   ? JSON.parse(localStorage.getItem("productColumn"))
+  //   : { id: true, name:&&" columnExist.status == true &&
 
   useEffect(() => {
-    if (!columnExist) {
-      columnExist.id = true;
-    }
+    // if (!columnExist) {
+    //   columnExist.id = true;
+    // }
+
+    dispatch(ProductManageColomnHideAndVisibleShow());
   }, []);
 
   useEffect(() => {
@@ -105,15 +108,14 @@ function Home() {
   useEffect(() => {
     dispatch(showProductAction());
   }, [deleteDetail]);
-
+  let staffExit = localStorage.getItem("staffInfo")
+    ? JSON.stringify(localStorage.getItem("staffInfo"))
+    : null;
   useEffect(() => {
-    let staffExit = localStorage.getItem("staffInfo")
-      ? JSON.stringify(localStorage.getItem("staffInfo"))
-      : null;
     if (!staffExit) {
       navigate("/login");
     }
-  }, []);
+  }, [staffExit]);
   const editPro = async (proId) => {
     navigate(`/editProduct/${proId}`);
   };
@@ -124,110 +126,169 @@ function Home() {
   };
 
   //downloadClick
-  const downloadClick = (id) => {
-    dispatch(downloadBarCode(id));
+  // const downloadClick = (id) => {
+  //   // dispatch(downloadBarCode(id));
+  // };
+
+  const zipDownload = (e) => {
+    console.log(zip, "e.target.checkede.target.checked");
   };
 
-  const columns = [
-    {
-      column_name: "Product Name",
+  //clickZipDownload
+  const clickZipDownload = () => {
+    var zip1 = new JSZip();
+    var count = 0;
+    var zipFilename = `${zipFolder}.zip`;
 
-      enabled: columnExist.name == "Product Name" ? columnExist.status : true,
-      // enabled: columnExist ? columnExist.status : true,
-    },
-    {
-      column_name: "Description",
-      enabled: columnExist.name == "Description" ? columnExist.status : true,
-      // enabled: columnExist ? columnExist.status : true,
-    },
-    {
-      column_name: "Main Category",
-      enabled: columnExist.name == "Main Category" ? columnExist.status : true,
-      // enabled: columnExist ? columnExist.status : true,
-    },
-    {
-      column_name: "Sub Category",
-      enabled: columnExist.name == "Sub Category" ? columnExist.status : true,
-      // enabled: columnExist ? columnExist.status : true,
-    },
-    {
-      column_name: "Size",
-      enabled: columnExist.name == "Size" ? columnExist.status : true,
-      // enabled: columnExist ? columnExist.status : true,
-    },
-    {
-      column_name: "Color",
-      enabled: columnExist.name == "Color" ? columnExist.status : true,
-      // enabled: columnExist ? columnExist.status : true,
-    },
+    zip.forEach(function (url, i) {
+      var filename = zip[i];
+      console.log(filename, "zip[i]===-=-==-=-");
+      filename = filename
+        .replace(/[\/\*\|\:\<\>\?\"\\]/gi, "")
+        .replace("httpsi.imgur.com", "");
+      // loading a file and add it in a zip file
+      JSZipUtils.getBinaryContent(url, function (err, data) {
+        if (err) {
+          throw err; // or handle the error
+        }
+        zip1.file(filename, data, { binary: true });
+        count++;
+        if (count == zip.length) {
+          zip1.generateAsync({ type: "blob" }).then(function (content) {
+            saveAs(content, zipFilename);
+          });
+        }
+      });
+    });
+  };
 
-    {
-      column_name: "Gender",
-      enabled: columnExist.name == "Gender" ? columnExist.status : true,
-      // enabled: columnExist ? columnExist.status : true,
-    },
+  const clickMrpZipDownload = () => {
+    ///MRPZIP
+    var zip2 = new JSZip();
+    var count = 0;
+    var zipFilename = `${zipFolder1}.zip`;
 
-    {
-      column_name: "Brand",
-      enabled: columnExist.name == "Brand" ? columnExist.status : true,
-      // enabled: columnExist ? columnExist.status : true,
-    },
+    zipMrp.forEach(function (url, i) {
+      var filename = zipMrp[i];
+      console.log(filename, "zipMrp[i]===-=-==-=-");
+      filename = filename
+        .replace(/[\/\*\|\:\<\>\?\"\\]/gi, "")
+        .replace("httpsi.imgur.com", "");
+      // loading a file and add it in a zip file
+      JSZipUtils.getBinaryContent(url, function (err, data) {
+        if (err) {
+          throw err; // or handle the error
+        }
+        zip2.file(filename, data, { binary: true });
+        count++;
+        if (count == zip.length) {
+          zip2.generateAsync({ type: "blob" }).then(function (content) {
+            saveAs(content, zipFilename);
+          });
+        }
+      });
+    });
+  };
+  // const columns = [
+  //   {
+  //     column_name: "Product Name",
 
-    {
-      column_name: "MaterialType",
-      enabled: columnExist.name == "MaterialType" ? columnExist.status : true,
-      // enabled: columnExist ? columnExist.status : true,
-    },
+  //     enabled: columnExist.name == "Product Name" ? columnExist.status : true,
+  //     // enabled: columnExist ? columnExist.status : true,
+  //   },
+  //   {
+  //     column_name: "Description",
+  //     enabled: columnExist.name == "Description" ? columnExist.status : true,
+  //     // enabled: columnExist ? columnExist.status : true,
+  //   },
+  //   {
+  //     column_name: "Main Category",
+  //     enabled: columnExist.name == "Main Category" ? columnExist.status : true,
+  //     // enabled: columnExist ? columnExist.status : true,
+  //   },
+  //   {
+  //     column_name: "Sub Category",
+  //     enabled: columnExist.name == "Sub Category" ? columnExist.status : true,
+  //     // enabled: columnExist ? columnExist.status : true,
+  //   },
+  //   {
+  //     column_name: "Size",
+  //     enabled: columnExist.name == "Size" ? columnExist.status : true,
+  //     // enabled: columnExist ? columnExist.status : true,
+  //   },
+  //   {
+  //     column_name: "Color",
+  //     enabled: columnExist.name == "Color" ? columnExist.status : true,
+  //     // enabled: columnExist ? columnExist.status : true,
+  //   },
 
-    {
-      column_name: "Market Price",
-      enabled: columnExist.name == "Market Price" ? columnExist.status : true,
-      // enabled: columnExist ? columnExist.status : true,
-    },
+  //   {
+  //     column_name: "Gender",
+  //     enabled: columnExist.name == "Gender" ? columnExist.status : true,
+  //     // enabled: columnExist ? columnExist.status : true,
+  //   },
 
-    {
-      column_name: "Selling Price",
-      enabled: columnExist.name == "Selling Price" ? columnExist.status : true,
-      // enabled: columnExist ? columnExist.status : true,
-    },
+  //   {
+  //     column_name: "Brand",
+  //     enabled: columnExist.name == "Brand" ? columnExist.status : true,
+  //     // enabled: columnExist ? columnExist.status : true,
+  //   },
 
-    {
-      column_name: "Price Code",
-      enabled: columnExist.name == "Price Code" ? columnExist.status : true,
-      // enabled: columnExist ? columnExist.status : true,
-    },
+  //   {
+  //     column_name: "MaterialType",
+  //     enabled: columnExist.name == "MaterialType" ? columnExist.status : true,
+  //     // enabled: columnExist ? columnExist.status : true,
+  //   },
 
-    {
-      column_name: "Discount",
-      enabled: columnExist.name == "Discount" ? columnExist.status : true,
-      // enabled: columnExist ? columnExist.status : true,
-    },
-    {
-      column_name: "Stocks",
-      enabled: columnExist.name == "Stocks" ? columnExist.status : true,
-      // enabled: columnExist ? columnExist.status : true,
-    },
-    {
-      column_name: "Vendor Name",
-      enabled: columnExist.name == "Vendor Name" ? columnExist.status : true,
-      // enabled: columnExist ? columnExist.status : true,
-    },
-    {
-      column_name: "Bar Code",
-      enabled: columnExist.name == "Bar Code" ? columnExist.status : true,
-      // enabled: columnExist ? columnExist.status : true,
-    },
-    {
-      column_name: "MRP Bar Code",
-      enabled: columnExist.name == "MRP Bar Code" ? columnExist.status : true,
-      // enabled: columnExist ? columnExist.status : true,
-    },
-    {
-      column_name: "Action",
-      enabled: columnExist.name == "Action" ? columnExist.status : true,
-      // enabled: columnExist ? columnExist.status : true,
-    },
-  ];
+  //   {
+  //     column_name: "Market Price",
+  //     enabled: columnExist.name == "Market Price" ? columnExist.status : true,
+  //     // enabled: columnExist ? columnExist.status : true,
+  //   },
+
+  //   {
+  //     column_name: "Selling Price",
+  //     enabled: columnExist.name == "Selling Price" ? columnExist.status : true,
+  //     // enabled: columnExist ? columnExist.status : true,
+  //   },
+
+  //   {
+  //     column_name: "Price Code",
+  //     enabled: columnExist.name == "Price Code" ? columnExist.status : true,
+  //     // enabled: columnExist ? columnExist.status : true,
+  //   },
+
+  //   {
+  //     column_name: "Discount",
+  //     enabled: columnExist.name == "Discount" ? columnExist.status : true,
+  //     // enabled: columnExist ? columnExist.status : true,
+  //   },
+  //   {
+  //     column_name: "Stocks",
+  //     enabled: columnExist.name == "Stocks" ? columnExist.status : true,
+  //     // enabled: columnExist ? columnExist.status : true,
+  //   },
+  //   {
+  //     column_name: "Vendor Name",
+  //     enabled: columnExist.name == "Vendor Name" ? columnExist.status : true,
+  //     // enabled: columnExist ? columnExist.status : true,
+  //   },
+  //   {
+  //     column_name: "Bar Code",
+  //     enabled: columnExist.name == "Bar Code" ? columnExist.status : true,
+  //     // enabled: columnExist ? columnExist.status : true,
+  //   },
+  //   {
+  //     column_name: "MRP Bar Code",
+  //     enabled: columnExist.name == "MRP Bar Code" ? columnExist.status : true,
+  //     // enabled: columnExist ? columnExist.status : true,
+  //   },
+  //   {
+  //     column_name: "Action",
+  //     enabled: columnExist.name == "Action" ? columnExist.status : true,
+  //     // enabled: columnExist ? columnExist.status : true,
+  //   },
+  // ];
 
   return (
     <>
@@ -274,6 +335,15 @@ function Home() {
             >
               <Button left="60%">Add Product</Button>
             </Link>
+            <Flex>
+              <Box ml="500px">
+                <Button onClick={clickZipDownload}>Zip Download</Button>
+              </Box>
+              <Box ml="500px">
+                <Button onClick={clickMrpZipDownload}>Zip Download MRP</Button>
+              </Box>
+            </Flex>
+
             <TableContainer
               ml="150px"
               mr="auto"
@@ -288,105 +358,162 @@ function Home() {
                 <TableCaption>Ukkens Vasthralay Product Details</TableCaption>
                 <Thead>
                   <Tr>
-                    {columns.map((item) => {
-                      if (item.enabled) {
-                        return <Th> {item.column_name} </Th>;
-                      }
-                    })}
+                    {columnHideAndVisibleShow &&
+                      columnHideAndVisibleShow.map((item) => {
+                        console.log(item.status, "statusstatusstatusstatus");
+                        if (item.status) {
+                          return <Th> {item.title} </Th>;
+                        }
+                      })}
                   </Tr>
                 </Thead>
+
                 {showProduct.showProduct.map((data) => {
                   return (
                     <Tbody key={data._id}>
                       <Tr>
-                        {columnExist.name == "Product Name" &&
-                        !columnExist.status ? null : (
-                          <Td>{data.ProductName}</Td>
-                        )}
+                        {columnHideAndVisibleShow &&
+                          columnHideAndVisibleShow.map((columnExist) => {
+                            return (
+                              <>
+                                {columnExist.title == "ProductName" &&
+                                  columnExist.status == true && (
+                                    <Td>{data.ProductName}</Td>
+                                  )}
 
-                        {columnExist.name == "Description" ? null : (
-                          <Td>{data.Description}</Td>
-                        )}
+                                {/* {columnExist.name == "Product Name" &&
+                                !columnExist.status ? null : (
+                                  <Td>{data.ProductName}</Td>
+                                )} */}
 
-                        {columnExist.name == "Main Category" ? null : (
-                          <Td>{data.MainCategory}</Td>
-                        )}
+                                {columnExist.title == "Description" &&
+                                  columnExist.status == true && (
+                                    <Td>{data.Description}</Td>
+                                  )}
 
-                        {columnExist.name == "Sub Category" ? null : (
-                          <Td>{data.SubCategory}</Td>
-                        )}
+                                {columnExist.title == "MainCategory" &&
+                                  columnExist.status == true && (
+                                    <Td>{data.MainCategory}</Td>
+                                  )}
 
-                        {columnExist.name == "Size" ? null : (
-                          <Td>{data.Size}</Td>
-                        )}
+                                {columnExist.title == "SubCategory" &&
+                                  columnExist.status == true && (
+                                    <Td>{data.SubCategory}</Td>
+                                  )}
 
-                        {columnExist.name == "Color" ? null : (
-                          <Td>{data.Color}</Td>
-                        )}
+                                {columnExist.title == "Size" &&
+                                  columnExist.status == true && (
+                                    <Td>{data.Size}</Td>
+                                  )}
 
-                        {columnExist.name == "Gender" ? null : (
-                          <Td>{data.GenderWear}</Td>
-                        )}
+                                {columnExist.title == "Color" &&
+                                  columnExist.status == true && (
+                                    <Td>{data.Color}</Td>
+                                  )}
 
-                        {columnExist.name == "Brand" ? null : (
-                          <Td>{data.Brand}</Td>
-                        )}
-
-                        {columnExist.name == "MaterialType" ? null : (
-                          <Td>{data.MaterialType}</Td>
-                        )}
-
-                        {columnExist.name == "Market Price" ? null : (
-                          <Td isNumeric>{data.MarketPrice}</Td>
-                        )}
-
-                        {columnExist.name == "Selling Price" ? null : (
-                          <Td>{data.SellingPrice}</Td>
-                        )}
-
-                        {columnExist.name == "Price Code" ? null : (
-                          <Td>{data.priceCode}</Td>
-                        )}
-                        {columnExist.name == "Discount" ? null : (
-                          <Td>{data.Discount}</Td>
-                        )}
-
-                        {columnExist.name == "Stocks" ? null : (
-                          <Td>{data.Qty}</Td>
-                        )}
-                        {columnExist.name == "Vendor Name" ? null : (
-                          <Td>{data.VendorName}</Td>
-                        )}
-
-                        {/* {columnExist.name == "Qty Type" ? null : (
+                                {columnExist.title == "Gender" &&
+                                  columnExist.status == true && (
+                                    <Td>{data.GenderWear}</Td>
+                                  )}
+                                {columnExist.title == "Brand" &&
+                                  columnExist.status == true && (
+                                    <Td>{data.Brand}</Td>
+                                  )}
+                                {columnExist.title == "MaterialType" &&
+                                  columnExist.status == true && (
+                                    <Td>{data.MaterialType}</Td>
+                                  )}
+                                {columnExist.title == "MarketPrice" &&
+                                  columnExist.status == true && (
+                                    <Td isNumeric>{data.MarketPrice}</Td>
+                                  )}
+                                {columnExist.title == "SellingPrice" &&
+                                  columnExist.status == true && (
+                                    <Td>{data.SellingPrice}</Td>
+                                  )}
+                                {columnExist.title == "PriceCode" &&
+                                  columnExist.status == true && (
+                                    <Td>{data.priceCode}</Td>
+                                  )}
+                                {columnExist.title == "Discount" &&
+                                  columnExist.status == true && (
+                                    <Td>{data.Discount}</Td>
+                                  )}
+                                {columnExist.title == "Stocks" &&
+                                  columnExist.status == true && (
+                                    <Td>{data.Qty}</Td>
+                                  )}
+                                {columnExist.title == "VendorName" &&
+                                  columnExist.status == true && (
+                                    <Td>{data.VendorName}</Td>
+                                  )}
+                                {/* {columnExist.name == "Qty Type" &&  columnExist.status == true && 
                           <Td>{data.selectQty}</Td>
                         )} */}
+                                {columnExist.title == "BarCode" &&
+                                  columnExist.status == true && (
+                                    <Td>
+                                      <Image
+                                        src={`copy/${data.BarCodePin}OUT.png`}
+                                        alt="Bar Code"
+                                      />
+                                      <Button
+                                        size="sm"
+                                        colorScheme="teal"
+                                        mt="10px"
+                                        onClick={() => {
+                                          saveAs(
+                                            `copy/${data.BarCodePin}OUT.png`,
+                                            `${data.BarCodePin}.jpg`
+                                          );
+                                          toast({
+                                            title: "Download Success.",
+                                            description:
+                                              "Barcode Downloaded Successfully.",
+                                            status: "success",
+                                            duration: 9000,
+                                            isClosable: true,
+                                          });
+                                        }}
+                                      >
+                                        Download
+                                      </Button>
+                                    </Td>
+                                  )}
 
-                        {columnExist.name == "Bar Code" ? null : (
-                          <Td>
-                            <Image src={data.BarCodeLink} alt="Bar Code" />
-                            <Button
-                              size="sm"
-                              colorScheme="teal"
-                              mt="10px"
-                              onClick={() => {
-                                downloadClick(data._id);
-                              }}
-                            >
-                              Download
-                            </Button>
-                          </Td>
-                        )}
-
-                        <Td>
-                          <Image
-                            src={`copy/${data.BarCodePin}.png`}
-                            alt="MRP Barcode"
-                          />
-                          <Button size="sm" colorScheme="teal" mt="10px">
-                            Download
-                          </Button>
-                        </Td>
+                                {columnExist.title == "MRPBarCode" &&
+                                  columnExist.status == true && (
+                                    <Td>
+                                      <Image
+                                        src={`copy/${data.BarCodePin}.png`}
+                                        alt="MRP Barcode"
+                                      />
+                                      <Button
+                                        size="sm"
+                                        colorScheme="teal"
+                                        mt="10px"
+                                        onClick={() => {
+                                          saveAs(
+                                            `copy/${data.BarCodePin}.png`,
+                                            `${data.BarCodePin}MRP.jpg`
+                                          );
+                                          toast({
+                                            title: "Download Success.",
+                                            description:
+                                              "Barcode Downloaded Successfully.",
+                                            status: "success",
+                                            duration: 9000,
+                                            isClosable: true,
+                                          });
+                                        }}
+                                      >
+                                        Download
+                                      </Button>
+                                    </Td>
+                                  )}
+                              </>
+                            );
+                          })}
 
                         <Td>
                           <Button
@@ -409,6 +536,19 @@ function Home() {
                           >
                             Delete
                           </Button>
+                        </Td>
+                        <Td>
+                          <Checkbox
+                            onChange={() => {
+                              setZipMrp([...zipMrp, data.BarCodeMrpLink]);
+                              setZipFolder(data.PID);
+                              setZip([...zip, data.BarCodeLink]);
+                              setZipFolder1(data.PID);
+                              zipDownload();
+                            }}
+                          >
+                            Checkbox
+                          </Checkbox>
                         </Td>
                       </Tr>
                     </Tbody>

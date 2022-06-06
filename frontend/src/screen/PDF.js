@@ -60,7 +60,7 @@ export const PDF = ({ billInfo, qty, grand }) => {
 
                         <Td>{data.SellingPrice}</Td>
 
-                        <Td>{qty}</Td>
+                        <Td>{data.qtyVal}</Td>
                       </Tr>
                     </>
                   );
@@ -74,7 +74,7 @@ export const PDF = ({ billInfo, qty, grand }) => {
       <Pdf targetRef={ref} filename="post.pdf">
         {({ toPdf }) => (
           <Button colorScheme="red" onClick={toPdf}>
-            Capture as PDF
+            Download as PDF
           </Button>
         )}
       </Pdf>

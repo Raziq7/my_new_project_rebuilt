@@ -1,44 +1,36 @@
-import React, { useEffect } from "react";
 import {
   Button,
-  Divider,
+  Checkbox,
   Flex,
   FormControl,
-  Icon,
+  FormLabel,
+  Heading,
   Input,
-  InputGroup,
-  InputLeftElement,
+  Link,
   Stack,
+  Image,
   Text,
-  VStack,
 } from "@chakra-ui/react";
-import { AiTwotoneLock } from "react-icons/ai";
-import { MdLocalPostOffice } from "react-icons/md";
-import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { staffLogin } from "../../actions/staffAction";
 import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import { useEffect } from "react";
+import { staffLogin } from "../../actions/staffAction";
 import Messege from "../Messege";
 
-function Login() {
+export default function Test() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const loginMsg = useSelector((state) => {
-    return state.staffLginData;
-  });
-  let { error } = loginMsg;
 
   const staffLoginData = useSelector((state) => {
     return state.staffLginData;
   });
-
   let { loding, staffInfo } = staffLoginData;
 
-  // useEffect(() => {
-  //   if (staffInfo) {
-  //     navigate("/");
-  //   }
-  // }, [staffInfo]);
+  const loginMsg = useSelector((state) => {
+    return state.staffLginData;
+  });
+  let { error } = loginMsg;
 
   useEffect(() => {
     let isStaff = localStorage.getItem("staffInfo")
@@ -50,15 +42,8 @@ function Login() {
   }, [staffInfo]);
 
   //validatio form
-
   const validate = (values) => {
     const errors = {};
-
-    // if (!values.name) {
-    //   errors.name = "Required";
-    // } else if (values.name.length < 3) {
-    //   errors.name = "Must be 4 characters or More";
-    // }
 
     if (!values.email) {
       errors.email = "Required";
@@ -78,7 +63,6 @@ function Login() {
 
   const formik = useFormik({
     initialValues: {
-      // name: "",
       email: "",
       password: "",
     },
@@ -87,98 +71,68 @@ function Login() {
       dispatch(staffLogin(values));
     },
   });
+
   return (
-    <div>
-      {loding ? (
-        <h1>Loding......</h1>
-      ) : (
-        <Flex
-          justify={"center"}
-          align={"center"}
-          ml={["70px", "250px", "400px", "500px"]}
-          // mr="20"
-          // mr={["70px", "250px", "400px", "auto"]}
-          mt="150px"
-        >
+    <Stack minH={"100vh"} direction={{ base: "column", md: "row" }}>
+      <Flex p={8} flex={1} align={"center"} justify={"center"}>
+        <Stack spacing={4} w={"full"} maxW={"md"}>
+          <Heading fontSize={"2xl"}>Sign in to your account</Heading>
+          {error && <Messege variant="danger">{error}</Messege>}
+
           <form onSubmit={formik.handleSubmit}>
-            <Stack spacing={4}>
-              {error && <Messege variant="danger">{error}</Messege>}
-
-              <VStack>
-                {/* <FormControl isRequired> */}
-                {/* <InputGroup> */}
-                {/* <InputLeftElement children={<Icon name="info" />} /> */}
-                {/* <Input
-                      onChange={formik.handleChange}
-                      value={formik.values.name}
-                      onBlur={formik.handleBlur}
-                      type="name"
-                      placeholder="Enter Your Name"
-                      aria-label="name"
-                      name="name"
-                    /> */}
-                {/* </InputGroup>
-                </FormControl> */}
-                {/* {formik.errors.name ? (
-                  <Text color="tomato">{formik.errors.name}</Text>
-                ) : null} */}
-              </VStack>
-
-              <VStack>
-                <FormControl isRequired>
-                  <InputGroup>
-                    <InputLeftElement children={<MdLocalPostOffice />} />
-                    <Input
-                      onChange={formik.handleChange}
-                      value={formik.values.email}
-                      onBlur={formik.handleBlur}
-                      type="email"
-                      placeholder="Enter Your Email"
-                      aria-label="Email"
-                      name="email"
-                    />
-                  </InputGroup>
-                </FormControl>
-                {formik.errors.email ? (
-                  <Text color="tomato">{formik.errors.email}</Text>
-                ) : null}
-              </VStack>
-
-              <VStack>
-                <FormControl isRequired>
-                  <InputGroup>
-                    <InputLeftElement children={<AiTwotoneLock />} />
-                    <Input
-                      onChange={formik.handleChange}
-                      value={formik.values.password}
-                      onBlur={formik.handleBlur}
-                      type="password"
-                      placeholder="Enter Your Password"
-                      aria-label="Password"
-                      name="password"
-                    />
-                  </InputGroup>
-                </FormControl>
-                {formik.errors.password ? (
-                  <Text color="tomato">{formik.errors.password}</Text>
-                ) : null}
-              </VStack>
-
-              <Divider />
-              <Button
-                type="submit"
-                boxShadow="sm"
-                _hover={{ boxShadow: "md" }}
-                _active={{ boxShadow: "lg" }}
-              >
-                Sign In!
+            <FormControl id="email">
+              <FormLabel>Email address</FormLabel>
+              <Input
+                onChange={formik.handleChange}
+                value={formik.values.email}
+                onBlur={formik.handleBlur}
+                type="email"
+                placeholder="Enter Your Email"
+                aria-label="Email"
+                name="email"
+              />
+            </FormControl>
+            {formik.errors.email ? (
+              <Text color="tomato">{formik.errors.email}</Text>
+            ) : null}
+            <FormControl id="password">
+              <FormLabel>Password</FormLabel>
+              <Input
+                onChange={formik.handleChange}
+                value={formik.values.password}
+                onBlur={formik.handleBlur}
+                type="password"
+                placeholder="Enter Your Password"
+                aria-label="Password"
+                name="password"
+              />
+            </FormControl>
+            {formik.errors.password ? (
+              <Text color="tomato">{formik.errors.password}</Text>
+            ) : null}
+            <Stack spacing={6}>
+              {/* <Stack
+              direction={{ base: "column", sm: "row" }}
+              align={"start"}
+              justify={"space-between"}
+            >
+              {/* <Checkbox>Remember me</Checkbox> */}
+              {/* <Link color={"blue.500"}>Forgot password?</Link> */}
+              {/* </Stack> */}
+              <Button type="submit" colorScheme={"blue"} variant={"solid"}>
+                Sign in
               </Button>
             </Stack>
           </form>
-        </Flex>
-      )}
-    </div>
+        </Stack>
+      </Flex>
+      <Flex flex={1}>
+        <Image
+          alt={"Login Image"}
+          objectFit={"cover"}
+          src={"images/4231726.jpg"}
+        />
+      </Flex>
+    </Stack>
   );
 }
-
-export default Login;

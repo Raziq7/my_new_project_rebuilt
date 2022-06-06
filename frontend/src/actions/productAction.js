@@ -37,6 +37,18 @@ import {
   DELETE_BILLING_PRO_REQUEST,
   DELETE_BILLING_PRO_SUCCESS,
   DELETE_BILLING_PRO_ERR,
+  LADGER_BOOK_REQUEST,
+  LADGER_BOOK_SUCCESS,
+  LADGER_BOOK_ERR,
+  ADD_LADGER_BOOK_REQUEST,
+  ADD_LADGER_BOOK_SUCCESS,
+  ADD_LADGER_BOOK_ERR,
+  ADD_CATEGORY_SET_REQUEST,
+  ADD_CATEGORY_SET_SUCCESS,
+  ADD_CATEGORY_SET_ERR,
+  SHOW_CATEGORY_SET_SUCCESS,
+  SHOW_CATEGORY_SET_REQUEST,
+  SHOW_CATEGORY_SET_ERR,
 } from "../constant/productConstant";
 
 // export const addProductAction = (details) => async (dispatch, getState) => {
@@ -153,20 +165,6 @@ export const increasStockValue = (value, id) => async (dispatch, getState) => {
   }
 };
 
-export const downloadBarCode = (id) => async (dispatch, getState) => {
-  try {
-    console.log("downloadClick", id);
-
-    dispatch({ type: DOWNLOAD_BAR_CODE_REQUEST });
-
-    let { data } = await axios.post("/api/superAdmin/downloadBarcode", { id });
-
-    dispatch({ type: DOWNLOAD_BAR_CODE_SUCCESS, payload: data });
-  } catch (err) {
-    dispatch({ type: DOWNLOAD_BAR_CODE_ERR, payload: err });
-  }
-};
-
 export const addProductExcel = (file) => async (dispatch, getState) => {
   try {
     dispatch({ type: ADD_PRODUCT_REQUEST });
@@ -199,48 +197,49 @@ export const billingAction = (value) => async (dispatch, getState) => {
 
 //increas Qty Value
 
-export const increasQtyValue = (qty, id) => async (dispacth, getState) => {
-  try {
-    dispacth({ type: INCREAS_BILLING_QTY_REQUEST });
+export const checkoutBill =
+  (billInfo, grandTotal) => async (dispacth, getState) => {
+    try {
+      dispacth({ type: INCREAS_BILLING_QTY_REQUEST });
 
-    let { data } = await axios.post("/api/superAdmin/increasBillingQty", {
-      qty,
-      id,
-    });
+      let { data } = await axios.post("/api/superAdmin/checkoutBillingQty", {
+        billInfo,
+        grandTotal,
+      });
 
-    dispacth({ type: INCREAS_BILLING_QTY_SUCCESS, payload: data });
-  } catch (error) {
-    dispacth({
-      type: INCREAS_BILLING_QTY_ERR,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+      dispacth({ type: INCREAS_BILLING_QTY_SUCCESS, payload: data });
+    } catch (error) {
+      dispacth({
+        type: INCREAS_BILLING_QTY_ERR,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 //decreasBillingQty
 
-export const decreasBillingQty = (id) => async (dispacth, getState) => {
-  try {
-    dispacth({ type: DECREAS_BILLING_QTY_REQUEST });
+// export const decreasBillingQty = (id) => async (dispacth, getState) => {
+//   try {
+//     dispacth({ type: DECREAS_BILLING_QTY_REQUEST });
 
-    let { data } = await axios.post("/api/superAdmin/decreasBillingQty", {
-      id,
-    });
+//     let { data } = await axios.post("/api/superAdmin/decreasBillingQty", {
+//       id,
+//     });
 
-    dispacth({ type: DECREAS_BILLING_QTY_SUCCESS, payload: data });
-  } catch (error) {
-    dispacth({
-      type: DECREAS_BILLING_QTY_ERR,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+//     dispacth({ type: DECREAS_BILLING_QTY_SUCCESS, payload: data });
+//   } catch (error) {
+//     dispacth({
+//       type: DECREAS_BILLING_QTY_ERR,
+//       payload:
+//         error.response && error.response.data.message
+//           ? error.response.data.message
+//           : error.message,
+//     });
+//   }
+// };
 
 //deleteBillingPro
 
@@ -264,14 +263,58 @@ export const deleteBillingPro = (id) => async (dispacth, getState) => {
   }
 };
 
-// export const billingDetailsAction = () => async (dispatch, getState) => {
-//   try {
-//     dispatch({ type: BILLING_DETAILS_REQUEST });
+export const ladgerBookAction = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: LADGER_BOOK_REQUEST });
 
-//     let { data } = await axios.get("/api/superAdmin/getBillingDetails");
+    let { data } = await axios.get("/api/superAdmin/ladgerBook");
 
-//     dispatch({ type: BILLING_DETAILS_SUCCESS, payload: data });
-//   } catch (err) {
-//     dispatch({ type: BILLING_DETAILS_ERR, payload: err });
-//   }
-// };
+    dispatch({ type: LADGER_BOOK_SUCCESS, payload: data });
+  } catch (err) {
+    dispatch({ type: LADGER_BOOK_ERR, payload: err });
+  }
+};
+
+export const AddladgerBookAction = (details) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ADD_LADGER_BOOK_REQUEST });
+
+    let { data } = await axios.post("/api/superAdmin/AddladgerBook", {
+      details,
+    });
+
+    dispatch({ type: ADD_LADGER_BOOK_SUCCESS, payload: data });
+  } catch (err) {
+    dispatch({ type: ADD_LADGER_BOOK_ERR, payload: err });
+  }
+};
+export const categorySelect = (category) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ADD_CATEGORY_SET_REQUEST });
+
+    let { data } = await axios.post("/api/superAdmin/categoryAdd", {
+      category,
+    });
+
+    dispatch({ type: ADD_CATEGORY_SET_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: ADD_CATEGORY_SET_ERR,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+export const ladgerBookshow = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: SHOW_CATEGORY_SET_REQUEST });
+
+    let { data } = await axios.get("/api/superAdmin/ladgerBookshow");
+
+    dispatch({ type: SHOW_CATEGORY_SET_SUCCESS, payload: data });
+  } catch (err) {
+    dispatch({ type: SHOW_CATEGORY_SET_ERR, payload: err });
+  }
+};

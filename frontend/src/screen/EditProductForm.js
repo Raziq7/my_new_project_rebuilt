@@ -82,7 +82,7 @@ function EditProductForm() {
   };
   return (
     <>
-      <VStack width={["auto", "auto", "90%", "90%", "90%"]} mb="auto">
+      <VStack mb="auto" mr="auto" ml="auto">
         <Text fontSize="40px" color="teal">
           Edit Product
         </Text>
@@ -98,8 +98,7 @@ function EditProductForm() {
         ) : (
           editInfo && (
             <form
-              width={["444px", "444px", "444px", "100%", "100%"]}
-              display={["444px", "444px", "444px", "100%", "100%"]}
+              width={["444px", "444px", "444px", "444px"]}
               onSubmit={submitForm}
             >
               <Box mt="9px">
@@ -133,7 +132,7 @@ function EditProductForm() {
               </Box>
 
               <Box
-                display={["block", "block", "block", "block", "flex"]}
+                display={["block", "block", "block", "block", "block"]}
                 justifyContent={[
                   "center",
                   "center",

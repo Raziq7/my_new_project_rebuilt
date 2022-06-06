@@ -1,4 +1,10 @@
 import {
+  ADD_CATEGORY_SET_ERR,
+  ADD_CATEGORY_SET_REQUEST,
+  ADD_CATEGORY_SET_SUCCESS,
+  ADD_LADGER_BOOK_ERR,
+  ADD_LADGER_BOOK_REQUEST,
+  ADD_LADGER_BOOK_SUCCESS,
   ADD_ONE_PRODUCT,
   ADD_PRODUCT_FAILED,
   ADD_PRODUCT_REQUEST,
@@ -29,9 +35,15 @@ import {
   INC_PURCHASE_VALUE_ERR,
   INC_PURCHASE_VALUE_REQUEST,
   INC_PURCHASE_VALUE_SUCCESS,
+  LADGER_BOOK_ERR,
+  LADGER_BOOK_REQUEST,
+  LADGER_BOOK_SUCCESS,
   PURCHASE_STOCK_ERR,
   PURCHASE_STOCK_REQUEST,
   PURCHASE_STOCK_SUCCESS,
+  SHOW_CATEGORY_SET_ERR,
+  SHOW_CATEGORY_SET_REQUEST,
+  SHOW_CATEGORY_SET_SUCCESS,
   SHOW_PRODUCT_ERR,
   SHOW_PRODUCT_REQUEST,
   SHOW_PRODUCT_SUCCESS,
@@ -212,27 +224,6 @@ export const increasStockValueReducer = (state = {}, action) => {
 
 //download BarCode
 
-export const downloadBarCodeReducer = (state = {}, action) => {
-  switch (action.type) {
-    case DOWNLOAD_BAR_CODE_REQUEST:
-      return {
-        loading: true,
-      };
-    case DOWNLOAD_BAR_CODE_SUCCESS:
-      return {
-        loading: false,
-        download: action.payload,
-      };
-    case DOWNLOAD_BAR_CODE_ERR:
-      return {
-        loading: false.valueOf,
-        error: action.payload,
-      };
-    default:
-      return state;
-  }
-};
-
 export const billingReducer = (state = {}, action) => {
   switch (action.type) {
     case BILLING_VALUE_REQUEST:
@@ -302,23 +293,86 @@ export const decreasBillingQtyReducer = (state = {}, action) => {
   }
 };
 
-// export const billingDetailsReducer = (state = {}, action) => {
-//   switch (action.type) {
-//     case BILLING_DETAILS_REQUEST:
-//       return {
-//         loading: true,
-//       };
-//     case BILLING_DETAILS_SUCCESS:
-//       return {
-//         loading: false,
-//         billing: action.payload,
-//       };
-//     case BILLING_VALUE_ERR:
-//       return {
-//         loading: false,
-//         error: action.payload,
-//       };
-//     default:
-//       return state;
-//   }
-// };
+export const ladgerBookReducer = (state = {}, action) => {
+  switch (action.type) {
+    case LADGER_BOOK_REQUEST:
+      return {
+        loading: true,
+      };
+    case LADGER_BOOK_SUCCESS:
+      return {
+        loading: false,
+        ladger: action.payload,
+      };
+    case LADGER_BOOK_ERR:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const AddladgerBookReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ADD_LADGER_BOOK_REQUEST:
+      return {
+        loading: true,
+      };
+    case ADD_LADGER_BOOK_SUCCESS:
+      return {
+        loading: false,
+        addladger: action.payload,
+      };
+    case ADD_LADGER_BOOK_ERR:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const categorySelectReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ADD_CATEGORY_SET_REQUEST:
+      return {
+        loading: true,
+      };
+    case ADD_CATEGORY_SET_SUCCESS:
+      return {
+        loading: false,
+        categoryLadger: action.payload,
+      };
+    case ADD_CATEGORY_SET_ERR:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const ladgerBookshowReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SHOW_CATEGORY_SET_REQUEST:
+      return {
+        loading: true,
+      };
+    case SHOW_CATEGORY_SET_SUCCESS:
+      return {
+        loading: false,
+        showcategoryLadger: action.payload,
+      };
+    case SHOW_CATEGORY_SET_ERR:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};

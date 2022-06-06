@@ -12,16 +12,23 @@ import {
   editProductTakeReducer,
   purchaseStockProductReducer,
   increasStockValueReducer,
-  downloadBarCodeReducer,
+  // downloadBarCodeReducer,
   addProductExcelReducer,
   billingReducer,
   billingDetailsReducer,
   increasQtyValueReducer,
   decreasBillingQtyReducer,
+  ladgerBookReducer,
+  AddladgerBookReducer,
+  categorySelectReducer,
+  ladgerBookshowReducer,
 } from "./reducers/productReducer";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
-import { ProductManageColomnHideAndVisibleReducer } from "./reducers/SettingReducer";
+import {
+  ProductManageColomnHideAndVisibleReducer,
+  ProductManageColomnHideAndVisibleShowReducer,
+} from "./reducers/SettingReducer";
 
 const appReducer = combineReducers({
   staffData: staffRegsterReducer,
@@ -36,11 +43,15 @@ const appReducer = combineReducers({
   purcaseDetails: purchaseStockProductReducer,
   increasStockValue: increasStockValueReducer,
   ProductManageColomnHideAndVisible: ProductManageColomnHideAndVisibleReducer,
-  downloadBarCode: downloadBarCodeReducer,
+  ProductManageColomnHideAndVisibleShow:
+    ProductManageColomnHideAndVisibleShowReducer,
   billing: billingReducer,
   increasQtyValue: increasQtyValueReducer,
   decreasBillingQty: decreasBillingQtyReducer,
-  // billingDetails: billingDetailsReducer,
+  ladgerBook: ladgerBookReducer,
+  AddladgerBook: AddladgerBookReducer,
+  categorySelect: categorySelectReducer,
+  ladgerBookshow: ladgerBookshowReducer,
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

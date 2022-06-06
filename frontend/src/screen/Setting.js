@@ -7,19 +7,20 @@ function Setting({ title }) {
   const [value, setValue] = useState();
 
   const dispatch = useDispatch();
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     if (typeof e === "string") {
       if (e.toLowerCase() === "true") {
         console.log("true");
-        setValue(true);
+        await setValue(true);
+        dispatch(ProductManageColomnHideAndVisible(true, title));
       }
       if (e.toLowerCase() === "false") {
         console.log("false");
-        setValue(false);
+        await setValue(false);
+        dispatch(ProductManageColomnHideAndVisible(false, title));
       }
     }
     // console.log(value);
-    dispatch(ProductManageColomnHideAndVisible(value, title));
   };
 
   return (

@@ -14,9 +14,10 @@ import EditProductForm from "./screen/EditProductForm";
 import UserManagment from "./screen/UserManagment";
 import ParchaseStock from "./screen/ParchaseStock";
 import SettingComponent from "./components/SettingComponent";
-import Sample from "./screen/Sample";
-import Test from "./screen/Test";
+import LadgerBook from "./screen/LadgerBook";
 import Billing from "./screen/Billing";
+// import NewNav from "./screen/NewNav";
+import Test from "./screen/Test";
 
 function App() {
   return (
@@ -46,9 +47,11 @@ function App() {
 
             <Route path="/purchaseStock" element={<ParchaseStock />} />
 
-            {/* <Route path="/sample" element={<Sample />} /> */}
+            <Route path="/LadgerBook" element={<LadgerBook />} />
 
-            {/* <Route path="/test" element={<Test />} /> */}
+            <Route path="/test" element={<Test />} />
+
+            {/* <Route path="/NewNav" element={<NewNav />} /> */}
           </Routes>
         </Flex>
       </Routers>

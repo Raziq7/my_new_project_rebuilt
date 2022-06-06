@@ -32,7 +32,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   billingAction,
   decreasBillingQty,
-  increasQtyValue,
+  checkoutBill,
   deleteBillingPro,
 } from "../actions/productAction";
 import { PDF } from "./PDF";
@@ -66,6 +66,12 @@ function Billing() {
     }
   }, [BillDetail, deleteBillingPro]);
 
+  useEffect(() => {
+    if (qtyVal == 1) {
+      setQtyVal(1);
+    }
+  }, [qtyVal]);
+
   //events
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -94,33 +100,32 @@ function Billing() {
   };
 
   //INC QTY
-  const incrementQty = (id) => {
+  const incrementQty = async (id) => {
     console.log("==================================");
     const index = billInfo.findIndex((i) => i._id == id);
-    // console.log(index);
-
+    if (billInfo[index].qtyVal === undefined || null) {
+      billInfo[index].qtyVal = 1;
+      setQtyVal(billInfo[index].qtyVal);
+    }
+    await setQtyVal(billInfo[index].qtyVal);
     console.log(billInfo[index].qtyVal);
-    setQtyVal(billInfo[index].qtyVal);
     setQtyVal(qtyVal + 1);
     billInfo[index].qtyVal = qtyVal;
-    dispacth(increasQtyValue(qty, id));
-
-    // console.log(billInfo[index], " setQty(qty + 1); setQty(qty + 1);");
   };
 
   //DEC QTY
 
-  const decrement = (id) => {
+  const decrement = async (id) => {
     console.log("==================================");
     const index = billInfo.findIndex((i) => i._id == id);
     console.log(index);
 
     if (billInfo[index].qtyVal) {
       if (billInfo[index].qtyVal !== 1) {
-        setQtyVal(billInfo[index].qtyVal);
+        await setQtyVal(billInfo[index].qtyVal);
         setQtyVal(qtyVal - 1);
         billInfo[index].qtyVal = qtyVal;
-        dispacth(decreasBillingQty(id));
+        // dispacth(decreasBillingQty(id));
       }
     }
   };
@@ -294,6 +299,7 @@ function Billing() {
                     onClick={() => {
                       setGrandTotal(grand);
                       setVisiblePdf(true);
+                      dispacth(checkoutBill(billInfo, grand));
                     }}
                   >
                     Checkout

@@ -18,13 +18,18 @@ const {
   downloadBarcode,
   addProductPost,
   billing,
-  getBillingDetails,
-  decreasBillingQty,
-  increasBillingQty,
+  // getBillingDetails,
+  // decreasBillingQty,
+  checkoutBillingQty,
   deleteBillingPro,
+  AddladgerBook,
+  ladgerBook,
+  categoryAdd,
+  ladgerBookshow,
+  ProductManageColomnHideAndVisible,
+  ProductManageColomnHideAndVisibleShow,
 } = require("../controllers/sAdminController");
 const protect = require("../Middleware/auth");
-var multer = require("multer");
 const router = express.Router();
 
 //add Product
@@ -82,12 +87,33 @@ router.route("/billing").post(billing);
 // router.route("/getBillingDetails").get(getBillingDetails);
 
 //increas Billing Qty
-router.route("/increasBillingQty").post(increasBillingQty);
+router.route("/checkoutBillingQty").post(checkoutBillingQty);
 
 //decreasBillingQty
-router.route("/decreasBillingQty").post(decreasBillingQty);
+// router.route("/decreasBillingQty").post(decreasBillingQty);
 
 //deleteBillingPro
 router.route("/deleteBillingPro").post(deleteBillingPro);
 
+//AddladgerBook
+router.route("/AddladgerBook").post(AddladgerBook);
+
+//ladgerBook
+router.route("/ladgerBook").get(ladgerBook);
+
+//categoryAdd
+router.route("/categoryAdd").post(categoryAdd);
+
+//ladgerBookshow
+router.route("/ladgerBookshow").get(ladgerBookshow);
+
+//ProductManageColomnHideAndVisible
+router
+  .route("/ProductManageColomnHideAndVisible")
+  .post(ProductManageColomnHideAndVisible);
+
+//ProductManageColomnHideAndVisibleShow
+router
+  .route("/ProductManageColomnHideAndVisibleShow")
+  .get(ProductManageColomnHideAndVisibleShow);
 module.exports = router;
