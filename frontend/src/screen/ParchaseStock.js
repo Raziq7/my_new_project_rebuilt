@@ -1,4 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
+import MaterialTable from "material-table";
+import {
+  AddBox,
+  ArrowDownward,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Clear,
+  DeleteOutline,
+  Edit,
+  FilterList,
+  FirstPage,
+  LastPage,
+  Remove,
+  SaveAlt,
+  Search,
+  ViewColumn,
+} from "@material-ui/icons";
 import {
   Table,
   Thead,
@@ -16,6 +34,8 @@ import {
   Button,
   Input,
   Flex,
+  Text,
+  useToast,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPurchaseData, increasStockValue } from "../actions/productAction";
@@ -30,12 +50,13 @@ function ParchaseStock() {
   const [dataId, setDataId] = useState();
   const [dataFilter, setDataFilter] = useState([]);
   const [pdf, setPdf] = useState(false);
+  const toast = useToast();
 
   let { loading, purchaseData } = useSelector((state) => {
     return state.purcaseDetails;
   });
 
-  const { increaseStock } = useSelector((state) => {
+  const { increaseStock, error } = useSelector((state) => {
     return state.increasStockValue;
   });
 
@@ -55,6 +76,56 @@ function ParchaseStock() {
     dispatch(increasStockValue(increasStock, dataId));
   };
 
+  //data Meterial
+  let data =
+    dataFilter &&
+    dataFilter.map((data) => {
+      console.log(
+        data,
+        "Uncaught TypeError: row is undefined viewStaffviewStaffviewStaffviewStaffviewStaff"
+      );
+      // if (!data.superAdmin)
+      return {
+        ProductName: data.ProductName,
+        Size: data.Size,
+        Brand: data.Brand,
+        MaterialType: data.MaterialType,
+        MaxStock: data.MaxStock,
+        MinStock: data.MinStock,
+        SellingPrice: data.SellingPrice,
+        VendorName: data.VendorName,
+        Action: (
+          // if (!data.superAdmin)
+          <Button
+            onClick={() => {
+              setCheck(true);
+              console.log(check);
+            }}
+          >
+            Add Stock
+          </Button>
+        ),
+        Add: check == true && (
+          <form onSubmit={incStock}>
+            <Input
+              placeholder="Purchased Quantity"
+              onChange={(e) => {
+                setincreasStock(e.target.value);
+                setDataId(data._id);
+              }}
+              htmlSize={4}
+              width="auto"
+              name="incStock"
+            />
+            <Button colorScheme="teal" size="sm" type="submit">
+              Add
+            </Button>
+          </form>
+        ),
+        _id: data._id,
+      };
+    });
+
   const submitHandler = (e) => {
     e.preventDefault();
     const filteredRows = dataFilter.filter((row) => {
@@ -68,140 +139,135 @@ function ParchaseStock() {
       setDataFilter(filteredRows);
     }
   };
+  //meterial Icon
+
+  const tableIcons = {
+    Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+    Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
+    Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+    Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+    DetailPanel: forwardRef((props, ref) => (
+      <ChevronRight {...props} ref={ref} />
+    )),
+    Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+    Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
+    Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
+    FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
+    LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
+    NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+    PreviousPage: forwardRef((props, ref) => (
+      <ChevronLeft {...props} ref={ref} />
+    )),
+    ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+    Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
+    SortArrow: forwardRef((props, ref) => (
+      <ArrowDownward {...props} ref={ref} />
+    )),
+    ThirdStateCheck: forwardRef((props, ref) => (
+      <Remove {...props} ref={ref} />
+    )),
+    ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
+  };
+
+  const columns = [
+    {
+      title: "Product Name",
+      field: "ProductName",
+    },
+    { title: "Size", field: "Size" },
+    { title: "Color", field: "Color" },
+
+    { title: "Brand", field: "Brand" },
+    { title: "Material", field: "Material" },
+    { title: "Max Qty", field: "MaxQty" },
+    { title: "Min Stock", field: "MinStock" },
+    { title: "Price", field: "Price" },
+    { title: "vendor Name", field: "vendorName" },
+
+    {
+      title: "Action",
+      field: "Action",
+    },
+
+    {
+      title: "Add",
+      field: "Add",
+    },
+  ];
   return (
     <>
-      {loading ? (
-        <Stack>
-          <Skeleton height="20px" />
-          <Skeleton height="20px" />
-          <Skeleton height="20px" />
-          <Skeleton height="20px" />
-          <Skeleton height="20px" />
-          <Skeleton height="20px" />
-          <Skeleton height="20px" />
-          <Skeleton height="20px" />
-          <Skeleton height="20px" />
-          <Skeleton height="20px" />
-          <Skeleton height="20px" />
-          <Skeleton height="20px" />
-        </Stack>
-      ) : !pdf ? (
-        <Box overflowY="auto" mb="auto" ml="auto" mr="auto">
-          <Center fontSize="40px" color="teal">
-            Purchase Stock
-          </Center>
-          <Flex justifyContent="space-between">
-            <Box ml="200px">
-              <Button
-                on
-                onClick={() => {
-                  setPdf(true);
-                }}
-              >
-                Download PDF
-              </Button>
-            </Box>
-            <Box mr="200px">
-              <form onSubmit={submitHandler}>
-                <Input
-                  onChange={(e) => {
-                    setSearch(e.target.value);
-                  }}
-                  placeholder="Search"
-                  w="auto"
-                />
-                <Button ml="5px" type="submit">
-                  Search
-                </Button>
-              </form>
-            </Box>
-          </Flex>
-          <TableContainer
-            ml="auto"
-            mr="auto"
-            width={{
-              sm: "60%",
-              md: "650px",
-              lg: "800px",
-              xl: "70%",
+      <Box overflowY="auto" mb="auto" ml="auto" mr="auto">
+        <Center fontSize="40px" color="teal">
+          Purchase Stock
+        </Center>
+        {error &&
+          toast({
+            title: error,
+            position: "top",
+            isClosable: true,
+            status: "error",
+          })}
+        {loading ? (
+          <Box h="500px" display="flex">
+            <Skeleton>
+              <div>contents wrapped</div>
+              <div>won't be visible</div>
+            </Skeleton>
+            <Skeleton>
+              <div>contents wrapped</div>
+              <div>won't be visible</div>
+            </Skeleton>
+            <Skeleton>
+              <div>contents wrapped</div>
+              <div>won't be visible</div>
+            </Skeleton>
+            <Skeleton>
+              <div>contents wrapped</div>
+              <div>won't be visible</div>
+            </Skeleton>
+            <Skeleton>
+              <div>contents wrapped</div>
+              <div>won't be visible</div>
+            </Skeleton>
+            <Skeleton>
+              <div>contents wrapped</div>
+              <div>won't be visible</div>
+            </Skeleton>{" "}
+            <Skeleton>
+              <div>contents wrapped</div>
+              <div>won't be visible</div>
+            </Skeleton>
+            <Skeleton>
+              <div>contents wrapped</div>
+              <div>won't be visible</div>
+            </Skeleton>
+            <Skeleton>
+              <div>contents wrapped</div>
+              <div>won't be visible</div>
+            </Skeleton>
+          </Box>
+        ) : (
+          <MaterialTable
+            style={{
+              marginLeft: "150px",
+              marginTop: "20px",
+              width: "80%",
             }}
-          >
-            <Table variant="simple">
-              <TableCaption>Ukkens Vastralaya Parchase Stocks</TableCaption>
-              <Thead>
-                <Tr>
-                  <Th>Product Name</Th>
-                  <Th>Size</Th>
-                  <Th>Color</Th>
-                  <Th>Brand</Th>
-                  <Th>Material</Th>
-                  <Th>Max Qty</Th>
-                  <Th>Min Stock</Th>
-                  <Th>Price</Th>
-                  <Th>vendor Name</Th>
-                  <Th>Action</Th>
-                </Tr>
-              </Thead>
-
-              {dataFilter &&
-                dataFilter.map((data) => {
-                  return (
-                    <Tbody>
-                      <Tr>
-                        <Td>{data.ProductName ? data.ProductName : "null"}</Td>
-
-                        <Td>{data.Size ? data.Size : "null"}</Td>
-                        <Td>{data.Color ? data.Color : "null"}</Td>
-                        <Td>{data.Brand ? data.Brand : "null"}</Td>
-                        <Td>{data.MaterialType}</Td>
-                        <Td>{data.MaxStock ? data.MaxStock : "null"}</Td>
-
-                        <Td>{data.MinStock ? data.MinStock : "null"}</Td>
-
-                        <Td>{data.SellingPrice}</Td>
-                        <Td>{data.VendorName ? data.VendorName : "null"}</Td>
-                        <Td>
-                          <Button
-                            onClick={() => {
-                              setCheck(true);
-                              console.log(check);
-                            }}
-                          >
-                            Update Product
-                          </Button>
-                        </Td>
-                        {check == true && (
-                          <Td>
-                            <form onSubmit={incStock}>
-                              <Input
-                                onChange={(e) => {
-                                  setincreasStock(e.target.value);
-                                  setDataId(data._id);
-                                }}
-                                htmlSize={4}
-                                width="auto"
-                                name="incStock"
-                              />
-                              <Button
-                                colorScheme="teal"
-                                size="sm"
-                                type="submit"
-                              >
-                                Add
-                              </Button>
-                            </form>
-                          </Td>
-                        )}
-                      </Tr>
-                    </Tbody>
-                  );
-                })}
-            </Table>
-          </TableContainer>
-        </Box>
-      ) : (
-        <PurchasPdf dataFilter={dataFilter} />
-      )}
+            icons={tableIcons}
+            data={data}
+            columns={columns}
+            title="User Management"
+            options={{
+              filtering: true,
+              pageSize: 3,
+              pageSizeOptions: [3, 5, 10, 20, 30, 40, 50],
+              // selection: true,
+              exportButton: true,
+              grouping: true,
+            }}
+          />
+        )}
+      </Box>
     </>
   );
 }

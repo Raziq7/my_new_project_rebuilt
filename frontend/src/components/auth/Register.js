@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { staffRegster } from "../../actions/staffAction";
 import {
+  Box,
   Button,
+  Center,
   Divider,
-  Flex,
   FormControl,
+  HStack,
   Icon,
   Input,
   InputGroup,
@@ -98,7 +100,7 @@ function Register() {
   // }, []);
 
   return (
-    <Flex
+    <Box
       justify={"center"}
       align={"center"}
       ml="auto"
@@ -106,6 +108,9 @@ function Register() {
       mb="auto"
       mt="10px"
     >
+      <Center fontSize="40px" color="teal">
+        Add New User
+      </Center>
       <form onSubmit={formik.handleSubmit}>
         <Stack spacing={4}>
           <VStack>
@@ -113,11 +118,12 @@ function Register() {
               <InputGroup>
                 <InputLeftElement children={<Icon name="info" />} />
                 <Input
+                  backgroundColor="white"
                   onChange={formik.handleChange}
                   value={formik.values.name}
                   onBlur={formik.handleBlur}
                   type="name"
-                  placeholder="Enter Your Name"
+                  placeholder="Enter User Name"
                   aria-label="name"
                   name="name"
                 />
@@ -133,11 +139,12 @@ function Register() {
               <InputGroup>
                 <InputLeftElement children={<MdLocalPostOffice />} />
                 <Input
+                  backgroundColor="white"
                   onChange={formik.handleChange}
                   value={formik.values.email}
                   onBlur={formik.handleBlur}
                   type="email"
-                  placeholder="Enter Your Email"
+                  placeholder="Enter User Email"
                   aria-label="Email"
                   name="email"
                 />
@@ -153,11 +160,12 @@ function Register() {
               <InputGroup>
                 <InputLeftElement children={<BiMobileAlt />} />
                 <Input
+                  backgroundColor="white"
                   onChange={formik.handleChange}
                   value={formik.values.phone}
                   onBlur={formik.handleBlur}
                   type="number"
-                  placeholder="Enter Your Phone Number"
+                  placeholder="Enter User Phone Number"
                   aria-label="Phone Number"
                   name="phone"
                 />
@@ -173,11 +181,12 @@ function Register() {
               <InputGroup>
                 <InputLeftElement children={<AiTwotoneLock />} />
                 <Input
+                  backgroundColor="white"
                   onChange={formik.handleChange}
                   value={formik.values.password}
                   onBlur={formik.handleBlur}
                   type="password"
-                  placeholder="Enter Your Password"
+                  placeholder="Enter User Password"
                   aria-label="Password"
                   name="password"
                 />
@@ -193,11 +202,12 @@ function Register() {
               <InputGroup>
                 <InputLeftElement children={<AiTwotoneLock />} />
                 <Input
+                  backgroundColor="white"
                   onChange={formik.handleChange}
                   value={formik.values.confirmPassword}
                   onBlur={formik.handleBlur}
                   type="password"
-                  placeholder="Enter Your Confirm Password"
+                  placeholder="Enter User Confirm Password"
                   aria-label="Confirm Password"
                   name="confirmPassword"
                 />
@@ -209,17 +219,34 @@ function Register() {
           </VStack>
           <Divider />
 
-          <Button
-            type="submit"
-            boxShadow="sm"
-            _hover={{ boxShadow: "md" }}
-            _active={{ boxShadow: "lg" }}
-          >
-            Register!
-          </Button>
+          <HStack>
+            <Button
+              backgroundColor="teal"
+              color="white"
+              type="submit"
+              boxShadow="sm"
+              _hover={{ boxShadow: "md" }}
+              _active={{ boxShadow: "lg" }}
+            >
+              Register!
+            </Button>
+
+            <Link to="/usermanagment">
+              <Button
+                ml="10px"
+                backgroundColor="tomato"
+                type="submit"
+                boxShadow="sm"
+                _hover={{ boxShadow: "md" }}
+                _active={{ boxShadow: "lg" }}
+              >
+                Cancel
+              </Button>
+            </Link>
+          </HStack>
         </Stack>
       </form>
-    </Flex>
+    </Box>
   );
 }
 

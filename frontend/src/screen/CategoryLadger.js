@@ -1,5 +1,6 @@
 import {
   Button,
+  Center,
   FormControl,
   FormLabel,
   Input,
@@ -49,7 +50,11 @@ function CategoryLadger() {
 
   return (
     <>
-      <Button onClick={onOpen}>Open Form</Button>
+      <Center>
+        <Button onClick={onOpen} colorScheme="teal" ml="30px">
+          Open Form
+        </Button>
+      </Center>
       <Modal
         initialFocusRef={initialRef}
         finalFocusRef={finalRef}

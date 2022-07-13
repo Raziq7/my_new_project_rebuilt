@@ -21,7 +21,7 @@ const {
   // getBillingDetails,
   // decreasBillingQty,
   checkoutBillingQty,
-  deleteBillingPro,
+  // deleteBillingPro,
   AddladgerBook,
   ladgerBook,
   categoryAdd,
@@ -32,8 +32,8 @@ const {
 const protect = require("../Middleware/auth");
 const router = express.Router();
 
-//add Product
-// router.route("/").post(addProduct);
+// add Product
+router.route("/").post(addProduct);
 
 //get Product
 router.route("/getProduct").get(getProductDetails);
@@ -93,7 +93,7 @@ router.route("/checkoutBillingQty").post(checkoutBillingQty);
 // router.route("/decreasBillingQty").post(decreasBillingQty);
 
 //deleteBillingPro
-router.route("/deleteBillingPro").post(deleteBillingPro);
+// router.route("/deleteBillingPro").post(deleteBillingPro);
 
 //AddladgerBook
 router.route("/AddladgerBook").post(AddladgerBook);

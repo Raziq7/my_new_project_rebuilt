@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import Register from "./components/auth/Register";
 import Navbar from "./components/Navbar";
@@ -7,7 +7,7 @@ import Login from "./components/auth/Login";
 import Home from "./screen/Home";
 import AddProduct from "./screen/AddProduct";
 import SideNav from "./components/SideNav/SideNav";
-import { Flex } from "@chakra-ui/react";
+import { Flex, useColorMode, useColorModeValue } from "@chakra-ui/react";
 import Dashboard from "./screen/Dashboard";
 // import Smple from "./screen/Smple";
 import EditProductForm from "./screen/EditProductForm";
@@ -20,11 +20,24 @@ import Billing from "./screen/Billing";
 import Test from "./screen/Test";
 
 function App() {
+  const bg = useColorModeValue("#EDF2F6", "dark");
+  const [color, setColor] = useState("");
+  //dark Mode
+  // let DarkMode = localStorage.getItem("chakra-ui-color-mode")
+  //   ? localStorage.getItem("chakra-ui-color-mode")
+  //   : null;
+
+  // useEffect(() => {
+  //   if (DarkMode == "dark") {
+  //     setColor("black");
+  //   }
+  // }, []);
+
   return (
     <div>
       <Routers>
         <Navbar />
-        <Flex alignItems="center">
+        <Flex alignItems="center" backgroundColor={bg} m="0" p="0">
           <SideNav />
           <Routes>
             <Route path="/StaffForm" element={<Register />} />

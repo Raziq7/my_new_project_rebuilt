@@ -30,9 +30,13 @@ function NavItems({ navSize, icon, title, active }) {
               <Icon
                 as={icon}
                 fontSize="xl"
-                color={active ? "gray.500" : "gray.500"}
+                color={active ? "white" : "white"}
               />
-              <Text ml={5} display={navSize == "small" ? "none" : "flex"}>
+              <Text
+                color="white"
+                ml={5}
+                display={navSize == "small" ? "none" : "flex"}
+              >
                 {title}
               </Text>
             </Flex>

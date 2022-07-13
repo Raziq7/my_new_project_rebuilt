@@ -1,4 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
+import MaterialTable from "material-table";
+import {
+  AddBox,
+  ArrowDownward,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Clear,
+  DeleteOutline,
+  Edit,
+  FilterList,
+  FirstPage,
+  LastPage,
+  Remove,
+  SaveAlt,
+  Search,
+  ViewColumn,
+} from "@material-ui/icons";
 import {
   Table,
   Thead,
@@ -39,7 +57,47 @@ function UserManagment() {
   const { changeStatus } = useSelector((state) => {
     return state.changeStatus;
   });
+  //useSelector
+  const { loading, viewStaff, error } = useSelector((state) => {
+    return state.showStaff;
+  });
 
+  //data Meterial
+  let data =
+    viewStaff &&
+    viewStaff.map((data) => {
+      console.log(
+        data.superAdmin,
+        "Uncaught TypeError: row is undefined viewStaffviewStaffviewStaffviewStaffviewStaff"
+      );
+      // if (!data.superAdmin)
+      return {
+        UserName: data.name,
+        UserEmail: data.email,
+        Phone: data.phone,
+        Status: data.status,
+
+        Action: (
+          // if (!data.superAdmin)
+          <Select
+            name="status"
+            onChange={(e) => {
+              setStatus({
+                status: e.target.value,
+                id: data._id,
+              });
+            }}
+            placeholder="Select Status"
+          >
+            <option value="admin">Admin</option>
+            <option value="staff">Staff</option>
+            <option value="block">Block</option>
+            <option value="UnBlock">UnBlock</option>
+          </Select>
+        ),
+        _id: data._id,
+      };
+    });
   useEffect(() => {
     dispatch(staffShow());
   }, [changeStatus]);
@@ -55,11 +113,6 @@ function UserManagment() {
     }
   }, []);
 
-  //useSelector
-  const { loading, viewStaff, error } = useSelector((state) => {
-    return state.showStaff;
-  });
-
   useEffect(() => {
     if (!status == "") {
       console.log("entered", status);
@@ -74,6 +127,52 @@ function UserManagment() {
     }
   }, [status]);
 
+  //meterial Icon
+
+  const tableIcons = {
+    Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+    Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
+    Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+    Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+    DetailPanel: forwardRef((props, ref) => (
+      <ChevronRight {...props} ref={ref} />
+    )),
+    Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+    Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
+    Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
+    FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
+    LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
+    NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+    PreviousPage: forwardRef((props, ref) => (
+      <ChevronLeft {...props} ref={ref} />
+    )),
+    ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+    Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
+    SortArrow: forwardRef((props, ref) => (
+      <ArrowDownward {...props} ref={ref} />
+    )),
+    ThirdStateCheck: forwardRef((props, ref) => (
+      <Remove {...props} ref={ref} />
+    )),
+    ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
+  };
+
+  //COLUMN METERIAL
+  const columns = [
+    {
+      title: "UserName",
+      field: "UserName",
+    },
+    { title: "Useremail", field: "UserEmail" },
+    { title: "Phone", field: "Phone" },
+
+    { title: "Status", field: "Status" },
+    {
+      title: "Action",
+      field: "Action",
+    },
+  ];
+
   return (
     <Box
       width={{
@@ -83,13 +182,13 @@ function UserManagment() {
         xl: "70%",
       }}
       mb="500px"
-      ml="50px"
+      ml="150px"
     >
       <Center fontSize="40px" color="teal">
         User Managment
       </Center>
       <Link style={{ textDecoration: "none" }} as={ReachLink} to="/StaffForm">
-        <Button left="96" ml="36">
+        <Button ml="158px" backgroundColor="#16134F" color="white">
           Add User
         </Button>
       </Link>
@@ -107,72 +206,51 @@ function UserManagment() {
             <div>contents wrapped</div>
             <div>won't be visible</div>
           </Skeleton>
+          <Skeleton>
+            <div>contents wrapped</div>
+            <div>won't be visible</div>
+          </Skeleton>
+          <Skeleton>
+            <div>contents wrapped</div>
+            <div>won't be visible</div>
+          </Skeleton>
+          <Skeleton>
+            <div>contents wrapped</div>
+            <div>won't be visible</div>
+          </Skeleton>{" "}
+          <Skeleton>
+            <div>contents wrapped</div>
+            <div>won't be visible</div>
+          </Skeleton>
+          <Skeleton>
+            <div>contents wrapped</div>
+            <div>won't be visible</div>
+          </Skeleton>
+          <Skeleton>
+            <div>contents wrapped</div>
+            <div>won't be visible</div>
+          </Skeleton>
         </>
       ) : (
-        <TableContainer
-          width={{
-            sm: "650px",
-            md: "650px",
-            lg: "600px",
-            xl: "700px",
+        <MaterialTable
+          style={{
+            marginLeft: "150px",
+            marginTop: "20px",
+            width: "80%",
           }}
-          ml="auto"
-          mr="auto"
-        >
-          <Table variant="simple">
-            <TableCaption>Ukkens Vasthralaya User Managment</TableCaption>
-            <Thead>
-              <Tr>
-                <Th>User Name</Th>
-                <Th>User email</Th>
-                <Th>Phone</Th>
-                <Th>Status</Th>
-                <Th> Action</Th>
-              </Tr>
-            </Thead>
-            {viewStaff.map((staff) => {
-              if (!staff.superAdmin)
-                return (
-                  <Tbody key={staff._id}>
-                    <Tr>
-                      <Td>{staff.name}</Td>
-                      <Td>{staff.email}</Td>
-                      <Td>{staff.phone}</Td>
-                      <Td>{staff.status}</Td>
-                      <Td>
-                        <Select
-                          w="110px"
-                          name="status"
-                          onChange={(e) => {
-                            setStatus({
-                              status: e.target.value,
-                              id: staff._id,
-                            });
-                          }}
-                          placeholder="Select Status"
-                        >
-                          <option value="admin">Admin</option>
-                          <option value="staff">Staff</option>
-                          <option value="block">Block</option>
-                          <option value="UnBlock">UnBlock</option>
-                        </Select>
-                      </Td>
-                    </Tr>
-                  </Tbody>
-                );
-            })}
-
-            <Tfoot>
-              <Tr>
-                <Th>User Name</Th>
-                <Th>User email</Th>
-                <Th>Phone</Th>
-                <Th>Status</Th>
-                <Th> Action</Th>
-              </Tr>
-            </Tfoot>
-          </Table>
-        </TableContainer>
+          icons={tableIcons}
+          data={data}
+          columns={columns}
+          title="User Management"
+          options={{
+            filtering: true,
+            pageSize: 3,
+            pageSizeOptions: [3, 5, 10, 20, 30, 40, 50],
+            // selection: true,
+            exportButton: true,
+            grouping: true,
+          }}
+        />
       )}
     </Box>
   );

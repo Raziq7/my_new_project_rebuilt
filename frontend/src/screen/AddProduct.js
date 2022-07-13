@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addProductExcel } from "../actions/productAction";
 import * as xlsx from "xlsx";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function AddProduct() {
   const [file, setFile] = useState();
@@ -86,7 +86,7 @@ export default function AddProduct() {
               multiple
             />
           </FormControl>
-          <Stack spacing={6}>
+          <Stack spacing={2}>
             <Button
               bg={"blue.400"}
               color={"white"}
@@ -97,6 +97,19 @@ export default function AddProduct() {
             >
               Request to add product
             </Button>
+            <Link to="/home">
+              <Button
+                ml="100px"
+                bg={"blue.400"}
+                color={"white"}
+                _hover={{
+                  bg: "red.500",
+                }}
+                type="submit"
+              >
+                Cancel
+              </Button>
+            </Link>
           </Stack>
         </form>
       </Stack>

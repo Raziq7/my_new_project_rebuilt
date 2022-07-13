@@ -13,6 +13,8 @@ import {
   Stack,
   useColorMode,
   Center,
+  Badge,
+  VStack,
 } from "@chakra-ui/react";
 import { Link as ReachLink } from "react-router-dom";
 import { FaMoon, FaSun } from "react-icons/fa";
@@ -43,17 +45,13 @@ export default function Navbar() {
 
   return (
     <>
-      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
+      <Box bg={useColorModeValue("#fff", "gray.900")} px={4}>
         {staffInfo && (
           <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
             <Box>
               {" "}
-              <Avatar
-                size={"sm"}
-                src={
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6zes53m4a_2VLTcmTn_bHk8NO5SkuWfcQbg&usqp=CAU"
-                }
-              />
+              {/* <Avatar size={"sm"} src={"images/UK-Logo.png"} w="200px" /> */}
+              <img src="images/UK-Logo.png" alt="" width="80px" h="auto" />
             </Box>
 
             <Flex alignItems={"center"}>
@@ -70,31 +68,46 @@ export default function Navbar() {
                     cursor={"pointer"}
                     minW={0}
                   >
-                    <Avatar
-                      size={"sm"}
-                      src={
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6zes53m4a_2VLTcmTn_bHk8NO5SkuWfcQbg&usqp=CAU"
-                      }
+                    <img
+                      src="images/UK-Logo.png"
+                      alt=""
+                      width="80px"
+                      h="auto"
                     />
                   </MenuButton>
                   <MenuList alignItems={"center"}>
                     <br />
                     <Center>
-                      <Avatar
-                        size={"2xl"}
-                        src={
-                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6zes53m4a_2VLTcmTn_bHk8NO5SkuWfcQbg&usqp=CAU"
-                        }
+                      {/* <Avatar size={"2xl"} src={"images/UK-Logo.png"} /> */}
+                      <img
+                        src="images/UK-Logo.png"
+                        alt=""
+                        width="100px"
+                        h="auto"
                       />
                     </Center>
                     <br />
                     <Center>
-                      <p>{staffExit.findStaff.email}</p>
+                      <VStack>
+                        {staffExit.findStaff.status && (
+                          <Badge colorScheme="green">
+                            {staffExit.findStaff.status}
+                          </Badge>
+                        )}
+
+                        <p>{staffExit.findStaff.email}</p>
+                      </VStack>
                     </Center>
                     <br />
                     <MenuDivider />
-                    <MenuItem>Your Servers</MenuItem>
-                    <MenuItem>Account Settings</MenuItem>
+                    {/* <MenuItem>Your Servers</MenuItem> */}
+                    <Link
+                      style={{ textDecoration: "none" }}
+                      as={ReachLink}
+                      to="/setting"
+                    >
+                      <MenuItem>Account Settings</MenuItem>
+                    </Link>
                     {localStorage.getItem("staffInfo") ? (
                       <MenuItem onClick={logOut}>Logout</MenuItem>
                     ) : (

@@ -16,6 +16,7 @@ import {
   Search,
   ViewColumn,
 } from "@material-ui/icons";
+import { GiButtonFinger } from "react-icons/gi";
 
 import {
   chakra,
@@ -69,6 +70,7 @@ function LadgerBook() {
   const [details, setDetails] = useState("");
   const [credit, setCredit] = useState("");
   const [debit, setDebit] = useState("");
+  const [expense, setExpense] = useState("category");
 
   const dispatch = useDispatch();
   let { loading, ladger } = useSelector((state) => {
@@ -94,9 +96,9 @@ function LadgerBook() {
   const columns = [
     // { title: "S.No", field: "S.No" },
     // { title: "Date", field: "Date" },
-    { title: "Credit", field: "Credit" },
     { title: "Category", field: "Category" },
     { title: "Detaile", field: "Detaile" },
+    { title: "Credit", field: "Credit" },
     { title: "Debit", field: "Debit" },
     { title: "Current Balnce", field: "Current_Balnce" },
     // { title: "Clossing Balnce", field: "Clossing Balnce" },
@@ -113,12 +115,6 @@ function LadgerBook() {
         Current_Balnce: ladg.balance,
       };
     });
-  // options = {
-  //   exportButton: true,
-  //   exportCsv: (columns, data) => {
-  //     alert("You should develop a code to export " + data.length + " rows");
-  //   },
-  // };
 
   ///submitHandler
   const submitHandler = (e) => {
@@ -143,10 +139,13 @@ function LadgerBook() {
       <Box
         sx={basicBoxStyles}
         filter="grayscale(80%)"
-        height={200}
+        height={250}
         width="90%"
         ml="250px"
       >
+        <Center fontSize="40px" color="white">
+          Ledger Book
+        </Center>
         <form onSubmit={submitHandler}>
           <Box
             spacing={3}
@@ -163,6 +162,7 @@ function LadgerBook() {
                 }}
                 placeholder="Select category"
                 size="md"
+                sx={{ marginLeft: "20px" }}
               >
                 {showcategoryLadger &&
                   showcategoryLadger.map((data) => (
@@ -171,36 +171,64 @@ function LadgerBook() {
               </Select>
             </VStack>
             <Divider />
-            <Input
-              onChange={(e) => {
-                setDetails(e.target.value);
-              }}
-              placeholder="Details"
-              _placeholder={{ color: "inherit" }}
-            />
-            <Divider />
-            <BsArrowsExpand />
+            <VStack mb="28px">
+              <Text>Enter Details</Text>
+              <Input
+                onChange={(e) => {
+                  setDetails(e.target.value);
+                }}
+                placeholder="Details"
+                _placeholder={{ color: "inherit" }}
+                sx={{ marginLeft: "20px" }}
+              />
+            </VStack>
+            <Box sx={{ marginLeft: "20px" }}></Box>
 
-            <Input
+            <Select
               onChange={(e) => {
-                setCredit(e.target.value);
+                setExpense(e.target.value);
               }}
-              focusBorderColor="red"
-              placeholder="Credit"
-              _placeholder={{ color: "inherit" }}
-              type="number"
-            />
-            <Input
-              onChange={(e) => {
-                setDebit(e.target.value);
-              }}
-              focusBorderColor="red"
-              placeholder="Debit"
-              _placeholder={{ color: "inherit" }}
-              type="number"
-            />
-            <Button type="submit" variantColor="green">
-              ADD
+              placeholder="Select category"
+              size="md"
+              sx={{ marginLeft: "20px" }}
+            >
+              <option value="category">Category</option>
+              <option value="debit">Debit</option>
+            </Select>
+            <Box sx={{ marginLeft: "20px" }}></Box>
+            {expense == "category" && (
+              <VStack mb="28px">
+                <Text>Credit</Text>
+                <Input
+                  onChange={(e) => {
+                    setCredit(e.target.value);
+                  }}
+                  focusBorderColor="red"
+                  placeholder="Credit"
+                  _placeholder={{ color: "inherit" }}
+                  type="number"
+                />
+              </VStack>
+            )}
+
+            {expense == "debit" && (
+              <VStack mb="28px">
+                <Text>Debit</Text>
+                <Input
+                  onChange={(e) => {
+                    setDebit(e.target.value);
+                  }}
+                  focusBorderColor="red"
+                  placeholder="Debit"
+                  _placeholder={{ color: "inherit" }}
+                  type="number"
+                  sx={{ marginLeft: "20px" }}
+                />
+              </VStack>
+            )}
+
+            <Button type="submit">
+              <GiButtonFinger></GiButtonFinger>
             </Button>
           </Box>
         </form>
@@ -217,7 +245,7 @@ function LadgerBook() {
           icons={tableIcons}
           data={data}
           columns={columns}
-          title="Ladger Book"
+          title="Ledger Book"
           options={{
             filtering: true,
             pageSize: 5,

@@ -1,13 +1,32 @@
-import { Box, Flex, Stack, Text, VStack, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Stack,
+  Text,
+  VStack,
+  useToast,
+  Stat,
+  StatLabel,
+  StatNumber,
+  StatHelpText,
+  StatArrow,
+  StatGroup,
+  HStack,
+  Spacer,
+} from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 //chart
-import Chart from "react-apexcharts";
+import ChartLine from "../components/charts/ChartLine";
+import DashTable from "../components/DashTable/DashTable";
+import ChartCard from "../components/charts/ChartCard";
+import BarChart from "../components/charts/BarChart";
 
 function Dashboard() {
   const navigate = useNavigate();
   const toast = useToast();
+  const [color, setColor] = useState("");
 
   useEffect(() => {
     let staffExit = localStorage.getItem("staffInfo")
@@ -31,23 +50,49 @@ function Dashboard() {
     }
   }, []);
 
+  //dark Mode
+  let DarkMode = localStorage.getItem("chakra-ui-color-mode")
+    ? localStorage.getItem("chakra-ui-color-mode")
+    : null;
+
+  useEffect(() => {
+    if (DarkMode == "dark") {
+      setColor("#6F6AF8");
+    }
+  }, [DarkMode]);
   //charts
-  const chart = {
-    options: {
-      chart: {
-        id: "basic-bar",
-      },
-      xaxis: {
-        categories: [1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999],
-      },
+  const UserData = [
+    {
+      id: 1,
+      year: 2016,
+      userGain: 80000,
+      userLost: 823,
     },
-    series: [
-      {
-        name: "series-1",
-        data: [40, 45, 50, 49, 60, 70, 91],
-      },
-    ],
-  };
+    {
+      id: 2,
+      year: 2017,
+      userGain: 45677,
+      userLost: 345,
+    },
+    {
+      id: 3,
+      year: 2018,
+      userGain: 78888,
+      userLost: 555,
+    },
+    {
+      id: 4,
+      year: 2019,
+      userGain: 90000,
+      userLost: 4555,
+    },
+    {
+      id: 5,
+      year: 2020,
+      userGain: 4300,
+      userLost: 234,
+    },
+  ];
 
   return (
     <VStack w="100%">
@@ -55,106 +100,133 @@ function Dashboard() {
         w="90%"
         display={["block", "block", "block", "flex", "flex"]}
         mb="200px"
-        justifyContent="space-evenly"
+        justifyContent="space-around"
       >
         <Box
+          backgroundColor={DarkMode == "light" ? "white" : color}
           borderRadius="25px"
-          ml="100px"
-          w="100%"
-          h="190px"
-          bgGradient="linear(to-t,#857295,#29259A)"
+          w="300px"
+          h="150px"
+          boxShadow="xl"
+          textAlign="center"
+          mt="30px"
         >
-          <Text fontSize="3xl" ml="25px" color="white">
-            Total Sales
-          </Text>
-          <Flex justifyContent="space-around">
-            <Text fontSize="xl" ml="25px" color="yellow">
-              Today <br />
-              52
-            </Text>
-            <Text fontSize="xl" ml="25px" color="yellow">
-              weekly
-              <br />
-              52
-            </Text>
-            <Text fontSize="xl" ml="25px" color="yellow">
-              Monthly
-              <br />
-              52
-            </Text>
-          </Flex>
-          <Flex justifyContent="space-around">
-            <Text fontSize="xl" ml="25px" color="pink">
-              Avg <br />
-              52
-            </Text>
-            <Text fontSize="xl" ml="25px" color="pink">
-              Avg <br />
-              52
-            </Text>
-            <Text fontSize="xl" ml="25px" color="pink">
-              Avg <br />
-              52
-            </Text>
-          </Flex>
+          <HStack mt="20px">
+            <StatGroup ml="45px">
+              <Stat>
+                <StatLabel>Today</StatLabel>
+                <StatNumber>345,670</StatNumber>
+                <StatHelpText>
+                  <StatArrow type="increase" />
+                  23.36%
+                </StatHelpText>
+              </Stat>
+            </StatGroup>
+            <Spacer />
+            <StatGroup mr="10px">
+              <Stat>
+                <StatLabel>Yestarday</StatLabel>
+                <StatNumber>45</StatNumber>
+                <StatHelpText>
+                  <StatArrow type="decrease" />
+                  9.05%
+                </StatHelpText>
+              </Stat>
+            </StatGroup>
+            <Spacer />
+          </HStack>
+          <Text colorScheme="facebook">TOTAL USERS</Text>
         </Box>
+
         <Box
+          backgroundColor={DarkMode == "light" ? "white" : color}
           borderRadius="25px"
-          ml="100px"
-          w="100%"
-          h="190px"
-          bgGradient="linear(to-t,#857295,#29259A)"
+          w="300px"
+          h="150px"
+          boxShadow="xl"
+          textAlign="center"
+          mt="30px"
         >
-          <Text fontSize="3xl" ml="25px" color="white">
-            Total Sales
-          </Text>
-          <Flex justifyContent="space-around">
-            <Text fontSize="xl" ml="25px" color="yellow">
-              Today <br />
-              52
-            </Text>
-            <Text fontSize="xl" ml="25px" color="yellow">
-              weekly
-              <br />
-              52
-            </Text>
-            <Text fontSize="xl" ml="25px" color="yellow">
-              Monthly
-              <br />
-              52
-            </Text>
-          </Flex>
-          <Flex justifyContent="space-around">
-            <Text fontSize="xl" ml="25px" color="pink">
-              Avg <br />
-              52
-            </Text>
-            <Text fontSize="xl" ml="25px" color="pink">
-              Avg <br />
-              52
-            </Text>
-            <Text fontSize="xl" ml="25px" color="pink">
-              Avg <br />
-              52
-            </Text>
-          </Flex>
+          <HStack mt="20px">
+            <StatGroup ml="45px">
+              <Stat>
+                <StatLabel>Today</StatLabel>
+                <StatNumber>345,670</StatNumber>
+                <StatHelpText>
+                  <StatArrow type="increase" />
+                  23.36%
+                </StatHelpText>
+              </Stat>
+            </StatGroup>
+            <Spacer />
+            <StatGroup mr="10px">
+              <Stat>
+                <StatLabel>Yestarday</StatLabel>
+                <StatNumber>45</StatNumber>
+                <StatHelpText>
+                  <StatArrow type="decrease" />
+                  9.05%
+                </StatHelpText>
+              </Stat>
+            </StatGroup>
+            <Spacer />
+          </HStack>
+          <Text colorScheme="facebook">INCOME REPORT</Text>
+        </Box>
+
+        <Box
+          backgroundColor={DarkMode == "light" ? "white" : color}
+          borderRadius="25px"
+          w="300px"
+          h="150px"
+          boxShadow="xl"
+          textAlign="center"
+          mt="30px"
+        >
+          <HStack mt="20px">
+            <StatGroup ml="45px">
+              <Stat>
+                <StatLabel>Today</StatLabel>
+                <StatNumber>345,670</StatNumber>
+                <StatHelpText>
+                  <StatArrow type="increase" />
+                  23.36%
+                </StatHelpText>
+              </Stat>
+            </StatGroup>
+            <Spacer />
+            <StatGroup mr="30px">
+              <Stat>
+                <StatLabel>Yestarday</StatLabel>
+                <StatNumber>45</StatNumber>
+                <StatHelpText>
+                  <StatArrow type="decrease" />
+                  9.05%
+                </StatHelpText>
+              </Stat>
+            </StatGroup>
+            <Spacer />
+          </HStack>
+          <Text colorScheme="facebook">SALES COUNT</Text>
         </Box>
       </Box>
-      <div className="mixed-chart">
-        <Chart
-          options={chart.options}
-          series={chart.series}
-          type="bar"
-          mr="350px"
-          width="66%"
-        />
-        <Chart
-          options={chart.options}
-          series={chart.series}
-          type="line"
-          width="500"
-        />
-      </div>
+
+      <Box
+        w="100%"
+        display={["block", "block", "block", "flex", "flex"]}
+        ml="50px"
+      >
+        <Box w="45%" ml="30px" mb="400px">
+          {/* <ChartLine /> */}
+          <BarChart />
+        </Box>
+        <Box w="45%" ml="50px" mb="400px">
+          <DashTable />
+        </Box>
+      </Box>
+      {/* <Box w="45%" ml="50px" mb="auto" mt="auto">
+        <ChartLine />
+      </Box> */}
     </VStack>
   );
 }

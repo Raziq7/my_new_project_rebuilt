@@ -22,6 +22,12 @@ import {
   AddladgerBookReducer,
   categorySelectReducer,
   ladgerBookshowReducer,
+  getCategoryReducer,
+  addCategoryReducer,
+  subCategoryReducer,
+  deleteSubCategoryReducer,
+  deleteCategoryReducer,
+  getSubCategoriesReducer,
 } from "./reducers/productReducer";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
@@ -52,6 +58,12 @@ const appReducer = combineReducers({
   AddladgerBook: AddladgerBookReducer,
   categorySelect: categorySelectReducer,
   ladgerBookshow: ladgerBookshowReducer,
+  getCategory: getCategoryReducer,
+  addCategory: addCategoryReducer,
+  subCategory: subCategoryReducer,
+  deleteSubCategory: deleteSubCategoryReducer,
+  deleteCategory: deleteCategoryReducer,
+  getSubCategories: getSubCategoriesReducer,
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
