@@ -8,6 +8,7 @@ import {
   Text,
   useColorModeValue,
   Center,
+  Box,
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -62,13 +63,15 @@ export default function AddProduct() {
     return null;
   };
   return (
-    <Flex
+    <Box
       minH={"70vh"}
       ml="auto"
       mr="auto"
-      mb="auto"
-      bg={useColorModeValue("gray.50", "gray.800")}
+      bg={useColorModeValue("#EDF2F6", "gray.800")}
     >
+      <Center fontSize="40px" color="teal">
+        Add New Product
+      </Center>
       <Stack
         spacing={4}
         w={"full"}
@@ -78,6 +81,7 @@ export default function AddProduct() {
         boxShadow={"lg"}
         p={6}
         my={20}
+        style={{ marginTop: 0, marginBottom: "390px" }}
       >
         <Button onClick={saveFile}>Sample Excel Sheet</Button>
         <Heading lineHeight={1.1} fontSize={{ base: "2xl", md: "3xl" }}>
@@ -136,7 +140,6 @@ export default function AddProduct() {
                 _hover={{
                   bg: "red.500",
                 }}
-                type="submit"
               >
                 Cancel
               </Button>
@@ -144,6 +147,6 @@ export default function AddProduct() {
           </Stack>
         </form>
       </Stack>
-    </Flex>
+    </Box>
   );
 }

@@ -37,6 +37,7 @@ import {
   Text,
   useToast,
   HStack,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPurchaseData, increasStockValue } from "../actions/productAction";
@@ -211,10 +212,13 @@ function ParchaseStock() {
       field: "Add",
     },
   ];
+
+  const bg = useColorModeValue("#C9BBBB", "black");
+
   return (
     <>
       <Box overflowY="auto" mb="auto" ml="auto" mr="auto">
-        <Center fontSize="40px" color="teal">
+        <Center fontSize="40px" color="teal" mt="10px">
           Purchase Stock
         </Center>
         {error &&
@@ -266,9 +270,9 @@ function ParchaseStock() {
         ) : (
           <MaterialTable
             style={{
-              marginLeft: "150px",
+              marginLeft: 90,
               marginTop: "20px",
-              width: "80%",
+              width: "1060px",
             }}
             icons={tableIcons}
             data={data}
@@ -281,6 +285,18 @@ function ParchaseStock() {
               // selection: true,
               exportButton: true,
               grouping: true,
+              rowStyle: {
+                fontFamily: "Mulish-Regular",
+                backgroundColor: bg,
+                color: "#FFFFFF",
+              },
+              headerStyle: {
+                fontFamily: "Mulish-Regular",
+                fontSize: "1.1em",
+                fontWeight: "600",
+                color: "#FFFFFF",
+                backgroundColor: bg,
+              },
             }}
           />
         )}

@@ -27,7 +27,7 @@ import {
   getShowCategory,
   getSubCategory,
 } from "../actions/productAction";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Test() {
   const dispatch = useDispatch();
@@ -126,7 +126,7 @@ function Test() {
       boxShadow="2xl"
       backgroundColor={bg}
       width={["auto", "auto", "90%", "90%", "90%"]}
-      height="600px"
+      height="700px"
       ml="40px"
       mt="5px"
       mb="auto"
@@ -322,17 +322,18 @@ function Test() {
               width="auto"
             />
           </Box>
-
-          <Button
-            type="submit"
-            ml="5px"
-            mt="20px"
-            colorScheme="teal"
-            size="sm"
-            onClick={TableSubmit}
-          >
-            Add
-          </Button>
+          <VStack>
+            <Button
+              type="submit"
+              ml="5px"
+              mt="20px"
+              colorScheme="teal"
+              size="sm"
+              onClick={TableSubmit}
+            >
+              Add
+            </Button>
+          </VStack>
         </Box>
 
         <Box
@@ -538,7 +539,7 @@ function Test() {
         <Spacer />
 
         <Divider />
-        <VStack mt="5px">
+        <HStack mt="5px" ml="360px">
           <Button
             type="submit"
             boxShadow="sm"
@@ -548,7 +549,18 @@ function Test() {
           >
             Submit!!
           </Button>
-        </VStack>
+          <Link to="/addproduct">
+            <Button
+              bg={"blue.400"}
+              color={"white"}
+              _hover={{
+                bg: "red.500",
+              }}
+            >
+              Cancel
+            </Button>
+          </Link>
+        </HStack>
       </form>
     </VStack>
   );

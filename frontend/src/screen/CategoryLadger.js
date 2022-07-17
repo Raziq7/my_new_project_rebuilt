@@ -52,7 +52,7 @@ function CategoryLadger() {
     <>
       <Center>
         <Button onClick={onOpen} colorScheme="teal" ml="30px">
-          Open Form
+          Add category
         </Button>
       </Center>
       <Modal

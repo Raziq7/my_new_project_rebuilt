@@ -15,6 +15,7 @@ import {
   Center,
   Badge,
   VStack,
+  Text,
 } from "@chakra-ui/react";
 import { Link as ReachLink } from "react-router-dom";
 import { FaMoon, FaSun } from "react-icons/fa";
@@ -53,6 +54,7 @@ export default function Navbar() {
               {/* <Avatar size={"sm"} src={"images/UK-Logo.png"} w="200px" /> */}
               <img src="images/UK-Logo.png" alt="" width="80px" h="auto" />
             </Box>
+            <Text fontSize="2xl">Sales and Stock Managment Dashboard</Text>
 
             <Flex alignItems={"center"}>
               <Stack direction={"row"} spacing={7}>

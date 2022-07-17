@@ -13,6 +13,7 @@ import {
   StatGroup,
   HStack,
   Spacer,
+  Center,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -95,135 +96,139 @@ function Dashboard() {
   ];
 
   return (
-    <VStack w="100%">
-      <Box
-        w="90%"
-        display={["block", "block", "block", "flex", "flex"]}
-        mb="200px"
-        justifyContent="space-around"
-      >
+    <VStack w="100%" mb="200px">
+      <Center fontSize="40px" color="teal">
+        Business Overview
+      </Center>
+      <Box w="90%">
         <Box
-          backgroundColor={DarkMode == "light" ? "white" : color}
-          borderRadius="25px"
-          w="300px"
-          h="150px"
-          boxShadow="xl"
-          textAlign="center"
-          mt="30px"
+          display={["block", "block", "block", "flex", "flex"]}
+          justifyContent="space-around"
         >
-          <HStack mt="20px">
-            <StatGroup ml="45px">
-              <Stat>
-                <StatLabel>Today</StatLabel>
-                <StatNumber>345,670</StatNumber>
-                <StatHelpText>
-                  <StatArrow type="increase" />
-                  23.36%
-                </StatHelpText>
-              </Stat>
-            </StatGroup>
-            <Spacer />
-            <StatGroup mr="10px">
-              <Stat>
-                <StatLabel>Yestarday</StatLabel>
-                <StatNumber>45</StatNumber>
-                <StatHelpText>
-                  <StatArrow type="decrease" />
-                  9.05%
-                </StatHelpText>
-              </Stat>
-            </StatGroup>
-            <Spacer />
-          </HStack>
-          <Text colorScheme="facebook">TOTAL USERS</Text>
-        </Box>
+          <Box
+            backgroundColor={DarkMode == "light" ? "white" : color}
+            borderRadius="25px"
+            w="300px"
+            h="150px"
+            boxShadow="xl"
+            textAlign="center"
+            mt="30px"
+          >
+            <HStack mt="20px">
+              <StatGroup ml="45px">
+                <Stat>
+                  <StatLabel>Today</StatLabel>
+                  <StatNumber>345,670</StatNumber>
+                  <StatHelpText>
+                    <StatArrow type="increase" />
+                    23.36%
+                  </StatHelpText>
+                </Stat>
+              </StatGroup>
+              <Spacer />
+              <StatGroup mr="10px">
+                <Stat>
+                  <StatLabel>Yestarday</StatLabel>
+                  <StatNumber>45</StatNumber>
+                  <StatHelpText>
+                    <StatArrow type="decrease" />
+                    9.05%
+                  </StatHelpText>
+                </Stat>
+              </StatGroup>
+              <Spacer />
+            </HStack>
+            <Text colorScheme="facebook">TOTAL USERS</Text>
+          </Box>
 
-        <Box
-          backgroundColor={DarkMode == "light" ? "white" : color}
-          borderRadius="25px"
-          w="300px"
-          h="150px"
-          boxShadow="xl"
-          textAlign="center"
-          mt="30px"
-        >
-          <HStack mt="20px">
-            <StatGroup ml="45px">
-              <Stat>
-                <StatLabel>Today</StatLabel>
-                <StatNumber>345,670</StatNumber>
-                <StatHelpText>
-                  <StatArrow type="increase" />
-                  23.36%
-                </StatHelpText>
-              </Stat>
-            </StatGroup>
-            <Spacer />
-            <StatGroup mr="10px">
-              <Stat>
-                <StatLabel>Yestarday</StatLabel>
-                <StatNumber>45</StatNumber>
-                <StatHelpText>
-                  <StatArrow type="decrease" />
-                  9.05%
-                </StatHelpText>
-              </Stat>
-            </StatGroup>
-            <Spacer />
-          </HStack>
-          <Text colorScheme="facebook">INCOME REPORT</Text>
-        </Box>
+          <Box
+            backgroundColor={DarkMode == "light" ? "white" : color}
+            borderRadius="25px"
+            w="300px"
+            h="150px"
+            boxShadow="xl"
+            textAlign="center"
+            mt="30px"
+          >
+            <HStack mt="20px">
+              <StatGroup ml="45px">
+                <Stat>
+                  <StatLabel>Today</StatLabel>
+                  <StatNumber>345,670</StatNumber>
+                  <StatHelpText>
+                    <StatArrow type="increase" />
+                    23.36%
+                  </StatHelpText>
+                </Stat>
+              </StatGroup>
+              <Spacer />
+              <StatGroup mr="10px">
+                <Stat>
+                  <StatLabel>Yestarday</StatLabel>
+                  <StatNumber>45</StatNumber>
+                  <StatHelpText>
+                    <StatArrow type="decrease" />
+                    9.05%
+                  </StatHelpText>
+                </Stat>
+              </StatGroup>
+              <Spacer />
+            </HStack>
+            <Text colorScheme="facebook">INCOME REPORT</Text>
+          </Box>
 
+          <Box
+            backgroundColor={DarkMode == "light" ? "white" : color}
+            borderRadius="25px"
+            w="300px"
+            h="150px"
+            boxShadow="xl"
+            textAlign="center"
+            mt="30px"
+          >
+            <HStack mt="20px">
+              <StatGroup ml="45px">
+                <Stat>
+                  <StatLabel>Today</StatLabel>
+                  <StatNumber>345,670</StatNumber>
+                  <StatHelpText>
+                    <StatArrow type="increase" />
+                    23.36%
+                  </StatHelpText>
+                </Stat>
+              </StatGroup>
+              <Spacer />
+              <StatGroup mr="30px">
+                <Stat>
+                  <StatLabel>Yestarday</StatLabel>
+                  <StatNumber>45</StatNumber>
+                  <StatHelpText>
+                    <StatArrow type="decrease" />
+                    9.05%
+                  </StatHelpText>
+                </Stat>
+              </StatGroup>
+              <Spacer />
+            </HStack>
+            <Text colorScheme="facebook">SALES COUNT</Text>
+          </Box>
+        </Box>
         <Box
-          backgroundColor={DarkMode == "light" ? "white" : color}
-          borderRadius="25px"
-          w="300px"
-          h="150px"
-          boxShadow="xl"
-          textAlign="center"
-          mt="30px"
+          w="100%"
+          display={["block", "block", "block", "flex", "flex"]}
+          ml="50px"
+          mt="100px"
         >
-          <HStack mt="20px">
-            <StatGroup ml="45px">
-              <Stat>
-                <StatLabel>Today</StatLabel>
-                <StatNumber>345,670</StatNumber>
-                <StatHelpText>
-                  <StatArrow type="increase" />
-                  23.36%
-                </StatHelpText>
-              </Stat>
-            </StatGroup>
-            <Spacer />
-            <StatGroup mr="30px">
-              <Stat>
-                <StatLabel>Yestarday</StatLabel>
-                <StatNumber>45</StatNumber>
-                <StatHelpText>
-                  <StatArrow type="decrease" />
-                  9.05%
-                </StatHelpText>
-              </Stat>
-            </StatGroup>
-            <Spacer />
-          </HStack>
-          <Text colorScheme="facebook">SALES COUNT</Text>
+          <Box w="45%" ml="30px">
+            {/* <ChartLine /> */}
+            <BarChart />
+          </Box>
+          <Box w="45%" ml="50px">
+            <DashTable />
+          </Box>
         </Box>
       </Box>
 
-      <Box
-        w="100%"
-        display={["block", "block", "block", "flex", "flex"]}
-        ml="50px"
-      >
-        <Box w="45%" ml="30px" mb="400px">
-          {/* <ChartLine /> */}
-          <BarChart />
-        </Box>
-        <Box w="45%" ml="50px" mb="400px">
-          <DashTable />
-        </Box>
-      </Box>
       {/* <Box w="45%" ml="50px" mb="auto" mt="auto">
         <ChartLine />
       </Box> */}

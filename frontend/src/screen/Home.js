@@ -589,6 +589,7 @@ import {
   Flex,
   Stack,
   useDisclosure,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import MaterialTable from "material-table";
 import {
@@ -890,111 +891,12 @@ function Home() {
     },
   ];
 
-  // const columns = [
-  //   {
-  //     column_name: "Product Name",
-
-  //     enabled: columnExist.name == "Product Name" ? columnExist.status : true,
-  //     // enabled: columnExist ? columnExist.status : true,
-  //   },
-  //   {
-  //     column_name: "Description",
-  //     enabled: columnExist.name == "Description" ? columnExist.status : true,
-  //     // enabled: columnExist ? columnExist.status : true,
-  //   },
-  //   {
-  //     column_name: "Main Category",
-  //     enabled: columnExist.name == "Main Category" ? columnExist.status : true,
-  //     // enabled: columnExist ? columnExist.status : true,
-  //   },
-  //   {
-  //     column_name: "Sub Category",
-  //     enabled: columnExist.name == "Sub Category" ? columnExist.status : true,
-  //     // enabled: columnExist ? columnExist.status : true,
-  //   },
-  //   {
-  //     column_name: "Size",
-  //     enabled: columnExist.name == "Size" ? columnExist.status : true,
-  //     // enabled: columnExist ? columnExist.status : true,
-  //   },
-  //   {
-  //     column_name: "Color",
-  //     enabled: columnExist.name == "Color" ? columnExist.status : true,
-  //     // enabled: columnExist ? columnExist.status : true,
-  //   },
-
-  //   {
-  //     column_name: "Gender",
-  //     enabled: columnExist.name == "Gender" ? columnExist.status : true,
-  //     // enabled: columnExist ? columnExist.status : true,
-  //   },
-
-  //   {
-  //     column_name: "Brand",
-  //     enabled: columnExist.name == "Brand" ? columnExist.status : true,
-  //     // enabled: columnExist ? columnExist.status : true,
-  //   },
-
-  //   {
-  //     column_name: "MaterialType",
-  //     enabled: columnExist.name == "MaterialType" ? columnExist.status : true,
-  //     // enabled: columnExist ? columnExist.status : true,
-  //   },
-
-  //   {
-  //     column_name: "Market Price",
-  //     enabled: columnExist.name == "Market Price" ? columnExist.status : true,
-  //     // enabled: columnExist ? columnExist.status : true,
-  //   },
-
-  //   {
-  //     column_name: "Selling Price",
-  //     enabled: columnExist.name == "Selling Price" ? columnExist.status : true,
-  //     // enabled: columnExist ? columnExist.status : true,
-  //   },
-
-  //   {
-  //     column_name: "Price Code",
-  //     enabled: columnExist.name == "Price Code" ? columnExist.status : true,
-  //     // enabled: columnExist ? columnExist.status : true,
-  //   },
-
-  //   {
-  //     column_name: "Discount",
-  //     enabled: columnExist.name == "Discount" ? columnExist.status : true,
-  //     // enabled: columnExist ? columnExist.status : true,
-  //   },
-  //   {
-  //     column_name: "Stocks",
-  //     enabled: columnExist.name == "Stocks" ? columnExist.status : true,
-  //     // enabled: columnExist ? columnExist.status : true,
-  //   },
-  //   {
-  //     column_name: "Vendor Name",
-  //     enabled: columnExist.name == "Vendor Name" ? columnExist.status : true,
-  //     // enabled: columnExist ? columnExist.status : true,
-  //   },
-  //   {
-  //     column_name: "Bar Code",
-  //     enabled: columnExist.name == "Bar Code" ? columnExist.status : true,
-  //     // enabled: columnExist ? columnExist.status : true,
-  //   },
-  //   {
-  //     column_name: "MRP Bar Code",
-  //     enabled: columnExist.name == "MRP Bar Code" ? columnExist.status : true,
-  //     // enabled: columnExist ? columnExist.status : true,
-  //   },
-  //   {
-  //     column_name: "Action",
-  //     enabled: columnExist.name == "Action" ? columnExist.status : true,
-  //     // enabled: columnExist ? columnExist.status : true,
-  //   },
-  // ];
+  const bg = useColorModeValue("#C9BBBB", "black");
 
   return (
     <>
       <Box overflowY="auto" mb="auto">
-        <Center fontSize="40px" color="teal">
+        <Center fontSize="40px" color="teal" mt="10px">
           Product Management
         </Center>
         <>
@@ -1048,7 +950,7 @@ function Home() {
                 marginLeft: 150,
                 marginRight: "auto",
                 marginTop: "20px",
-                width: "1000px",
+                width: "1060px",
               }}
               icons={tableIcons}
               data={data}
@@ -1061,6 +963,18 @@ function Home() {
                 selection: true,
                 exportButton: true,
                 grouping: true,
+                rowStyle: {
+                  fontFamily: "Mulish-Regular",
+                  backgroundColor: bg,
+                  color: "#FFFFFF",
+                },
+                headerStyle: {
+                  fontFamily: "Mulish-Regular",
+                  fontSize: "1.1em",
+                  fontWeight: "600",
+                  color: "#FFFFFF",
+                  backgroundColor: bg,
+                },
               }}
               actions={[
                 {

@@ -16,7 +16,6 @@ import {
   Search,
   ViewColumn,
 } from "@material-ui/icons";
-import { GiButtonFinger } from "react-icons/gi";
 
 import {
   chakra,
@@ -130,9 +129,11 @@ function LadgerBook() {
   };
   //background setup
   const [color, setColor] = useState("white");
-  const bg = useColorModeValue("white", "dark");
+  const bg = useColorModeValue("#C9BBBB", "black");
+  console.log(bg, "bgbgbgbgbgbgbg");
+
   useEffect(() => {
-    if (bg == "dark") {
+    if (bg == "black") {
       setColor("#242935");
       console.log(bg, "bgbgbgbgbgbgbg");
     } else {
@@ -141,7 +142,12 @@ function LadgerBook() {
   }, [bg]);
 
   return (
-    <VStack>
+    <VStack ml="200px">
+      <Box>
+        <Center fontSize="40px" color="teal" style={{ marginBottom: "10px" }}>
+          Ledger Book
+        </Center>
+      </Box>
       <Box
         sx={{
           justifyContent: "center",
@@ -151,14 +157,10 @@ function LadgerBook() {
         backgroundColor={color}
         filter="grayscale(80%)"
         height={250}
-        width="90%"
-        ml="250px"
-        mb="50px"
+        width="100%"
         boxShadow="2xl"
+        style={{ marginBottom: "10px" }}
       >
-        <Center fontSize="40px" color="teal">
-          Ledger Book
-        </Center>
         <form onSubmit={submitHandler}>
           <Box
             spacing={3}
@@ -175,7 +177,7 @@ function LadgerBook() {
                 }}
                 placeholder="Select category"
                 size="md"
-                sx={{ marginLeft: "20px", width: "150px" }}
+                style={{ marginLeft: "15px", width: "100px" }}
               >
                 {showcategoryLadger &&
                   showcategoryLadger.map((data) => (
@@ -193,22 +195,26 @@ function LadgerBook() {
                 backgroundColor={color == "dark" && "wheat"}
                 placeholder="Details"
                 _placeholder={{ color: "inherit" }}
-                sx={{ marginLeft: "20px" }}
+                sx={{ marginLeft: "15px" }}
               />
             </VStack>
             <Box sx={{ marginLeft: "20px" }}></Box>
+            <VStack mb="28px">
+              <Text>Select Type</Text>
 
-            <Select
-              onChange={(e) => {
-                setExpense(e.target.value);
-              }}
-              placeholder="Select category"
-              size="md"
-              sx={{ marginLeft: "20px" }}
-            >
-              <option value="credit">Credit</option>
-              <option value="debit">Debit</option>
-            </Select>
+              <Select
+                onChange={(e) => {
+                  setExpense(e.target.value);
+                }}
+                placeholder="Select category"
+                size="md"
+                style={{ marginLeft: "15px", width: "100px" }}
+              >
+                <option value="credit">Credit</option>
+                <option value="debit">Debit</option>
+              </Select>
+            </VStack>
+
             <Box sx={{ marginLeft: "20px" }}></Box>
             {expense == "credit" && (
               <VStack mb="28px">
@@ -236,27 +242,23 @@ function LadgerBook() {
                   placeholder="Debit"
                   _placeholder={{ color: "inherit" }}
                   type="number"
-                  sx={{ marginLeft: "20px" }}
+                  sx={{ marginLeft: "15px" }}
                 />
               </VStack>
             )}
 
             <Button
-              bg={"blue.400"}
-              color={"white"}
-              _hover={{
-                bg: "blue.500",
+              style={{
+                backgroundColor: "#008081",
+                marginLeft: "15px",
+                color: "white",
               }}
               type="submit"
               width="100px"
-              ml="5px"
               boxShadow="2xl"
               rounded="xl"
             >
-              <Center>
-                {/* <GiButtonFinger></GiButtonFinger> */}
-                Add Ledger
-              </Center>
+              Add Ledger
             </Button>
           </Box>
         </form>
@@ -269,21 +271,33 @@ function LadgerBook() {
         </Stack>
       ) : (
         <MaterialTable
-          style={{ marginLeft: "220px", marginBottom: "50px", width: "80%" }}
+          style={{ marginLeft: "5px", marginBottom: "50px", width: "100%" }}
           icons={tableIcons}
           data={data}
           columns={columns}
           title="Ledger Book"
           options={{
             filtering: true,
-            pageSize: 5,
-            pageSizeOptions: [5, 10, 20, 30, 40, 50],
+            pageSize: 3,
+            pageSizeOptions: [3, 5, 10, 20, 30, 40, 50],
             exportButton: {
               csv: true,
               pdf: false,
             },
-
             exportAllData: true,
+            grouping: true,
+            rowStyle: {
+              fontFamily: "Mulish-Regular",
+              backgroundColor: bg,
+              color: "#FFFFFF",
+            },
+            headerStyle: {
+              fontFamily: "Mulish-Regular",
+              fontSize: "1.1em",
+              fontWeight: "600",
+              color: "#FFFFFF",
+              backgroundColor: bg,
+            },
           }}
         />
       )}

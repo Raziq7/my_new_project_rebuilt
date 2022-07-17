@@ -74,7 +74,11 @@ function SideNav() {
             />
 
             <Link
-              style={{ marginRight: "100%", textDecoration: "none" }}
+              style={{
+                marginRight: "100%",
+                textDecoration: "none",
+                boxShadow: "none",
+              }}
               as={ReachLink}
               to="/"
             >
@@ -82,7 +86,11 @@ function SideNav() {
             </Link>
 
             <Link
-              style={{ marginRight: "100%", textDecoration: "none" }}
+              style={{
+                marginRight: "100%",
+                textDecoration: "none",
+                boxShadow: "none",
+              }}
               as={ReachLink}
               to="/home"
             >
@@ -96,7 +104,11 @@ function SideNav() {
 
             {staffExit.findStaff.status == "admin" && "superAdmin" && (
               <Link
-                style={{ marginRight: "100%", textDecoration: "none" }}
+                style={{
+                  marginRight: "100%",
+                  textDecoration: "none",
+                  boxShadow: "none",
+                }}
                 as={ReachLink}
                 to="/usermanagment"
               >
@@ -109,7 +121,11 @@ function SideNav() {
             )}
 
             <Link
-              style={{ marginRight: "100%", textDecoration: "none" }}
+              style={{
+                marginRight: "100%",
+                textDecoration: "none",
+                boxShadow: "none",
+              }}
               as={ReachLink}
               to="/purchaseStock"
             >
@@ -121,7 +137,11 @@ function SideNav() {
             </Link>
 
             <Link
-              style={{ marginRight: "100%", textDecoration: "none" }}
+              style={{
+                marginRight: "100%",
+                textDecoration: "none",
+                boxShadow: "none",
+              }}
               as={ReachLink}
               to="/billing"
             >
@@ -136,6 +156,7 @@ function SideNav() {
               style={{
                 marginRight: "100%",
                 textDecoration: "none",
+                boxShadow: "none",
               }}
               as={ReachLink}
               to="/LadgerBook"
@@ -155,6 +176,7 @@ function SideNav() {
                 marginRight: "100%",
                 textDecoration: "none",
                 border: "none",
+                boxShadow: "none",
               }}
               as={ReachLink}
               to="/Setting"

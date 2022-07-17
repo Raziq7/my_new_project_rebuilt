@@ -131,14 +131,24 @@ export default function Login() {
       </Flex>
       <Flex flex={1}>
         <Box
-          sx={{ zIndex: 100, position: "absolute", marginLeft: "350px", mt: 2 }}
+          sx={{
+            zIndex: 100,
+            position: "absolute",
+            marginLeft: "350px",
+            mt: 2,
+            width: "300px",
+          }}
         >
-          <Badge ml="115px" fontSize="0.8em" colorScheme="purple">
-            VERSION: 16.x{" "}
-            <Center>
-              <br /> && <br /> 6.x
-            </Center>
-          </Badge>
+          <Text color="black" fontSize="lg">
+            New Update Available !
+          </Text>{" "}
+          <Badge colorScheme="blue">App Version V1.0.5</Badge>
+          <br />
+          <Text fontSize="md" color="md">
+            We have added some new awesome features
+          </Text>
+          <br />
+          {/* <Button>App Version V1.0.5</Button> */}
         </Box>
         <Image
           alt={"Login Image"}

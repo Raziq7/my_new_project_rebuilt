@@ -26,6 +26,7 @@ import {
   Progress,
   useToast,
   Center,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import MaterialTable from "material-table";
 import {
@@ -237,6 +238,7 @@ function Billing() {
       }
     }
   };
+  const bg = useColorModeValue("#C9BBBB", "black");
 
   return (
     <>
@@ -248,11 +250,14 @@ function Billing() {
         mb="auto"
         mt="20px"
       >
+        <Center fontSize="40px" color="teal" mt="10px">
+          Billing Managment
+        </Center>
         {!visilblePdf && (
           <>
             {!billingForm && (
               <>
-                <Button colorScheme="blue" onClick={onOpen}>
+                <Button ml="50px" colorScheme="blue" onClick={onOpen}>
                   Enter customer Details
                 </Button>
 
@@ -303,9 +308,6 @@ function Billing() {
             {billingForm && (
               <>
                 <VStack>
-                  <Center fontSize="40px" color="teal">
-                    Billing
-                  </Center>
                   <HStack>
                     <form onSubmit={handleSubmit}>
                       <Input
@@ -336,72 +338,7 @@ function Billing() {
                 </VStack>
                 {loading && <Progress size="xs" isIndeterminate />}
                 {error && <h1>{error}</h1>}
-                {/* <TableContainer>
-                    <Table variant="simple">
-                      <TableCaption>Ukkens Vastralaya Billing</TableCaption>
-                      <Thead>
-                        <Tr>
-                          <Th>Product Name</Th>
-                          <Th>Size</Th>
 
-                          <Th>Brand</Th>
-                          <Th>Discount</Th>
-
-                          <Th>Price</Th>
-                          <Th>Qty</Th>
-
-                          <Th>Action</Th>
-                        </Tr>
-                      </Thead>
-
-                      <Tbody>
-                        {billInfo &&
-                          billInfo.map((data) => {
-                            grand = grand + data.SellingPrice;
-                            let qtyRate = data.SellingPrice * data.qtyVal;
-                            grand = grand + qtyRate - data.SellingPrice;
-
-                            return (
-                              <>
-                                {data.Qty < 5 && <Text>Low Product</Text>}
-                                <Tr>
-                                  <Td>{data.ProductName}</Td>
-
-                                  <Td>{data.Size}</Td>
-
-                                  <Td> {data.Brand}</Td>
-                                  <Td> {data.Discount}</Td>
-
-                                  <Td>{data.SellingPrice}</Td>
-
-                                  <Td>{qtyErr ? qtyErr : data.qtyVal}</Td>
-
-                                  <Td>
-                                    <HStack>
-                                      <AiOutlinePlus
-                                        onClick={() => incrementQty(data._id)}
-                                      />
-                                      <AiOutlineMinus
-                                        onClick={() => decrement(data._id)}
-                                      />
-                                    </HStack>
-                                  </Td>
-
-                                  <Td>
-                                    {qty == 1 && (
-                                      <MdDangerous
-                                        onClick={() => removeItem(data._id)}
-                                      />
-                                    )}
-                                  </Td>
-                                </Tr>
-                              </>
-                            );
-                          })}
-                      </Tbody>
-                      <Text>TOTAL: {grand}</Text>
-                    </Table>
-                  </TableContainer> */}
                 <MaterialTable
                   style={{
                     marginLeft: "50px",
@@ -416,9 +353,20 @@ function Billing() {
                     filtering: true,
                     pageSize: 3,
                     pageSizeOptions: [3, 5, 10, 20, 30, 40, 50],
-                    // selection: true,
                     exportButton: true,
                     grouping: true,
+                    rowStyle: {
+                      fontFamily: "Mulish-Regular",
+                      backgroundColor: bg,
+                      color: "#FFFFFF",
+                    },
+                    headerStyle: {
+                      fontFamily: "Mulish-Regular",
+                      fontSize: "1.1em",
+                      fontWeight: "600",
+                      color: "#FFFFFF",
+                      backgroundColor: bg,
+                    },
                   }}
                 />
                 <Box
