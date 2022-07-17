@@ -112,7 +112,7 @@ export default function AddProduct() {
               }}
               type="submit"
             >
-              Request to add product
+              Request to Add Product
             </Button>
             <Center>or</Center>
             <Link to="/test">
