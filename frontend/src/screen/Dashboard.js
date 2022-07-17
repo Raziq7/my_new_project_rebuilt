@@ -90,7 +90,7 @@ function Dashboard() {
     {
       id: 5,
       year: 2020,
-      User: 4300,
+      userGain: 4300,
       userLost: 234,
     },
   ];
