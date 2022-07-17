@@ -10,17 +10,22 @@ import {
   Stack,
   Image,
   Text,
+  useToast,
+  Box,
+  Badge,
+  Center,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { useEffect } from "react";
 import { staffLogin } from "../../actions/staffAction";
-import Messege from "../Messege";
+// import Messege from "../Messege";
 
-export default function Test() {
+export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const toast = useToast();
 
   const staffLoginData = useSelector((state) => {
     return state.staffLginData;
@@ -77,8 +82,14 @@ export default function Test() {
       <Flex p={8} flex={1} align={"center"} justify={"center"}>
         <Stack spacing={4} w={"full"} maxW={"md"}>
           <Heading fontSize={"2xl"}>Sign in to your account</Heading>
-          {error && <Messege variant="danger">{error}</Messege>}
-
+          {error &&
+            toast({
+              title: `${error}`,
+              status: "error",
+              position: "bottom-right",
+              isClosable: true,
+            })}
+          {/* // <Messege variant="danger">{error}</Messege>} */}
           <form onSubmit={formik.handleSubmit}>
             <FormControl id="email">
               <FormLabel>Email address</FormLabel>
@@ -111,14 +122,6 @@ export default function Test() {
               <Text color="tomato">{formik.errors.password}</Text>
             ) : null}
             <Stack spacing={6}>
-              {/* <Stack
-              direction={{ base: "column", sm: "row" }}
-              align={"start"}
-              justify={"space-between"}
-            >
-              {/* <Checkbox>Remember me</Checkbox> */}
-              {/* <Link color={"blue.500"}>Forgot password?</Link> */}
-              {/* </Stack> */}
               <Button type="submit" colorScheme={"blue"} variant={"solid"}>
                 Sign in
               </Button>
@@ -127,6 +130,16 @@ export default function Test() {
         </Stack>
       </Flex>
       <Flex flex={1}>
+        <Box
+          sx={{ zIndex: 100, position: "absolute", marginLeft: "350px", mt: 2 }}
+        >
+          <Badge ml="115px" fontSize="0.8em" colorScheme="purple">
+            VERSION: 16.x{" "}
+            <Center>
+              <br /> && <br /> 6.x
+            </Center>
+          </Badge>
+        </Box>
         <Image
           alt={"Login Image"}
           objectFit={"cover"}

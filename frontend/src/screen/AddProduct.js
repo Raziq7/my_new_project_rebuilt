@@ -7,13 +7,16 @@ import {
   Stack,
   Text,
   useColorModeValue,
+  Center,
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addProductExcel } from "../actions/productAction";
-import * as xlsx from "xlsx";
+import { saveAs } from "file-saver";
 import { Link, useNavigate } from "react-router-dom";
+import * as xlsx from "xlsx";
+
+import { addProductExcel } from "../actions/productAction";
 
 export default function AddProduct() {
   const [file, setFile] = useState();
@@ -46,6 +49,18 @@ export default function AddProduct() {
     dispatch(addProductExcel(file));
     navigate("/home");
   };
+
+  //Dowload
+  const saveFile = () => {
+    // saveAs(
+    //   "https://docs.google.com/spreadsheets/d/1QurlMyltUnKhxhN4DANcdxjAdHA3LmZfTpLYBbrBtXg/edit#gid=0",
+    //   "h.xlsx"
+    // );
+    window.open(
+      "https://docs.google.com/spreadsheets/d/1QurlMyltUnKhxhN4DANcdxjAdHA3LmZfTpLYBbrBtXg/edit#gid=0"
+    );
+    return null;
+  };
   return (
     <Flex
       minH={"70vh"}
@@ -58,12 +73,13 @@ export default function AddProduct() {
         spacing={4}
         w={"full"}
         maxW={"md"}
-        bg={useColorModeValue("white", "gray.700")}
+        bg={useColorModeValue("white", "gray.800")}
         rounded={"xl"}
         boxShadow={"lg"}
         p={6}
         my={20}
       >
+        <Button onClick={saveFile}>Sample Excel Sheet</Button>
         <Heading lineHeight={1.1} fontSize={{ base: "2xl", md: "3xl" }}>
           Add New Product
         </Heading>
@@ -88,6 +104,7 @@ export default function AddProduct() {
           </FormControl>
           <Stack spacing={2}>
             <Button
+              mt="15px"
               bg={"blue.400"}
               color={"white"}
               _hover={{
@@ -97,9 +114,23 @@ export default function AddProduct() {
             >
               Request to add product
             </Button>
+            <Center>or</Center>
+            <Link to="/test">
+              <Button
+                ml="50px"
+                bg={"blue.400"}
+                color={"white"}
+                _hover={{
+                  bg: "blue.500",
+                }}
+                type="submit"
+              >
+                Add product Manually
+              </Button>
+            </Link>
             <Link to="/home">
               <Button
-                ml="100px"
+                ml="105px"
                 bg={"blue.400"}
                 color={"white"}
                 _hover={{

@@ -10,6 +10,8 @@ import {
   TabPanels,
   Tab,
   TabPanel,
+  Center,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 
@@ -22,6 +24,7 @@ function SettingComponent() {
   const [visibleColumn, setVisibleColumn] = useState(false);
   const [catVisible, setCatVisible] = useState(false);
 
+  const bg = useColorModeValue("white", "dark");
   return (
     <>
       {/* <Box overflowY="auto" mb="auto" mt="50px" ml="100px">
@@ -94,9 +97,14 @@ function SettingComponent() {
         w="89%"
         h="100vh"
         ml="50px"
-        mb="200px"
-        sx={{ backgroundColor: "white" }}
+        mb="260px"
+        sx={{ backgroundColor: bg }}
+        rounded="xl"
       >
+        <Center fontSize="40px" color="teal">
+          Setting Page
+        </Center>
+
         <Tabs isFitted variant="enclosed">
           <TabList mb="1em">
             <Tab sx={{ fontWeight: "bold", color: "#16134F" }}>

@@ -608,6 +608,8 @@ import {
   Search,
   ViewColumn,
 } from "@material-ui/icons";
+import { AiOutlineDelete } from "react-icons/ai";
+import { AiOutlineDownload } from "react-icons/ai";
 import { saveAs } from "file-saver";
 import JSZip from "jszip";
 import JSZipUtils from "jszip-utils";
@@ -1043,9 +1045,10 @@ function Home() {
           ) : (
             <MaterialTable
               style={{
-                marginLeft: "150px",
+                marginLeft: 150,
+                marginRight: "auto",
                 marginTop: "20px",
-                width: "80%",
+                width: "1000px",
               }}
               icons={tableIcons}
               data={data}
@@ -1061,8 +1064,8 @@ function Home() {
               }}
               actions={[
                 {
+                  icon: () => <AiOutlineDelete />,
                   tooltip: "Remove All Selected Products",
-                  icon: "delete",
                   onClick: (evt, data) => {
                     data.map((id) => {
                       dispatch(deleteProduct(id._id));
@@ -1071,8 +1074,8 @@ function Home() {
                 },
 
                 {
+                  icon: () => <AiOutlineDownload />,
                   tooltip: "download All Selected Bar Code",
-                  icon: "lot",
                   onClick: (evt, data) => {
                     data.map(async (id) => {
                       setZipFolder(id.PID);
@@ -1084,8 +1087,8 @@ function Home() {
                 },
 
                 {
+                  icon: () => <AiOutlineDownload />,
                   tooltip: "download MRP All Selected Bar Code",
-                  icon: "2 down",
                   onClick: (evt, data) => {
                     data.map(async (id) => {
                       alert(id.PID, "ghjhkhkjhhkjkjhooogloglglglkg");
@@ -1098,6 +1101,7 @@ function Home() {
                 },
               ]}
             />
+            // <h1>KSJDFALSJDFASKJL</h1>
           )}
         </>
       </Box>

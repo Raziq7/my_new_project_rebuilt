@@ -27,6 +27,7 @@ import {
   Heading,
   Center,
   Skeleton,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import { BsArrowsExpand } from "react-icons/bs";
@@ -70,7 +71,7 @@ function LadgerBook() {
   const [details, setDetails] = useState("");
   const [credit, setCredit] = useState("");
   const [debit, setDebit] = useState("");
-  const [expense, setExpense] = useState("category");
+  const [expense, setExpense] = useState("credit");
 
   const dispatch = useDispatch();
   let { loading, ladger } = useSelector((state) => {
@@ -128,22 +129,34 @@ function LadgerBook() {
     dispatch(AddladgerBookAction(obj));
   };
   //background setup
-  const basicBoxStyles = {
-    justifyContent: "center",
-    alignItems: "center",
-    background:
-      "url(https://media.istockphoto.com/photos/recycled-paper-texture-background-in-turquoise-green-blue-mint-color-picture-id1163827586?k=20&m=1163827586&s=612x612&w=0&h=M3h5PwbI2tBkj5oc-UCmhEIJX1wl8IVtr0XXfQaicVk=) center/cover no-repeat",
-  };
+  const [color, setColor] = useState("white");
+  const bg = useColorModeValue("white", "dark");
+  useEffect(() => {
+    if (bg == "dark") {
+      setColor("#242935");
+      console.log(bg, "bgbgbgbgbgbgbg");
+    } else {
+      setColor("white");
+    }
+  }, [bg]);
+
   return (
     <VStack>
       <Box
-        sx={basicBoxStyles}
+        sx={{
+          justifyContent: "center",
+          alignItems: "center",
+          bgcolor: color,
+        }}
+        backgroundColor={color}
         filter="grayscale(80%)"
         height={250}
         width="90%"
         ml="250px"
+        mb="50px"
+        boxShadow="2xl"
       >
-        <Center fontSize="40px" color="white">
+        <Center fontSize="40px" color="teal">
           Ledger Book
         </Center>
         <form onSubmit={submitHandler}>
@@ -154,7 +167,7 @@ function LadgerBook() {
             justifyContent="center"
             mt="80px"
           >
-            <VStack mb="28px">
+            <VStack mb="28px" w="150px">
               <Text>Select Category</Text>
               <Select
                 onChange={(e) => {
@@ -162,7 +175,7 @@ function LadgerBook() {
                 }}
                 placeholder="Select category"
                 size="md"
-                sx={{ marginLeft: "20px" }}
+                sx={{ marginLeft: "20px", width: "150px" }}
               >
                 {showcategoryLadger &&
                   showcategoryLadger.map((data) => (
@@ -177,6 +190,7 @@ function LadgerBook() {
                 onChange={(e) => {
                   setDetails(e.target.value);
                 }}
+                backgroundColor={color == "dark" && "wheat"}
                 placeholder="Details"
                 _placeholder={{ color: "inherit" }}
                 sx={{ marginLeft: "20px" }}
@@ -192,11 +206,11 @@ function LadgerBook() {
               size="md"
               sx={{ marginLeft: "20px" }}
             >
-              <option value="category">Category</option>
+              <option value="credit">Credit</option>
               <option value="debit">Debit</option>
             </Select>
             <Box sx={{ marginLeft: "20px" }}></Box>
-            {expense == "category" && (
+            {expense == "credit" && (
               <VStack mb="28px">
                 <Text>Credit</Text>
                 <Input
@@ -227,8 +241,22 @@ function LadgerBook() {
               </VStack>
             )}
 
-            <Button type="submit">
-              <GiButtonFinger></GiButtonFinger>
+            <Button
+              bg={"blue.400"}
+              color={"white"}
+              _hover={{
+                bg: "blue.500",
+              }}
+              type="submit"
+              width="100px"
+              ml="5px"
+              boxShadow="2xl"
+              rounded="xl"
+            >
+              <Center>
+                {/* <GiButtonFinger></GiButtonFinger> */}
+                Add Ledger
+              </Center>
             </Button>
           </Box>
         </form>
@@ -241,7 +269,7 @@ function LadgerBook() {
         </Stack>
       ) : (
         <MaterialTable
-          style={{ marginLeft: "200px", marginTop: "20px", width: "80%" }}
+          style={{ marginLeft: "220px", marginBottom: "50px", width: "80%" }}
           icons={tableIcons}
           data={data}
           columns={columns}

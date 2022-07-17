@@ -73,6 +73,15 @@ function Category() {
             >
               Gender Category
             </Button>
+
+            <Button
+              onClick={() => {
+                setMode("Brand");
+              }}
+              colorScheme="teal"
+            >
+              Brand
+            </Button>
           </ButtonGroup>
         </Flex>
 

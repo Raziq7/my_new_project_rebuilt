@@ -66,10 +66,6 @@ function UserManagment() {
   let data =
     viewStaff &&
     viewStaff.map((data) => {
-      console.log(
-        data.superAdmin,
-        "Uncaught TypeError: row is undefined viewStaffviewStaffviewStaffviewStaffviewStaff"
-      );
       // if (!data.superAdmin)
       return {
         UserName: data.name,

@@ -36,6 +36,7 @@ import {
   Flex,
   Text,
   useToast,
+  HStack,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPurchaseData, increasStockValue } from "../actions/productAction";
@@ -69,6 +70,18 @@ function ParchaseStock() {
 
   useEffect(() => {
     dispatch(getPurchaseData());
+  }, [increaseStock]);
+
+  useEffect(() => {
+    if (increaseStock) {
+      toast({
+        title: " Product Quantity increased.",
+        description: `Product Quantity increased as ${increasStock}.`,
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   }, [increaseStock]);
 
   const incStock = (e) => {
@@ -105,23 +118,27 @@ function ParchaseStock() {
             Add Stock
           </Button>
         ),
-        Add: check == true && (
-          <form onSubmit={incStock}>
-            <Input
-              placeholder="Purchased Quantity"
-              onChange={(e) => {
-                setincreasStock(e.target.value);
-                setDataId(data._id);
-              }}
-              htmlSize={4}
-              width="auto"
-              name="incStock"
-            />
-            <Button colorScheme="teal" size="sm" type="submit">
-              Add
-            </Button>
-          </form>
-        ),
+        Add:
+          check == true ? (
+            <form onSubmit={incStock}>
+              <Text>Purchased Quantity</Text>
+              <HStack>
+                <Input
+                  placeholder="Purchased Quantity"
+                  onChange={(e) => {
+                    setincreasStock(e.target.value);
+                    setDataId(data._id);
+                  }}
+                  htmlSize={4}
+                  width="auto"
+                  name="incStock"
+                />
+                <Button colorScheme="teal" size="sm" type="submit">
+                  Add
+                </Button>
+              </HStack>
+            </form>
+          ) : null,
         _id: data._id,
       };
     });
@@ -256,7 +273,7 @@ function ParchaseStock() {
             icons={tableIcons}
             data={data}
             columns={columns}
-            title="User Management"
+            title="Purchase Stock"
             options={{
               filtering: true,
               pageSize: 3,

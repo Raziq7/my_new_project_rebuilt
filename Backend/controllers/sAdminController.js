@@ -25,6 +25,7 @@ cloudinary.config({
 
 module.exports = {
   addProduct: asyncHandler(async (req, res) => {
+    let categories = req.body.select;
     const vendorCode = {
       0: "U",
       1: "C",
@@ -49,216 +50,201 @@ module.exports = {
       vendoreDetails,
     } = req.body;
 
-    const {
-      proSize,
-      proColor,
-      qty,
-      marketPrice,
-      sellingPrice,
-      selectQty,
-      stocks,
-      minStock,
-      priceCode,
-    } = req.body.obj;
-
     //for VendoreCode
-    let priceCoded = "";
-    let price = sellingPrice;
-    for (let i = 0; i < price.length; i++) {
-      let char = Number(price[i]);
-      priceCoded = priceCoded + vendorCode[char];
-    }
-    priceCode = priceCoded;
+    categories.map(async (elem) => {
+      let priceCoded = "";
+      let price = elem.sellingPrice;
+      for (let i = 0; i < price.length; i++) {
+        let char = Number(price[i]);
+        priceCoded = priceCoded + vendorCode[char];
+      }
+      priceCode = priceCoded;
+      console.log(elem.selectQty, "console.log(selectQty);");
 
-    sellingPrice = parseInt(sellingPrice);
-    marketPrice = parseInt(marketPrice);
-    qty = parseInt(qty);
-    stocks = parseInt(stocks);
-    minStock = parseInt(minStock);
+      sellingPrice = parseInt(price);
+      marketPrice = parseInt(elem.marketPrice);
+      qty = parseInt(elem.qty);
+      stocks = parseInt(elem.stocks);
+      minStock = parseInt(elem.MinQty);
+      maxstock = parseInt(elem.MaxQty);
 
-    console.log(selectQty, "console.log(selectQty);");
-
-    let productDetailsExist = await Product.findOne({
-      ProductName: productName,
-    });
-    if (productDetailsExist) {
-      res.status(401);
-      throw new Error("Product already Exist");
-    } else {
-      var val = Math.floor(100000 + Math.random() * 900000);
-
-      var { data } = await createStream(
-        {
-          symbology: SymbologyType.CODE11,
-        },
-        val
-      );
-
-      let mrpBarCode = data;
-
-      let image1 = {
-        image: mrpBarCode,
-      };
-
-      let BarCode_link2 = await cloudinary.uploader.upload(image1.image, {
-        folder: "ukkens_Bar_Code",
+      let productDetailsExist = await Product.findOne({
+        ProductName: productName,
       });
+      console.log(productDetailsExist, "productDetailsExist");
 
-      // ============without MRP ==============
+      if (productDetailsExist) {
+        res.status(401);
+        throw new Error("Product already Exist");
+      } else {
+        var val = Math.floor(100000 + Math.random() * 900000);
 
-      const width1 = 1200;
-      const height1 = 1000;
+        var { data } = await createStream(
+          {
+            symbology: SymbologyType.CODE11,
+          },
+          val
+        );
 
-      const canvas1 = createCanvas(width1, height1);
-      const context1 = canvas1.getContext("2d");
+        let mrpBarCode = data;
 
-      context1.fillStyle = "#fff";
-      context1.fillRect(0, 20, width1, height1);
-
-      context1.font = "bold 70pt Menlo";
-      context1.textAlign = "center";
-      context1.textBaseline = "top";
-      // context.fillStyle = "#3574d4";
-
-      const text1 = "";
-
-      const textWidth1 = context1.measureText(text1).width;
-      context1.fillRect(
-        600 - textWidth1 / 2 - 10,
-        170 - 5,
-        textWidth1 + 20,
-        120
-      );
-      context1.fillStyle = "red";
-      context1.fillText(text1, 600, 170);
-
-      context1.fillStyle = "black";
-      context1.font = "bold 60pt Menlo";
-
-      loadImage(BarCode_link2.secure_url).then(async (image) => {
-        context1.drawImage(image, 50, 320, 1100, 380);
-        context1.fillText(productName, 500, 45);
-        context1.fillText(`QTY - ${qty}`, 259, 135);
-        context1.fillText(`Sort No: ${val}`, 460, 205);
-        context1.fillText(priceCode, 320, 720);
-
-        const buffer1 = canvas1.toBuffer("image/png");
-        fs.writeFileSync(`./frontend/public/copy/${val}OUT.png`, buffer1);
-
-        image = {
-          image: `./frontend/public/copy/${val}OUT.png`,
+        let image1 = {
+          image: mrpBarCode,
         };
 
-        let BarCode_update_link = await cloudinary.uploader.upload(
-          image.image,
-          {
-            folder: "ukkens_withoutMRPBar_Code",
-          }
-        );
+        let BarCode_link2 = await cloudinary.uploader.upload(image1.image, {
+          folder: "ukkens_Bar_Code",
+        });
 
-        ///dfgdsfgsdfgsdfgdsfgdsfgdf
-        var BarCodelink1 = BarCode_update_link.secure_url;
+        // ============without MRP ==============
 
-        //=*=*=*=*=*=*=*= without MRP =*=*=*=*=*=*=*=*=*=*=*=*
-        // =========MRP BAR CODE ====================
+        const width1 = 1200;
+        const height1 = 1000;
 
-        const width = 1200;
-        const height = 1000;
+        const canvas1 = createCanvas(width1, height1);
+        const context1 = canvas1.getContext("2d");
 
-        const canvas = createCanvas(width, height);
-        const context = canvas.getContext("2d");
+        context1.fillStyle = "#fff";
+        context1.fillRect(0, 20, width1, height1);
 
-        context.fillStyle = "#fff";
-        context.fillRect(0, 20, width, height);
-
-        context.font = "bold 70pt Menlo";
-        context.textAlign = "center";
-        context.textBaseline = "top";
+        context1.font = "bold 70pt Menlo";
+        context1.textAlign = "center";
+        context1.textBaseline = "top";
         // context.fillStyle = "#3574d4";
 
-        const text = "";
+        const text1 = "";
 
-        const textWidth = context.measureText(text).width;
-        context.fillRect(
-          600 - textWidth / 2 - 10,
+        const textWidth1 = context1.measureText(text1).width;
+        context1.fillRect(
+          600 - textWidth1 / 2 - 10,
           170 - 5,
-          textWidth + 20,
+          textWidth1 + 20,
           120
         );
-        context.fillStyle = "red";
-        context.fillText(text, 600, 170);
+        context1.fillStyle = "red";
+        context1.fillText(text1, 600, 170);
 
-        context.fillStyle = "black";
-        context.font = "bold 60pt Menlo";
-        context.fillText(`MRP ${sellingPrice}`, 600, 530);
-        // context.fillText(pro.ProductName, 455, 50);
+        context1.fillStyle = "black";
+        context1.font = "bold 60pt Menlo";
 
         loadImage(BarCode_link2.secure_url).then(async (image) => {
-          context.drawImage(image, 50, 320, 1100, 380);
-          context.fillText(productName, 500, 45);
-          context.fillText(`QTY - ${qty}`, 259, 135);
-          context.fillText(`Sort No: ${val}`, 460, 205);
-          context.fillText(priceCode, 320, 720);
-          context.fillText(`MRP ${sellingPrice}`, 620, 810);
+          context1.drawImage(image, 50, 320, 1100, 380);
+          context1.fillText(productName, 500, 45);
+          context1.fillText(`QTY - ${qty}`, 259, 135);
+          context1.fillText(`Sort No: ${val}`, 460, 205);
+          context1.fillText(priceCode, 320, 720);
 
-          const buffer = canvas.toBuffer("image/png");
-          fs.writeFileSync(`./frontend/public/copy/${val}.png`, buffer);
+          const buffer1 = canvas1.toBuffer("image/png");
+          fs.writeFileSync(`./frontend/public/copy/${val}OUT.png`, buffer1);
 
-          image1 = {
-            image: `./frontend/public/copy/${val}.png`,
+          image = {
+            image: `./frontend/public/copy/${val}OUT.png`,
           };
 
-          let BarCode_MRPUPDATE_link = await cloudinary.uploader.upload(
-            image1.image,
+          let BarCode_update_link = await cloudinary.uploader.upload(
+            image.image,
             {
-              folder: "ukkens_Mrp_Code",
+              folder: "ukkens_withoutMRPBar_Code",
             }
           );
 
-          console.log(
-            BarCode_MRPUPDATE_link,
-            "BarCode_link2BarCode_link2BarCode_link2"
-          );
-          var BarCodelink2 = BarCode_MRPUPDATE_link.secure_url;
+          ///dfgdsfgsdfgsdfgdsfgdsfgdf
+          var BarCodelink1 = BarCode_update_link.secure_url;
 
-          let details = await Product.create({
-            PID: val,
-            ProductName: productName,
-            Description: description,
-            MainCategory: mainCategory,
-            SubCategory: subCategory,
-            Size: proSize,
-            Color: proColor,
-            GenderWear: category,
-            Brand: brand,
-            MaterialType: selectQty,
-            MarketPrice: marketPrice,
-            SellingPrice: sellingPrice,
-            Discount: pro.Discount,
-            MaxStock: stocks,
-            MinStock: minStock,
-            Qty: qty,
-            MaxStockMeter: stocks,
-            MinStockMeter: minStock,
-            VendorName: vendorName,
-            priceCode: priceCode,
-            BarCodeLink: BarCodelink1,
-            BarCodePin: val,
-            BarCodeMrpLink: BarCodelink2,
+          //=*=*=*=*=*=*=*= without MRP =*=*=*=*=*=*=*=*=*=*=*=*
+          // =========MRP BAR CODE ====================
+
+          const width = 1200;
+          const height = 1000;
+
+          const canvas = createCanvas(width, height);
+          const context = canvas.getContext("2d");
+
+          context.fillStyle = "#fff";
+          context.fillRect(0, 20, width, height);
+
+          context.font = "bold 70pt Menlo";
+          context.textAlign = "center";
+          context.textBaseline = "top";
+          // context.fillStyle = "#3574d4";
+
+          const text = "";
+
+          const textWidth = context.measureText(text).width;
+          context.fillRect(
+            600 - textWidth / 2 - 10,
+            170 - 5,
+            textWidth + 20,
+            120
+          );
+          context.fillStyle = "red";
+          context.fillText(text, 600, 170);
+
+          context.fillStyle = "black";
+          context.font = "bold 60pt Menlo";
+          context.fillText(`MRP ${sellingPrice}`, 600, 530);
+          // context.fillText(pro.ProductName, 455, 50);
+
+          loadImage(BarCode_link2.secure_url).then(async (image) => {
+            context.drawImage(image, 50, 320, 1100, 380);
+            context.fillText(productName, 500, 45);
+            context.fillText(`QTY - ${qty}`, 259, 135);
+            context.fillText(`Sort No: ${val}`, 460, 205);
+            context.fillText(priceCode, 320, 720);
+            context.fillText(`MRP ${sellingPrice}`, 620, 810);
+
+            const buffer = canvas.toBuffer("image/png");
+            fs.writeFileSync(`./frontend/public/copy/${val}.png`, buffer);
+
+            image1 = {
+              image: `./frontend/public/copy/${val}.png`,
+            };
+
+            let BarCode_MRPUPDATE_link = await cloudinary.uploader.upload(
+              image1.image,
+              {
+                folder: "ukkens_Mrp_Code",
+              }
+            );
+
+            var BarCodelink2 = BarCode_MRPUPDATE_link.secure_url;
+
+            let details = await Product.create({
+              PID: val,
+              ProductName: productName,
+              Description: description,
+              MainCategory: mainCategory,
+              SubCategory: subCategory,
+              Size: elem.proSize,
+              Color: elem.proColor,
+              GenderWear: category,
+              Brand: brand,
+              MaterialType: elem.selectQty,
+              MarketPrice: marketPrice,
+              SellingPrice: sellingPrice,
+              Discount: 44,
+              MaxStock: maxstock,
+              MinStock: minStock,
+              Qty: qty,
+              MaxStockMeter: maxstock,
+              MinStockMeter: minStock,
+              VendorName: vendorName,
+              priceCode: priceCode,
+              BarCodeLink: BarCodelink1,
+              BarCodePin: val,
+              BarCodeMrpLink: BarCodelink2,
+            });
           });
         });
-        res.json({ data });
-      });
-    }
+      }
+    });
+    res.json({ data });
   }),
   //get Product
   getProductDetails: asyncHandler(async (req, res) => {
     try {
       let showProduct = await Product.find({});
-      console.log(
-        showProduct,
-        "========================================================================="
-      );
+
       res.json(showProduct);
     } catch (err) {
       console.log(err);
@@ -315,7 +301,6 @@ module.exports = {
 
     try {
       let findPro = await Product.findById(id);
-      console.log(findPro.BarCodeMrpLink, "//////////||||||||||||++++====");
       let BarCodeLink = findPro.BarCodeLink;
       let BarCodeMrpLink = findPro.BarCodeMrpLink;
 
@@ -340,11 +325,8 @@ module.exports = {
       let price = SellingPrice + "";
       for (let i = 0; i < price.length; i++) {
         let char = Number(price[i]);
-        console.log(char);
         priceCoded = priceCoded + vendorCode[char];
       }
-
-      console.log(priceCoded, "char-");
 
       let proSuccess = await Product.updateOne(
         { _id: req.query.id },
@@ -376,25 +358,22 @@ module.exports = {
           },
         }
       );
-      console.log(proSuccess, "1111111");
       res.json({ proSuccess });
     } catch (err) {
       res.status(401);
-      throw new Error(err);
       console.log(err);
+      throw new Error(err);
     }
   }),
 
   stockParchase: asyncHandler(async (req, res) => {
     try {
-      console.log("hello try");
       let purchaseData = await Product.find({});
 
       let parchaseDetails = purchaseData.filter(
         (data) => data.MinStock > data.Qty
       );
 
-      console.log(parchaseDetails, "8797979798");
       res.json(parchaseDetails);
     } catch (err) {
       console.log("hello", err);
@@ -476,10 +455,6 @@ module.exports = {
       await increseValue.save();
       res.json(increseValue);
     } else {
-      console.log(
-        isCheck,
-        `not Valid because MaxStock is ${increseValue.MaxStock}`
-      );
       res.status(401);
       throw new Error(`not Valid because MaxStock is ${increseValue.MaxStock}`);
     }
@@ -931,7 +906,6 @@ module.exports = {
       { title: title },
       { $set: { status: id } }
     );
-    console.log(set, "setsetset");
 
     res.json(set);
   }),
@@ -942,7 +916,6 @@ module.exports = {
     console.log(id, "sfggdf");
 
     let show = await ProductColumns.find({});
-    console.log(show, "setsetset");
 
     res.json(show);
   }),

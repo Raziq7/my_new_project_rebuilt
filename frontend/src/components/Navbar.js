@@ -68,23 +68,24 @@ export default function Navbar() {
                     cursor={"pointer"}
                     minW={0}
                   >
-                    <img
+                    {/* <img
                       src="images/UK-Logo.png"
                       alt=""
                       width="80px"
                       h="auto"
-                    />
+                    /> */}
+                    <Avatar size={"sm"} src={""} />
                   </MenuButton>
                   <MenuList alignItems={"center"}>
                     <br />
                     <Center>
-                      {/* <Avatar size={"2xl"} src={"images/UK-Logo.png"} /> */}
-                      <img
+                      <Avatar size={"2xl"} src={""} />
+                      {/* <img
                         src="images/UK-Logo.png"
                         alt=""
                         width="100px"
                         h="auto"
-                      />
+                      /> */}
                     </Center>
                     <br />
                     <Center>

@@ -16,12 +16,12 @@ import ParchaseStock from "./screen/ParchaseStock";
 import SettingComponent from "./components/SettingComponent";
 import LadgerBook from "./screen/LadgerBook";
 import Billing from "./screen/Billing";
+import Test from "./screen/AddProductManually";
 // import NewNav from "./screen/NewNav";
-import Test from "./screen/Test";
 
 function App() {
   const bg = useColorModeValue("#EDF2F6", "dark");
-  const [color, setColor] = useState("");
+  // const [color, setColor] = useState("white");
   //dark Mode
   // let DarkMode = localStorage.getItem("chakra-ui-color-mode")
   //   ? localStorage.getItem("chakra-ui-color-mode")

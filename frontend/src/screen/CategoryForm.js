@@ -168,7 +168,7 @@ function CategoryForm({ mode }) {
                             dispatch(deleteCategory(size));
                             toast({
                               position: "bottom-left",
-                              title: "Created Deleted.",
+                              title: "Deleted.",
                               description: `Category ${size} Deleted Successfully`,
                               status: "success",
                               duration: 9000,
@@ -201,7 +201,7 @@ function CategoryForm({ mode }) {
                             dispatch(deleteCategory(color));
                             toast({
                               position: "bottom-left",
-                              title: "Created Deleted.",
+                              title: "Deleted.",
                               description: `Category ${color} Deleted Successfully`,
                               status: "success",
                               duration: 9000,
@@ -234,7 +234,7 @@ function CategoryForm({ mode }) {
                             dispatch(deleteCategory(material));
                             toast({
                               position: "bottom-left",
-                              title: "Created Deleted.",
+                              title: "Deleted.",
                               description: `Category ${material} Deleted Successfully`,
                               status: "success",
                               duration: 9000,
@@ -268,7 +268,7 @@ function CategoryForm({ mode }) {
                             dispatch(deleteCategory(vendor));
                             toast({
                               position: "bottom-left",
-                              title: "Created Deleted.",
+                              title: "Deleted.",
                               description: `Category ${vendor} Deleted Successfully`,
                               status: "success",
                               duration: 9000,
@@ -300,7 +300,7 @@ function CategoryForm({ mode }) {
                             dispatch(deleteCategory(subcategory));
                             toast({
                               position: "bottom-left",
-                              title: "Created Deleted.",
+                              title: "Deleted.",
                               description: `Category ${subcategory} Deleted Successfully`,
                               status: "success",
                               duration: 9000,
@@ -325,15 +325,14 @@ function CategoryForm({ mode }) {
                   return data.Main_Category.map((MainCategory) => {
                     return (
                       <HStack>
-                        <Text color="teal">{MainCategory}</Text>
+                        <Text>{MainCategory}</Text>
                         <Spacer />
                         <AiFillDelete
-                          color="teal"
                           onClick={() => {
                             dispatch(deleteCategory(MainCategory));
                             toast({
                               position: "bottom-left",
-                              title: "Created Deleted.",
+                              title: "Deleted.",
                               description: `Category ${MainCategory} Deleted Successfully`,
                               status: "success",
                               duration: 9000,
@@ -342,7 +341,6 @@ function CategoryForm({ mode }) {
                           }}
                         />
                         <MdOutlineAddCircle
-                          color="teal"
                           onClick={() => {
                             setSubCategory(true);
                             setMainValue(MainCategory);
@@ -358,7 +356,6 @@ function CategoryForm({ mode }) {
                   setOverlay(<OverlayOne />);
                   onOpen();
                 }}
-                color="teal"
               >
                 Show SubCategory
               </Button>
@@ -431,15 +428,50 @@ function CategoryForm({ mode }) {
                   return data.Gender_Category.map((GenderCategory) => {
                     return (
                       <HStack>
-                        <Text color="teal">{GenderCategory}</Text>
+                        <Text>{GenderCategory}</Text>
                         <Spacer />
                         <AiFillDelete
                           onClick={() => {
                             dispatch(deleteCategory(GenderCategory));
                             toast({
                               position: "bottom-left",
-                              title: "Created Deleted.",
+                              title: "Deleted.",
                               description: `Category ${GenderCategory} Deleted Successfully`,
+                              status: "success",
+                              duration: 9000,
+                              isClosable: true,
+                            });
+                          }}
+                        />
+                      </HStack>
+                    );
+                  });
+                }
+              })}
+            </Box>
+          )}
+
+          {/* Brand */}
+
+          {showCategory && !showCategory.length == 0 && (
+            <Box w="auto" h="auto" boxShadow="lg" p="6" rounded="md">
+              <Heading as="h4" size="md" color="teal">
+                Brand
+              </Heading>
+              {showCategory.map((data) => {
+                if (data.Brand) {
+                  return data.Brand.map((brand) => {
+                    return (
+                      <HStack>
+                        <Text>{brand}</Text>
+                        <Spacer />
+                        <AiFillDelete
+                          onClick={() => {
+                            dispatch(deleteCategory(brand));
+                            toast({
+                              position: "bottom-left",
+                              title: "Deleted.",
+                              description: `Category ${brand} Deleted Successfully`,
                               status: "success",
                               duration: 9000,
                               isClosable: true,

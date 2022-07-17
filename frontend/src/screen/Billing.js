@@ -27,9 +27,28 @@ import {
   useToast,
   Center,
 } from "@chakra-ui/react";
+import MaterialTable from "material-table";
+import {
+  AddBox,
+  ArrowDownward,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Clear,
+  DeleteOutline,
+  Edit,
+  FilterList,
+  FirstPage,
+  LastPage,
+  Remove,
+  SaveAlt,
+  Search,
+  ViewColumn,
+} from "@material-ui/icons";
+
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { MdDangerous } from "react-icons/md";
-import React, { useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { billingAction, checkoutBill } from "../actions/productAction";
 import { PDF } from "./PDF";
@@ -54,6 +73,55 @@ function Billing() {
 
   const dispacth = useDispatch();
 
+  //meterial Icon
+
+  const tableIcons = {
+    Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+    Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
+    Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+    Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+    DetailPanel: forwardRef((props, ref) => (
+      <ChevronRight {...props} ref={ref} />
+    )),
+    Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+    Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
+    Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
+    FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
+    LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
+    NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+    PreviousPage: forwardRef((props, ref) => (
+      <ChevronLeft {...props} ref={ref} />
+    )),
+    ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+    Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
+    SortArrow: forwardRef((props, ref) => (
+      <ArrowDownward {...props} ref={ref} />
+    )),
+    ThirdStateCheck: forwardRef((props, ref) => (
+      <Remove {...props} ref={ref} />
+    )),
+    ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
+  };
+
+  //COLUMN METERIAL
+  const columns = [
+    {
+      title: "Product Name",
+      field: "ProductName",
+    },
+    { title: "Size", field: "Size" },
+    { title: "Brand", field: "Brand" },
+
+    { title: "Discount", field: "Discount" },
+    { title: "Price", field: "Price" },
+    { title: "Qty", field: "Qty" },
+
+    {
+      title: "Action",
+      field: "Action",
+    },
+  ];
+
   let { error, loading, BillDetail } = useSelector((state) => {
     return state.billing;
   });
@@ -64,6 +132,36 @@ function Billing() {
     }
   }, [BillDetail]);
 
+  //INITIAL VALUE
+  let grand = 0;
+  //data Meterial
+  let data =
+    billInfo &&
+    billInfo.map((data) => {
+      grand = grand + data.SellingPrice;
+      let qtyRate = data.SellingPrice * data.qtyVal;
+      grand = grand + qtyRate - data.SellingPrice;
+      return {
+        ProductName: data.ProductName,
+        Size: data.Size,
+        Brand: data.Brand,
+        Discount: data.Discount,
+        Price: data.SellingPrice,
+        Qty: (
+          <HStack>
+            <AiOutlineMinus onClick={() => decrement(data._id)} />
+            <Text>{data.qtyVal}</Text>
+            <AiOutlinePlus onClick={() => incrementQty(data._id)} />
+          </HStack>
+        ),
+
+        Action: qty == 1 && (
+          <MdDangerous onClick={() => removeItem(data._id)} />
+        ),
+        _id: data._id,
+      };
+    });
+
   useEffect(() => {
     if (qtyVal == 1) {
       setQtyVal(1);
@@ -73,17 +171,6 @@ function Billing() {
   //events
   const handleSubmit = (e) => {
     e.preventDefault();
-    // billInfo.map((data) => {
-    //   console.log(data, "datadatadatadatadata");
-    //   if (data.PID == billValue) {
-    //     setQtyVal(data.qtyVal + 1);
-    //     console.log("qtyValqtyValqtyVal", data.qtyVal);
-    //   } else {
-    //     console.log("heelo", billValue);
-    //     dispacth(billingAction(billValue));
-    //   }
-    //   setValue("");
-    // });
     console.log("heelo", billValue);
     dispacth(billingAction(billValue));
   };
@@ -95,13 +182,11 @@ function Billing() {
   };
 
   //removeItem
-
   const removeItem = (id) => {
     if (billInfo.length == 1) {
       setBillInfo([]);
     } else {
       const index = billInfo.findIndex((i) => i.id !== id);
-      console.log(index, "********");
       setBillInfo((prevState) => prevState.splice(index, 1));
     }
   };
@@ -139,7 +224,6 @@ function Billing() {
   //DEC QTY
 
   const decrement = async (id) => {
-    console.log("==================================");
     const index = billInfo.findIndex((i) => i._id == id);
     console.log(index);
 
@@ -154,8 +238,6 @@ function Billing() {
     }
   };
 
-  //INITIAL VALUE
-  let grand = 0;
   return (
     <>
       <Box
@@ -166,7 +248,7 @@ function Billing() {
         mb="auto"
         mt="20px"
       >
-        {!visilblePdf ? (
+        {!visilblePdf && (
           <>
             {!billingForm && (
               <>
@@ -254,21 +336,7 @@ function Billing() {
                 </VStack>
                 {loading && <Progress size="xs" isIndeterminate />}
                 {error && <h1>{error}</h1>}
-                <Box
-                  boxShadow="2xl"
-                  rounded="2xl"
-                  ml="auto"
-                  mt="50px"
-                  mr="auto"
-                  width={{
-                    sm: "60%",
-                    md: "650px",
-                    lg: "800px",
-                    xl: "83%",
-                  }}
-                  backgroundColor="white"
-                >
-                  <TableContainer>
+                {/* <TableContainer>
                     <Table variant="simple">
                       <TableCaption>Ukkens Vastralaya Billing</TableCaption>
                       <Thead>
@@ -333,10 +401,38 @@ function Billing() {
                       </Tbody>
                       <Text>TOTAL: {grand}</Text>
                     </Table>
-                  </TableContainer>
+                  </TableContainer> */}
+                <MaterialTable
+                  style={{
+                    marginLeft: "50px",
+                    marginTop: "20px",
+                    width: "100%",
+                  }}
+                  icons={tableIcons}
+                  data={data}
+                  columns={columns}
+                  title="User Management"
+                  options={{
+                    filtering: true,
+                    pageSize: 3,
+                    pageSizeOptions: [3, 5, 10, 20, 30, 40, 50],
+                    // selection: true,
+                    exportButton: true,
+                    grouping: true,
+                  }}
+                />
+                <Box
+                  mt="20px"
+                  boxShadow="xl"
+                  rounded="xl"
+                  w="150px"
+                  bg="#16134F"
+                >
+                  <Center>
+                    <Text color="white">TOTAL: {grand}</Text>
+                  </Center>
                 </Box>
-
-                {BillDetail && (
+                {/* {BillDetail && (
                   <Button
                     onClick={() => {
                       setGrandTotal(grand);
@@ -350,13 +446,15 @@ function Billing() {
                   >
                     Checkout
                   </Button>
-                )}
+                )} */}
               </>
             )}
           </>
-        ) : (
-          <PDF billInfo={billInfo} qty={qty} grand={grandTotal} />
         )}
+
+        {/* // : (
+        //   // <PDF billInfo={billInfo} qty={qty} grand={grandTotal} />
+        // )} */}
       </Box>
     </>
   );
