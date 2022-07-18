@@ -130,7 +130,6 @@ function LadgerBook() {
   //background setup
   const [color, setColor] = useState("white");
   const bg = useColorModeValue("#C9BBBB", "black");
-  console.log(bg, "bgbgbgbgbgbgbg");
 
   useEffect(() => {
     if (bg == "black") {
@@ -181,7 +180,12 @@ function LadgerBook() {
               >
                 {showcategoryLadger &&
                   showcategoryLadger.map((data) => (
-                    <option value={data.category}>{data.category}</option>
+                    <option
+                      style={{ marginLeft: "15px" }}
+                      value={data.category}
+                    >
+                      {data.category}
+                    </option>
                   ))}
               </Select>
             </VStack>
@@ -210,8 +214,12 @@ function LadgerBook() {
                 size="md"
                 style={{ marginLeft: "15px", width: "100px" }}
               >
-                <option value="credit">Credit</option>
-                <option value="debit">Debit</option>
+                <option style={{ marginLeft: "15px" }} value="credit">
+                  Credit
+                </option>
+                <option style={{ marginLeft: "15px" }} value="debit">
+                  Debit
+                </option>
               </Select>
             </VStack>
 
@@ -286,18 +294,6 @@ function LadgerBook() {
             },
             exportAllData: true,
             grouping: true,
-            rowStyle: {
-              fontFamily: "Mulish-Regular",
-              backgroundColor: bg,
-              color: "#FFFFFF",
-            },
-            headerStyle: {
-              fontFamily: "Mulish-Regular",
-              fontSize: "1.1em",
-              fontWeight: "600",
-              color: "#FFFFFF",
-              backgroundColor: bg,
-            },
           }}
         />
       )}

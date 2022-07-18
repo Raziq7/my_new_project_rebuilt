@@ -27,6 +27,7 @@ import {
   useToast,
   Center,
   useColorModeValue,
+  Flex,
 } from "@chakra-ui/react";
 import MaterialTable from "material-table";
 import {
@@ -62,10 +63,12 @@ function Billing() {
   const [phone, setPhone] = useState();
   const [qtyVal, setQtyVal] = useState(1);
   const [qtyErr, setQtyErr] = useState();
+  const [gst, setGst] = useState(0);
+
   let qty = 1;
 
   const [visilblePdf, setVisiblePdf] = useState(false);
-  const [grandTotal, setGrandTotal] = useState();
+  const [grandTotal, setGrandTotal] = useState(0);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -172,8 +175,19 @@ function Billing() {
   //events
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("heelo", billValue);
-    dispacth(billingAction(billValue));
+    if (!billInfo.length == 0) {
+      billInfo.map((i) => {
+        if (i.PID == billValue) {
+          i.qtyVal += 1;
+          setQtyVal(i.qtyVal);
+        } else {
+          dispacth(billingAction(billValue));
+        }
+      });
+    } else {
+      dispacth(billingAction(billValue));
+    }
+    setValue("");
   };
 
   const saveDetailClick = () => {
@@ -238,8 +252,15 @@ function Billing() {
       }
     }
   };
-  const bg = useColorModeValue("#C9BBBB", "black");
 
+  //Gst
+  const gstSubmit = (e) => {
+    e.preventDefault();
+    let gstcont = parseInt(gst);
+    grand += gstcont;
+    setGrandTotal(grand);
+    setGst("");
+  };
   return (
     <>
       <Box
@@ -257,7 +278,7 @@ function Billing() {
           <>
             {!billingForm && (
               <>
-                <Button ml="50px" colorScheme="blue" onClick={onOpen}>
+                <Button mt="25px" ml="50px" colorScheme="blue" onClick={onOpen}>
                   Enter customer Details
                 </Button>
 
@@ -348,38 +369,63 @@ function Billing() {
                   icons={tableIcons}
                   data={data}
                   columns={columns}
-                  title="User Management"
+                  title="Billing Managment"
                   options={{
                     filtering: true,
                     pageSize: 3,
                     pageSizeOptions: [3, 5, 10, 20, 30, 40, 50],
                     exportButton: true,
                     grouping: true,
-                    rowStyle: {
-                      fontFamily: "Mulish-Regular",
-                      backgroundColor: bg,
-                      color: "#FFFFFF",
-                    },
-                    headerStyle: {
-                      fontFamily: "Mulish-Regular",
-                      fontSize: "1.1em",
-                      fontWeight: "600",
-                      color: "#FFFFFF",
-                      backgroundColor: bg,
-                    },
                   }}
                 />
-                <Box
-                  mt="20px"
-                  boxShadow="xl"
-                  rounded="xl"
-                  w="150px"
-                  bg="#16134F"
-                >
-                  <Center>
-                    <Text color="white">TOTAL: {grand}</Text>
-                  </Center>
+                <Box mt="15px" ml="30px">
+                  <form onSubmit={gstSubmit}>
+                    <FormLabel>Enter GST</FormLabel>
+                    <HStack>
+                      <Input
+                        onChange={(e) => setGst(e.target.value)}
+                        ref={initialRef}
+                        placeholder="GST"
+                        value={gst}
+                        type="number"
+                        bg="white"
+                      />
+                      <Button bg="#16134F" colorScheme="#16134F" type="submit">
+                        Add Gst
+                      </Button>
+                    </HStack>
+                  </form>
                 </Box>
+                <Flex ml="30px">
+                  <Box
+                    mt="30px"
+                    boxShadow="xl"
+                    rounded="xl"
+                    w="150px"
+                    bg="#16134F"
+                    h="25px"
+                  >
+                    <Center>
+                      <Text color="white">TOTAL: {grand}</Text>
+                    </Center>
+                  </Box>
+
+                  <Box
+                    sx={{ marginTop: "30px" }}
+                    boxShadow="xl"
+                    rounded="xl"
+                    w="170px"
+                    bg="#16134F"
+                    h="25px"
+                    ml="10px"
+                  >
+                    <Center>
+                      <Text color="white">
+                        Total With Gst: {!grandTotal == 0 ? grandTotal : grand}
+                      </Text>
+                    </Center>
+                  </Box>
+                </Flex>
                 {/* {BillDetail && (
                   <Button
                     onClick={() => {

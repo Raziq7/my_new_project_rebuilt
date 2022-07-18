@@ -142,9 +142,9 @@ export default function Login() {
           <Text color="black" fontSize="lg">
             New Update Available !
           </Text>{" "}
-          <Badge colorScheme="blue">App Version V1.0.5</Badge>
+          <Badge colorScheme="green">App Version V1.0.5</Badge>
           <br />
-          <Text fontSize="md" color="md">
+          <Text fontSize="12px" color="md">
             We have added some new awesome features
           </Text>
           <br />

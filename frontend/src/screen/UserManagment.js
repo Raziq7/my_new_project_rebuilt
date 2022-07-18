@@ -169,7 +169,6 @@ function UserManagment() {
       field: "Action",
     },
   ];
-  const bg = useColorModeValue("#C9BBBB", "black");
 
   return (
     <Box
@@ -239,7 +238,7 @@ function UserManagment() {
           icons={tableIcons}
           data={data}
           columns={columns}
-          title="Billing Managment"
+          title="User Managment"
           options={{
             filtering: true,
             pageSize: 3,
@@ -247,18 +246,6 @@ function UserManagment() {
             // selection: true,
             exportButton: true,
             grouping: true,
-            rowStyle: {
-              fontFamily: "Mulish-Regular",
-              backgroundColor: bg,
-              color: "#FFFFFF",
-            },
-            headerStyle: {
-              fontFamily: "Mulish-Regular",
-              fontSize: "1.1em",
-              fontWeight: "600",
-              color: "#FFFFFF",
-              backgroundColor: bg,
-            },
           }}
         />
       )}

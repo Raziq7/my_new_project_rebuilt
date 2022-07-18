@@ -132,7 +132,7 @@ function SideNav() {
               <NavItems
                 navSize={navSize}
                 icon={BsBoxSeam}
-                title="Purchase Stock Managment"
+                title="Stock Managment"
               />
             </Link>
 

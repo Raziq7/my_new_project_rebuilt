@@ -891,8 +891,6 @@ function Home() {
     },
   ];
 
-  const bg = useColorModeValue("#C9BBBB", "black");
-
   return (
     <>
       <Box overflowY="auto" mb="auto">
@@ -963,18 +961,6 @@ function Home() {
                 selection: true,
                 exportButton: true,
                 grouping: true,
-                rowStyle: {
-                  fontFamily: "Mulish-Regular",
-                  backgroundColor: bg,
-                  color: "#FFFFFF",
-                },
-                headerStyle: {
-                  fontFamily: "Mulish-Regular",
-                  fontSize: "1.1em",
-                  fontWeight: "600",
-                  color: "#FFFFFF",
-                  backgroundColor: bg,
-                },
               }}
               actions={[
                 {
