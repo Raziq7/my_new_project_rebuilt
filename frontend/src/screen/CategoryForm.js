@@ -220,7 +220,7 @@ function CategoryForm({ mode }) {
           {showCategory && !showCategory.length == 0 && (
             <Box w="auto" h="auto" boxShadow="lg" p="6" rounded="md">
               <Heading as="h4" size="md" color="teal">
-                Metirial
+                Material
               </Heading>
               {showCategory.map((data) => {
                 if (data.material) {

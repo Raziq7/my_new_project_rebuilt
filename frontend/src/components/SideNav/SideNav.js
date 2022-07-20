@@ -159,12 +159,12 @@ function SideNav() {
                 boxShadow: "none",
               }}
               as={ReachLink}
-              to="/LadgerBook"
+              to="/LedgerBook"
             >
               <NavItems
                 navSize={navSize}
                 icon={FiBriefcase}
-                title="Ladger Book"
+                title="Ledger Book"
               />
             </Link>
 

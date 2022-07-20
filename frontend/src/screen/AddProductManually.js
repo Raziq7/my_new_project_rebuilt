@@ -82,6 +82,7 @@ function Test() {
   const [MaxQty, setMaxQty] = useState("");
   const [MinQty, setMinQty] = useState("");
   const [checkMeter, setCheckMetet] = useState(null);
+  const [Error, setError] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -106,19 +107,24 @@ function Test() {
 
   const TableSubmit = (e) => {
     e.preventDefault();
-    let obj = {
-      proSize: proSize,
-      proColor: proColor,
-      qty: qty,
-      marketPrice: marketPrice,
-      sellingPrice: sellingPrice,
-      selectQty: selectQty,
-      stocks: stocks,
-      MaxQty: MaxQty,
-      MinQty: MinQty,
-    };
+    if (MaxQty < stocks) {
+      setError(true);
+    } else {
+      let obj = {
+        proSize: proSize,
+        proColor: proColor,
+        qty: qty,
+        marketPrice: marketPrice,
+        sellingPrice: sellingPrice,
+        selectQty: selectQty,
+        stocks: stocks,
+        MaxQty: MaxQty,
+        MinQty: MinQty,
+      };
 
-    setSelect([...select, obj]);
+      setSelect([...select, obj]);
+      setError(false);
+    }
   };
   const bg = useColorModeValue("white", "dark");
   return (
@@ -139,6 +145,7 @@ function Test() {
         mb="auto"
       >
         <form
+          style={{ marginTop: "40px" }}
           width={["444px", "444px", "444px", "100%", "100%"]}
           display={["444px", "444px", "444px", "100%", "100%"]}
           onSubmit={formik.handleSubmit}
@@ -166,6 +173,11 @@ function Test() {
             justifyContent="space-around"
             mt="20px"
           >
+            {Error && (
+              <Text color="red">
+                Max Quantity Please Enter Greater than Total Stock
+              </Text>
+            )}
             <Box>
               <Text width="100px">Product Size</Text>
               <Select
@@ -244,7 +256,7 @@ function Test() {
             <Box>
               <Text ml="10px" width="100px">
                 {" "}
-                .
+                Discount
               </Text>
               <Input
                 onChange={(e) => {
@@ -301,6 +313,7 @@ function Test() {
                 name="stocks"
                 htmlSize={4}
                 width="auto"
+                type="number"
               />
             </Box>
 
@@ -313,6 +326,7 @@ function Test() {
                 name="MaxQty"
                 htmlSize={4}
                 width="auto"
+                type="number"
               />
             </Box>
             <Box>

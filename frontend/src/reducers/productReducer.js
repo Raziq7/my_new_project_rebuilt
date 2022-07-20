@@ -26,6 +26,9 @@ import {
   DECREAS_BILLING_QTY_ERR,
   DECREAS_BILLING_QTY_REQUEST,
   DECREAS_BILLING_QTY_SUCCESS,
+  DELETE_LEDGER_ERR,
+  DELETE_LEDGER_REQUEST,
+  DELETE_LEDGER_SUCCESS,
   DELETE_PRODUCT_ERR,
   DELETE_PRODUCT_REQUEST,
   DELETE_PRODUCT_SUCCESS,
@@ -530,6 +533,28 @@ export const getSubCategoriesReducer = (state = {}, action) => {
         showSubCategory: action.payload,
       };
     case GET_SUB_CATEGORY_ERR:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+// ledgerDeleteAction
+export const ledgerDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DELETE_LEDGER_REQUEST:
+      return {
+        loading: true,
+      };
+    case DELETE_LEDGER_SUCCESS:
+      return {
+        loading: false,
+        deleteLadger: action.payload,
+      };
+    case DELETE_LEDGER_ERR:
       return {
         loading: false,
         error: action.payload,

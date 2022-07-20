@@ -60,7 +60,7 @@ function App() {
 
             <Route path="/purchaseStock" element={<ParchaseStock />} />
 
-            <Route path="/LadgerBook" element={<LadgerBook />} />
+            <Route path="/LedgerBook" element={<LadgerBook />} />
 
             <Route path="/test" element={<Test />} />
 

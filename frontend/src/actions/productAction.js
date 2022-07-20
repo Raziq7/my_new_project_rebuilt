@@ -67,6 +67,9 @@ import {
   CATEGORY_GET_REQUEST,
   CATEGORY_GET_SUCCESS,
   CATEGORY_DELETE_ERR,
+  DELETE_LEDGER_REQUEST,
+  DELETE_LEDGER_SUCCESS,
+  DELETE_LEDGER_ERR,
 } from "../constant/productConstant";
 
 export const addProductAction = (details) => async (dispatch, getState) => {
@@ -449,3 +452,17 @@ export const deleteSubCatAction =
       console.log(err);
     }
   };
+
+//delete LedgerAction
+export const ledgerDeleteAction = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: DELETE_LEDGER_REQUEST });
+
+    let { data } = await axios.delete(`/api/superAdmin/deleteLedger/?id=${id}`);
+
+    dispatch({ type: DELETE_LEDGER_SUCCESS, payload: data });
+  } catch (err) {
+    dispatch({ type: DELETE_LEDGER_ERR, payload: err });
+    console.log(err);
+  }
+};

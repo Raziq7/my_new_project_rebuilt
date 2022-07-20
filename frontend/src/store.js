@@ -28,13 +28,10 @@ import {
   deleteSubCategoryReducer,
   deleteCategoryReducer,
   getSubCategoriesReducer,
+  ledgerDeleteReducer,
 } from "./reducers/productReducer";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
-import {
-  ProductManageColomnHideAndVisibleReducer,
-  ProductManageColomnHideAndVisibleShowReducer,
-} from "./reducers/SettingReducer";
 
 const appReducer = combineReducers({
   staffData: staffRegsterReducer,
@@ -48,9 +45,6 @@ const appReducer = combineReducers({
   editSuccess: editProductTakeReducer,
   purcaseDetails: purchaseStockProductReducer,
   increasStockValue: increasStockValueReducer,
-  ProductManageColomnHideAndVisible: ProductManageColomnHideAndVisibleReducer,
-  ProductManageColomnHideAndVisibleShow:
-    ProductManageColomnHideAndVisibleShowReducer,
   billing: billingReducer,
   increasQtyValue: increasQtyValueReducer,
   decreasBillingQty: decreasBillingQtyReducer,
@@ -64,6 +58,7 @@ const appReducer = combineReducers({
   deleteSubCategory: deleteSubCategoryReducer,
   deleteCategory: deleteCategoryReducer,
   getSubCategories: getSubCategoriesReducer,
+  ledgerDelete: ledgerDeleteReducer,
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

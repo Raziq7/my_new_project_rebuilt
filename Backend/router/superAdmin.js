@@ -28,6 +28,7 @@ const {
   ladgerBookshow,
   ProductManageColomnHideAndVisible,
   ProductManageColomnHideAndVisibleShow,
+  deleteLedger,
 } = require("../controllers/sAdminController");
 const protect = require("../Middleware/auth");
 const router = express.Router();
@@ -116,4 +117,8 @@ router
 router
   .route("/ProductManageColomnHideAndVisibleShow")
   .get(ProductManageColomnHideAndVisibleShow);
+
+// /deleteLedger
+router.route("/deleteLedger/").delete(deleteLedger);
+
 module.exports = router;

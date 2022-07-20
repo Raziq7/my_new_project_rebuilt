@@ -222,10 +222,10 @@ module.exports = {
               MaterialType: elem.selectQty,
               MarketPrice: marketPrice,
               SellingPrice: sellingPrice,
-              Discount: 44,
+              Discount: qty,
               MaxStock: maxstock,
               MinStock: minStock,
-              Qty: qty,
+              Qty: stocks,
               MaxStockMeter: maxstock,
               MinStockMeter: minStock,
               VendorName: vendorName,
@@ -918,5 +918,15 @@ module.exports = {
     let show = await ProductColumns.find({});
 
     res.json(show);
+  }),
+
+  // deleteLedger
+  deleteLedger: asyncHandler(async (req, res) => {
+    const { id } = req.query;
+    console.log(req.query, "sfggdf");
+
+    let deleteLedger = await LadgerBook.deleteOne({ _id: id });
+
+    res.json(deleteLedger);
   }),
 };

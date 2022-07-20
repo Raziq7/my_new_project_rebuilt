@@ -16,26 +16,26 @@ import {
   Search,
   ViewColumn,
 } from "@material-ui/icons";
+import { MdDelete } from "react-icons/md";
 
 import {
   chakra,
-  Spacer,
   Stack,
   VStack,
   Text,
-  Heading,
   Center,
   Skeleton,
   useColorModeValue,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
-import { BsArrowsExpand } from "react-icons/bs";
 
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import {
   AddladgerBookAction,
   ladgerBookAction,
   ladgerBookshow,
+  ledgerDeleteAction,
 } from "../actions/productAction";
 import { useDispatch, useSelector } from "react-redux";
 import { Box, Button, Divider, Input, Select } from "@material-ui/core";
@@ -81,27 +81,27 @@ function LadgerBook() {
     return state.ladgerBookshow;
   });
 
-  console.log(showcategoryLadger, "showcategoryLadgershowcategoryLadger");
   let { addladger } = useSelector((state) => {
     return state.AddladgerBook;
+  });
+
+  let { deleteLadger } = useSelector((state) => {
+    return state.ledgerDelete;
   });
 
   console.log(ladger, "123456787");
   useEffect(() => {
     dispatch(ladgerBookAction());
     dispatch(ladgerBookshow());
-  }, [addladger]);
-  const [showPassword, setShowPassword] = useState(false);
+  }, [addladger, deleteLadger]);
 
   const columns = [
-    // { title: "S.No", field: "S.No" },
-    // { title: "Date", field: "Date" },
     { title: "Category", field: "Category" },
     { title: "Detaile", field: "Detaile" },
     { title: "Credit", field: "Credit" },
     { title: "Debit", field: "Debit" },
     { title: "Current Balnce", field: "Current_Balnce" },
-    // { title: "Clossing Balnce", field: "Clossing Balnce" },
+    { title: "Action", field: "Action" },
   ];
 
   const data =
@@ -113,6 +113,11 @@ function LadgerBook() {
         Debit: ladg.debit,
         Credit: ladg.credit,
         Current_Balnce: ladg.balance,
+        Action: (
+          <>
+            <MdDelete onClick={() => dispatch(ledgerDeleteAction(ladg._id))} />
+          </>
+        ),
       };
     });
 
@@ -141,163 +146,165 @@ function LadgerBook() {
   }, [bg]);
 
   return (
-    <VStack ml="200px">
-      <Box>
-        <Center fontSize="40px" color="teal" style={{ marginBottom: "10px" }}>
-          Ledger Book
-        </Center>
-      </Box>
-      <Box
-        sx={{
-          justifyContent: "center",
-          alignItems: "center",
-          bgcolor: color,
-        }}
-        backgroundColor={color}
-        filter="grayscale(80%)"
-        height={250}
-        width="100%"
-        boxShadow="2xl"
-        style={{ marginBottom: "10px" }}
-      >
-        <form onSubmit={submitHandler}>
-          <Box
-            spacing={3}
-            display={["block", "block", "block", "flex", "flex"]}
-            alignItems="center"
-            justifyContent="center"
-            mt="80px"
-          >
-            <VStack mb="28px" w="150px">
-              <Text>Select Category</Text>
-              <Select
-                onChange={(e) => {
-                  setCategory(e.target.value);
-                }}
-                placeholder="Select category"
-                size="md"
-                style={{ marginLeft: "15px", width: "100px" }}
-              >
-                {showcategoryLadger &&
-                  showcategoryLadger.map((data) => (
-                    <option
-                      style={{ marginLeft: "15px" }}
-                      value={data.category}
-                    >
-                      {data.category}
-                    </option>
-                  ))}
-              </Select>
-            </VStack>
-            <Divider />
-            <VStack mb="28px">
-              <Text>Enter Details</Text>
-              <Input
-                onChange={(e) => {
-                  setDetails(e.target.value);
-                }}
-                backgroundColor={color == "dark" && "wheat"}
-                placeholder="Details"
-                _placeholder={{ color: "inherit" }}
-                sx={{ marginLeft: "15px" }}
-              />
-            </VStack>
-            <Box sx={{ marginLeft: "20px" }}></Box>
-            <VStack mb="28px">
-              <Text>Select Type</Text>
-
-              <Select
-                onChange={(e) => {
-                  setExpense(e.target.value);
-                }}
-                placeholder="Select category"
-                size="md"
-                style={{ marginLeft: "15px", width: "100px" }}
-              >
-                <option style={{ marginLeft: "15px" }} value="credit">
-                  Credit
-                </option>
-                <option style={{ marginLeft: "15px" }} value="debit">
-                  Debit
-                </option>
-              </Select>
-            </VStack>
-
-            <Box sx={{ marginLeft: "20px" }}></Box>
-            {expense == "credit" && (
-              <VStack mb="28px">
-                <Text>Credit</Text>
-                <Input
+    <>
+      <VStack ml="200px">
+        <Box>
+          <Center fontSize="40px" color="teal" style={{ marginBottom: "10px" }}>
+            Ledger Book
+          </Center>
+        </Box>
+        <Box
+          sx={{
+            justifyContent: "center",
+            alignItems: "center",
+            bgcolor: color,
+          }}
+          backgroundColor={color}
+          filter="grayscale(80%)"
+          height={250}
+          width="100%"
+          boxShadow="2xl"
+          style={{ marginBottom: "10px" }}
+        >
+          <form onSubmit={submitHandler}>
+            <Box
+              spacing={3}
+              display={["block", "block", "block", "flex", "flex"]}
+              alignItems="center"
+              justifyContent="center"
+              mt="80px"
+            >
+              <VStack mb="28px" w="150px">
+                <Text>Select Category</Text>
+                <Select
                   onChange={(e) => {
-                    setCredit(e.target.value);
+                    setCategory(e.target.value);
                   }}
-                  focusBorderColor="red"
-                  placeholder="Credit"
-                  _placeholder={{ color: "inherit" }}
-                  type="number"
-                />
+                  placeholder="Select category"
+                  size="md"
+                  style={{ marginLeft: "15px", width: "100px" }}
+                >
+                  {showcategoryLadger &&
+                    showcategoryLadger.map((data) => (
+                      <option
+                        style={{ marginLeft: "15px" }}
+                        value={data.category}
+                      >
+                        {data.category}
+                      </option>
+                    ))}
+                </Select>
               </VStack>
-            )}
-
-            {expense == "debit" && (
+              <Divider />
               <VStack mb="28px">
-                <Text>Debit</Text>
+                <Text>Enter Details</Text>
                 <Input
                   onChange={(e) => {
-                    setDebit(e.target.value);
+                    setDetails(e.target.value);
                   }}
-                  focusBorderColor="red"
-                  placeholder="Debit"
+                  backgroundColor={color == "dark" && "wheat"}
+                  placeholder="Details"
                   _placeholder={{ color: "inherit" }}
-                  type="number"
                   sx={{ marginLeft: "15px" }}
                 />
               </VStack>
-            )}
+              <Box sx={{ marginLeft: "20px" }}></Box>
+              <VStack mb="28px">
+                <Text>Select Type</Text>
 
-            <Button
-              style={{
-                backgroundColor: "#008081",
-                marginLeft: "15px",
-                color: "white",
-              }}
-              type="submit"
-              width="100px"
-              boxShadow="2xl"
-              rounded="xl"
-            >
-              Add Ledger
-            </Button>
-          </Box>
-        </form>
-      </Box>
-      {loading ? (
-        <Stack>
-          <Skeleton height="20px" />
-          <Skeleton height="20px" />
-          <Skeleton height="20px" />
-        </Stack>
-      ) : (
-        <MaterialTable
-          style={{ marginLeft: "5px", marginBottom: "50px", width: "100%" }}
-          icons={tableIcons}
-          data={data}
-          columns={columns}
-          title="Ledger Book"
-          options={{
-            filtering: true,
-            pageSize: 3,
-            pageSizeOptions: [3, 5, 10, 20, 30, 40, 50],
-            exportButton: {
-              csv: true,
-              pdf: false,
-            },
-            exportAllData: true,
-            grouping: true,
-          }}
-        />
-      )}
-    </VStack>
+                <Select
+                  onChange={(e) => {
+                    setExpense(e.target.value);
+                  }}
+                  placeholder="Select category"
+                  size="md"
+                  style={{ marginLeft: "15px", width: "100px" }}
+                >
+                  <option style={{ marginLeft: "15px" }} value="credit">
+                    Credit
+                  </option>
+                  <option style={{ marginLeft: "15px" }} value="debit">
+                    Debit
+                  </option>
+                </Select>
+              </VStack>
+
+              <Box sx={{ marginLeft: "20px" }}></Box>
+              {expense == "credit" && (
+                <VStack mb="28px">
+                  <Text>Credit</Text>
+                  <Input
+                    onChange={(e) => {
+                      setCredit(e.target.value);
+                    }}
+                    focusBorderColor="red"
+                    placeholder="Credit"
+                    _placeholder={{ color: "inherit" }}
+                    type="number"
+                  />
+                </VStack>
+              )}
+
+              {expense == "debit" && (
+                <VStack mb="28px">
+                  <Text>Debit</Text>
+                  <Input
+                    onChange={(e) => {
+                      setDebit(e.target.value);
+                    }}
+                    focusBorderColor="red"
+                    placeholder="Debit"
+                    _placeholder={{ color: "inherit" }}
+                    type="number"
+                    sx={{ marginLeft: "15px" }}
+                  />
+                </VStack>
+              )}
+
+              <Button
+                style={{
+                  backgroundColor: "#008081",
+                  marginLeft: "15px",
+                  color: "white",
+                }}
+                type="submit"
+                width="100px"
+                boxShadow="2xl"
+                rounded="xl"
+              >
+                Add Ledger
+              </Button>
+            </Box>
+          </form>
+        </Box>
+        {loading ? (
+          <Stack>
+            <Skeleton height="20px" />
+            <Skeleton height="20px" />
+            <Skeleton height="20px" />
+          </Stack>
+        ) : (
+          <MaterialTable
+            style={{ marginLeft: "5px", marginBottom: "50px", width: "100%" }}
+            icons={tableIcons}
+            data={data}
+            columns={columns}
+            title="Ledger Book"
+            options={{
+              filtering: true,
+              pageSize: 3,
+              pageSizeOptions: [3, 5, 10, 20, 30, 40, 50],
+              exportButton: {
+                csv: true,
+                pdf: false,
+              },
+              exportAllData: true,
+              grouping: true,
+            }}
+          />
+        )}
+      </VStack>
+    </>
   );
 }
 
