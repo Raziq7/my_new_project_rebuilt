@@ -29,6 +29,7 @@ import {
   useColorModeValue,
   Flex,
 } from "@chakra-ui/react";
+import Swal from "sweetalert2";
 import MaterialTable from "material-table";
 import {
   AddBox,
@@ -54,6 +55,7 @@ import React, { forwardRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { billingAction, checkoutBill } from "../actions/productAction";
 import { PDF } from "./PDF";
+import { useNavigate } from "react-router-dom";
 
 function Billing() {
   const [billValue, setValue] = useState();
@@ -71,6 +73,7 @@ function Billing() {
   const [grandTotal, setGrandTotal] = useState(0);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
 
   const initialRef = React.useRef();
   const finalRef = React.useRef();
@@ -117,7 +120,9 @@ function Billing() {
     { title: "Brand", field: "Brand" },
 
     { title: "Discount", field: "Discount" },
-    { title: "Price", field: "Price" },
+    { title: "MRP", field: "MRP" },
+    { title: "subtotal(per unit)", field: "SubtotalUnit" },
+    { title: "subtotal( x QTY)", field: "Subtotal" },
     { title: "Qty", field: "Qty" },
 
     {
@@ -142,7 +147,7 @@ function Billing() {
   let data =
     billInfo &&
     billInfo.map((data) => {
-      grand = grand + data.SellingPrice;
+      grand = grand + data.SellingPrice - data.Discount;
       let qtyRate = data.SellingPrice * data.qtyVal;
       grand = grand + qtyRate - data.SellingPrice;
       return {
@@ -150,7 +155,9 @@ function Billing() {
         Size: data.Size,
         Brand: data.Brand,
         Discount: data.Discount,
-        Price: data.SellingPrice,
+        MRP: data.SellingPrice.toLocaleString("en-US"),
+        SubtotalUnit: data.SellingPrice - data.Discount,
+        Subtotal: data.qtyVal * data.SellingPrice - data.Discount,
         Qty: (
           <HStack>
             <AiOutlineMinus onClick={() => decrement(data._id)} />
@@ -171,6 +178,33 @@ function Billing() {
       setQtyVal(1);
     }
   }, [qtyVal]);
+
+  useEffect(() => {
+    if (visilblePdf) {
+      setVisiblePdf(false);
+      Swal.fire({
+        title: "Have you Taken the print out ?",
+        text: "You can't print it out later !",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, checkout it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          dispacth(checkoutBill(billInfo, grand));
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Your Billing has been saved",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          window.location("/billing");
+        }
+      });
+    }
+  }, [visilblePdf]);
 
   //events
   const handleSubmit = (e) => {
@@ -270,179 +304,178 @@ function Billing() {
         mr="auto"
         mb="auto"
         mt="20px"
+        width="100%"
       >
         <Center fontSize="40px" color="teal" mt="10px">
           Billing Managment
         </Center>
-        {!visilblePdf && (
+        {!billingForm && (
           <>
-            {!billingForm && (
-              <>
-                <Button mt="25px" ml="50px" colorScheme="blue" onClick={onOpen}>
-                  Enter customer Details
-                </Button>
+            <Center>
+              <Button mt="25px" ml="10px" colorScheme="blue" onClick={onOpen}>
+                Enter customer Details
+              </Button>
+            </Center>
 
-                <Modal
-                  initialFocusRef={initialRef}
-                  isOpen={isOpen}
-                  onClose={onClose}
-                >
-                  <ModalOverlay />
-                  <ModalContent>
-                    <ModalHeader>Enter Customer Details</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody pb={6}>
-                      <FormControl>
-                        <FormLabel>Customer Name</FormLabel>
-                        <Input
-                          onChange={(e) => setName(e.target.value)}
-                          ref={initialRef}
-                          placeholder="Name"
-                        />
-                      </FormControl>
+            <Modal
+              initialFocusRef={initialRef}
+              isOpen={isOpen}
+              onClose={onClose}
+            >
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader>Enter Customer Details</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody pb={6}>
+                  <FormControl>
+                    <FormLabel>Customer Name</FormLabel>
+                    <Input
+                      onChange={(e) => setName(e.target.value)}
+                      ref={initialRef}
+                      placeholder="Name"
+                    />
+                  </FormControl>
 
-                      <FormControl mt={4}>
-                        <FormLabel>customer contact number</FormLabel>
-                        <Input
-                          onChange={(e) => setPhone(e.target.value)}
-                          placeholder="Phone Number"
-                          type="number"
-                        />
-                      </FormControl>
-                    </ModalBody>
+                  <FormControl mt={4}>
+                    <FormLabel>customer contact number</FormLabel>
+                    <Input
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="Phone Number"
+                      type="number"
+                    />
+                  </FormControl>
+                </ModalBody>
 
-                    <ModalFooter>
-                      <Button
-                        onClick={saveDetailClick}
-                        colorScheme="blue"
-                        mr={3}
-                      >
-                        Proceed to billing
-                      </Button>
-                      <Button onClick={onClose}>Cancel</Button>
-                    </ModalFooter>
-                  </ModalContent>
-                </Modal>
-              </>
-            )}
-
-            {billingForm && (
-              <>
-                <VStack>
-                  <HStack>
-                    <form onSubmit={handleSubmit}>
-                      <Input
-                        type="number"
-                        border="solid"
-                        background="white"
-                        placeholder="Enter the Billing ID"
-                        w="29"
-                        name="excel"
-                        value={billValue}
-                        onChange={(e) => {
-                          setValue(e.target.value);
-                          console.log(e.target.value);
-                        }}
-                      />
-                      <Button
-                        ml="5px"
-                        type="submit"
-                        backgroundColor="#16134F"
-                        color="white"
-                      >
-                        Add to cart
-                      </Button>
-                    </form>
-                  </HStack>
-                  <Text color="ActiveBorder">Enter Name : {name} </Text>
-                  <Text>Enter contact Number : {phone} </Text>
-                </VStack>
-                {loading && <Progress size="xs" isIndeterminate />}
-                {error && <h1>{error}</h1>}
-
-                <MaterialTable
-                  style={{
-                    marginLeft: "50px",
-                    marginTop: "20px",
-                    width: "100%",
-                  }}
-                  icons={tableIcons}
-                  data={data}
-                  columns={columns}
-                  title="Billing Managment"
-                  options={{
-                    filtering: true,
-                    pageSize: 3,
-                    pageSizeOptions: [3, 5, 10, 20, 30, 40, 50],
-                    exportButton: true,
-                    grouping: true,
-                  }}
-                />
-                <Box mt="15px" ml="30px">
-                  <form onSubmit={gstSubmit}>
-                    <FormLabel>Enter GST</FormLabel>
-                    <HStack>
-                      <Input
-                        onChange={(e) => setGst(e.target.value)}
-                        ref={initialRef}
-                        placeholder="GST"
-                        value={gst}
-                        type="number"
-                        bg="white"
-                      />
-                      <Button bg="#16134F" colorScheme="#16134F" type="submit">
-                        Add Gst
-                      </Button>
-                    </HStack>
-                  </form>
-                </Box>
-                <Flex ml="30px">
-                  <Box
-                    mt="30px"
-                    boxShadow="xl"
-                    rounded="xl"
-                    w="150px"
-                    bg="#16134F"
-                    h="25px"
-                  >
-                    <Center>
-                      <Text color="white">TOTAL: {grand}</Text>
-                    </Center>
-                  </Box>
-
-                  <Box
-                    sx={{ marginTop: "30px" }}
-                    boxShadow="xl"
-                    rounded="xl"
-                    w="170px"
-                    bg="#16134F"
-                    h="25px"
-                    ml="10px"
-                  >
-                    <Center>
-                      <Text color="white">
-                        Total With Gst: {!grandTotal == 0 ? grandTotal : grand}
-                      </Text>
-                    </Center>
-                  </Box>
-                </Flex>
-                {/* {BillDetail && (
-                  <Button
-                    onClick={() => {
-                      setGrandTotal(grand);
-                      setVisiblePdf(true);
-                      dispacth(checkoutBill(billInfo, grand));
-                    }}
-                    background="teal"
-                    color="white"
-                    mt="15px"
-                    ml="15px"
-                  >
-                    Checkout
+                <ModalFooter>
+                  <Button onClick={saveDetailClick} colorScheme="blue" mr={3}>
+                    Proceed to billing
                   </Button>
-                )} */}
-              </>
-            )}
+                  <Button onClick={onClose}>Cancel</Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
+          </>
+        )}
+
+        {billingForm && (
+          <>
+            <VStack>
+              <HStack>
+                <form onSubmit={handleSubmit}>
+                  <Input
+                    type="number"
+                    border="solid"
+                    background="white"
+                    placeholder="Enter the Billing ID"
+                    w="29"
+                    name="excel"
+                    value={billValue}
+                    onChange={(e) => {
+                      setValue(e.target.value);
+                      console.log(e.target.value);
+                    }}
+                  />
+                  <Button
+                    ml="5px"
+                    type="submit"
+                    backgroundColor="#16134F"
+                    color="white"
+                  >
+                    Add to cart
+                  </Button>
+                </form>
+              </HStack>
+              <Text color="ActiveBorder">Enter Name : {name} </Text>
+              <Text>Enter contact Number : {phone} </Text>
+            </VStack>
+            {loading && <Progress size="xs" isIndeterminate />}
+            {error && <h1>{error}</h1>}
+
+            <MaterialTable
+              style={{
+                marginLeft: "50px",
+                marginTop: "20px",
+                width: "95%",
+              }}
+              icons={tableIcons}
+              data={data}
+              columns={columns}
+              title="Billing Managment"
+              options={{
+                filtering: true,
+                pageSize: 5,
+                pageSizeOptions: [3, 5, 10, 20, 30, 40, 50],
+                exportButton: true,
+                grouping: true,
+              }}
+            />
+            <Box mt="15px" ml="300px" width="50%">
+              <form onSubmit={gstSubmit}>
+                <FormLabel>Enter GST</FormLabel>
+                <HStack>
+                  <Input
+                    onChange={(e) => setGst(e.target.value)}
+                    ref={initialRef}
+                    placeholder="GST"
+                    value={gst}
+                    type="number"
+                    bg="white"
+                  />
+                  <Button bg="#16134F" colorScheme="#16134F" type="submit">
+                    Add Gst
+                  </Button>
+                </HStack>
+              </form>
+            </Box>
+            <Flex ml="300px">
+              <Box
+                mt="30px"
+                boxShadow="xl"
+                rounded="xl"
+                w="150px"
+                bg="#16134F"
+                h="25px"
+              >
+                <Center>
+                  <Text color="white">
+                    TOTAL: {grand.toLocaleString("en-US")}
+                  </Text>
+                </Center>
+              </Box>
+
+              <Box
+                sx={{ marginTop: "30px" }}
+                boxShadow="xl"
+                rounded="xl"
+                w="170px"
+                bg="#16134F"
+                h="25px"
+                ml="10px"
+              >
+                <Center>
+                  <Text color="white">
+                    Total With Gst:{" "}
+                    {!grandTotal == 0
+                      ? grandTotal
+                      : grand.toLocaleString("en-US")}
+                  </Text>
+                </Center>
+              </Box>
+              {BillDetail && (
+                <Button
+                  onClick={() => {
+                    setGrandTotal(grand);
+                    setVisiblePdf(true);
+                  }}
+                  background="teal"
+                  color="white"
+                  mt="25px"
+                  ml="100px"
+                >
+                  Checkout
+                </Button>
+              )}
+            </Flex>
           </>
         )}
 

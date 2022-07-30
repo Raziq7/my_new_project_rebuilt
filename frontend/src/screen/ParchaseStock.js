@@ -268,9 +268,9 @@ function ParchaseStock() {
         ) : (
           <MaterialTable
             style={{
-              marginLeft: 90,
+              marginLeft: 10,
               marginTop: "20px",
-              width: "1060px",
+              width: "100%",
             }}
             icons={tableIcons}
             data={data}
@@ -278,7 +278,7 @@ function ParchaseStock() {
             title="Purchase Stock"
             options={{
               filtering: true,
-              pageSize: 3,
+              pageSize: 5,
               pageSizeOptions: [3, 5, 10, 20, 30, 40, 50],
               // selection: true,
               exportButton: true,

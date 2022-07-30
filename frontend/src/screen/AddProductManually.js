@@ -256,7 +256,7 @@ function Test() {
             <Box>
               <Text ml="10px" width="100px">
                 {" "}
-                Discount
+                Discount.Rs
               </Text>
               <Input
                 onChange={(e) => {
@@ -271,10 +271,10 @@ function Test() {
             </Box>
 
             <Box>
-              <Text width="100px">
+              <Text width="130px">
                 {checkMeter == "Meters"
-                  ? "Per Meter. Market Price"
-                  : "Market Price"}
+                  ? "Per Meter. wholesale price"
+                  : "wholesale price"}
               </Text>
               <Input
                 onChange={(e) => {
@@ -289,9 +289,7 @@ function Test() {
 
             <Box>
               <Text width="100px">
-                {checkMeter == "Meters"
-                  ? "Per Meter. Selling Price"
-                  : "Selling Price"}
+                {checkMeter == "Meters" ? "Per Meter.MRP" : " MRP"}
               </Text>
               <Input
                 onChange={(e) => {
@@ -394,8 +392,8 @@ function Test() {
                     <Th>Product Size</Th>
                     <Th>Product Color</Th>
                     <Th isNumeric>Product Qty</Th>
-                    <Th isNumeric> Market Price</Th>
-                    <Th isNumeric>Selling Price</Th>
+                    <Th isNumeric> wholesale price</Th>
+                    <Th isNumeric> MRP</Th>
                     <Th isNumeric>Total Stock</Th>
                     <Th isNumeric>Max Qty</Th>
                     <Th isNumeric>Min Qty</Th>

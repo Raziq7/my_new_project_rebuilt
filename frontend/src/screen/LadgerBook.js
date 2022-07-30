@@ -112,7 +112,7 @@ function LadgerBook() {
         Detaile: ladg.details,
         Debit: ladg.debit,
         Credit: ladg.credit,
-        Current_Balnce: ladg.balance,
+        Current_Balnce: ladg.balance.toLocaleString("en-US"),
         Action: (
           <>
             <MdDelete onClick={() => dispatch(ledgerDeleteAction(ladg._id))} />
@@ -147,7 +147,7 @@ function LadgerBook() {
 
   return (
     <>
-      <VStack ml="200px">
+      <VStack width="95%">
         <Box>
           <Center fontSize="40px" color="teal" style={{ marginBottom: "10px" }}>
             Ledger Book
@@ -158,11 +158,11 @@ function LadgerBook() {
             justifyContent: "center",
             alignItems: "center",
             bgcolor: color,
+            width: "90%",
           }}
           backgroundColor={color}
           filter="grayscale(80%)"
           height={250}
-          width="100%"
           boxShadow="2xl"
           style={{ marginBottom: "10px" }}
         >
@@ -285,14 +285,14 @@ function LadgerBook() {
           </Stack>
         ) : (
           <MaterialTable
-            style={{ marginLeft: "5px", marginBottom: "50px", width: "100%" }}
+            style={{ marginLeft: "5px", marginBottom: "50px", width: "90%" }}
             icons={tableIcons}
             data={data}
             columns={columns}
             title="Ledger Book"
             options={{
               filtering: true,
-              pageSize: 3,
+              pageSize: 5,
               pageSizeOptions: [3, 5, 10, 20, 30, 40, 50],
               exportButton: {
                 csv: true,

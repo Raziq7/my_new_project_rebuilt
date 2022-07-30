@@ -671,7 +671,11 @@ module.exports = {
           context.fillText(`QTY - ${pro.Qty}`, 259, 135);
           context.fillText(`Sort No: ${val}`, 460, 205);
           context.fillText(pro.priceCode, 320, 720);
-          context.fillText(`MRP ${pro.SellingPrice}`, 620, 810);
+          context.fillText(
+            `MRP ${pro.SellingPrice.toLocaleString("en-US")}`,
+            620,
+            810
+          );
 
           const buffer = canvas.toBuffer("image/png");
           fs.writeFileSync(`./frontend/public/copy/${val}.png`, buffer);

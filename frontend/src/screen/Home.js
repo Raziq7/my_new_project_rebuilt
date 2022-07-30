@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
 import {
   Skeleton,
   Button,
@@ -7,6 +7,7 @@ import {
   HStack,
   useToast,
   Flex,
+  Checkbox,
 } from "@chakra-ui/react";
 import MaterialTable from "material-table";
 import {
@@ -57,6 +58,8 @@ function Home() {
 
   const [zipFolder, setZipFolder] = useState();
   const [zipFolder1, setZipFolder1] = useState();
+  const [select, setSelect] = useState([]);
+  const [checked, setCheck] = useState(false);
 
   //socket io
   const socket = useSocket((socket) => {
@@ -103,19 +106,22 @@ function Home() {
   let data =
     showProduct &&
     showProduct.map((data) => {
+      let sell = data.SellingPrice - data.Discount;
       return {
         ProductName: data.ProductName,
         Description: data.Description,
         MainCategory: data.MainCategory,
+        BarcodeId: data.PID,
         SubCategory: data.SubCategory,
         Size: data.Size,
         Color: data.Color,
         GenderWear: data.GenderWear,
         Brand: data.Brand,
         MaterialType: data.MaterialType,
-        SellingPrice: data.SellingPrice,
-        priceCode: data.priceCode,
+        MRP: data.SellingPrice.toLocaleString("en-US"),
         Discount: data.Discount,
+        SellingPrice: sell.toLocaleString("en-US"),
+        priceCode: data.priceCode,
         Qty: data.Qty,
         VendorName: data.VendorName,
         BarCode: (
@@ -146,6 +152,22 @@ function Home() {
             Edit
           </Button>
         ),
+        ZIP: (
+          <Checkbox
+            isInvalid
+            sx={{ marginLeft: "10px" }}
+            size="lg"
+            onChange={(e) => {
+              setCheck(e.target.checked);
+              setZipFolder(data.PID);
+              setZip([...zip, data.PID]);
+              setZipMrp([...zipMrp, data.BarCodeMrpLink]);
+              setZipFolder(data.PID);
+              setZip([...zip, data.BarCodeLink]);
+              setZipFolder1(data.PID);
+            }}
+          ></Checkbox>
+        ),
         _id: data._id,
         BarCodeLink: data.BarCodeLink,
         BarCodeMrpLink: data.BarCodeMrpLink,
@@ -168,6 +190,7 @@ function Home() {
 
   //clickZipDownload
   const clickZipDownload = () => {
+    setCheck(false);
     var zip1 = new JSZip();
     var count = 0;
     var zipFilename = `${zipFolder}.zip`;
@@ -195,6 +218,7 @@ function Home() {
   };
 
   const clickMrpZipDownload = () => {
+    setCheck(false);
     ///MRPZIP
     var zip2 = new JSZip();
     var count = 0;
@@ -261,6 +285,7 @@ function Home() {
     },
     { title: "Description", field: "Description" },
     { title: "Main Category", field: "MainCategory" },
+    { title: "Barcode ID", field: "BarcodeId" },
 
     { title: "SubCategory", field: "SubCategory" },
     { title: "Size", field: "Size" },
@@ -269,9 +294,11 @@ function Home() {
     { title: "Gender Wear", field: "GenderWear" },
     { title: "Brand", field: "Brand" },
     { title: "Material Type", field: "MaterialType" },
-    { title: "Selling Price", field: "SellingPrice" },
-    { title: "price Code", field: "priceCode" },
+    { title: "MRP", field: "MRP" },
     { title: "Discount", field: "Discount" },
+    { title: "Selling Price", field: "SellingPrice" },
+
+    { title: "price Code", field: "priceCode" },
     { title: "Qty", field: "Qty" },
     { title: "Vendor Name", field: "VendorName" },
     {
@@ -285,6 +312,10 @@ function Home() {
     {
       title: "Action",
       field: "Action",
+    },
+    {
+      title: "Barcode ZIP Download",
+      field: "ZIP",
     },
   ];
 
@@ -300,16 +331,34 @@ function Home() {
             as={ReachLink}
             to="/addproduct"
           >
-            <Button left="15%" backgroundColor="#16134F" color="white">
+            <Button left="9%" backgroundColor="#16134F" color="white">
               Add Product
             </Button>
           </Link>
           <Flex>
-            <Box ml="500px">
+            <Box ml="800px">
+              {checked && (
+                <Button
+                  onClick={clickZipDownload}
+                  backgroundColor="#16134F"
+                  color="white"
+                >
+                  Download Barcode
+                </Button>
+              )}
               {/* <Button onClick={clickZipDownload}>Zip Download</Button> */}
             </Box>
-            <Box ml="500px">
+            <Box ml="30px">
               {/* <Button onClick={clickMrpZipDownload}>Zip Download MRP</Button> */}
+              {checked && (
+                <Button
+                  onClick={clickMrpZipDownload}
+                  backgroundColor="#16134F"
+                  color="white"
+                >
+                  Download Barcode with MRP
+                </Button>
+              )}
             </Box>
           </Flex>
           {loading ? (
@@ -342,10 +391,9 @@ function Home() {
           ) : (
             <MaterialTable
               style={{
-                marginLeft: 150,
-                marginRight: "auto",
+                marginLeft: 40,
                 marginTop: "20px",
-                width: "1060px",
+                width: "95%",
               }}
               icons={tableIcons}
               data={data}
@@ -353,8 +401,8 @@ function Home() {
               title="Product Management"
               options={{
                 filtering: true,
-                pageSize: 3,
-                pageSizeOptions: [3, 5, 10, 20, 30, 40, 50],
+                pageSize: 5,
+                pageSizeOptions: [5, 10, 20, 30, 40, 50],
                 selection: true,
                 exportButton: true,
                 grouping: true,
@@ -366,33 +414,6 @@ function Home() {
                   onClick: (evt, data) => {
                     data.map((id) => {
                       dispatch(deleteProduct(id._id));
-                    });
-                  },
-                },
-
-                {
-                  icon: () => <AiOutlineDownload />,
-                  tooltip: "download All Selected Bar Code",
-                  onClick: (evt, data) => {
-                    data.map(async (id) => {
-                      setZipFolder(id.PID);
-                      setZip([...zip, id.PID]);
-
-                      clickZipDownload();
-                    });
-                  },
-                },
-
-                {
-                  icon: () => <AiOutlineDownload />,
-                  tooltip: "download MRP All Selected Bar Code",
-                  onClick: (evt, data) => {
-                    data.map(async (id) => {
-                      alert(id.PID, "ghjhkhkjhhkjkjhooogloglglglkg");
-
-                      setZipMrp([...zipMrp, id.BarCodeMrpLink]);
-                      setZipFolder1(id.PID);
-                      clickMrpZipDownload();
                     });
                   },
                 },

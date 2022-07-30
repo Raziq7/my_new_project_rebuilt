@@ -175,17 +175,18 @@ function UserManagment() {
       width={{
         sm: "60%",
         md: "650px",
-        lg: "500px",
-        xl: "70%",
+        lg: "600px",
+        xl: "100%",
       }}
-      mb="500px"
-      ml="150px"
+      mb="auto"
+      mt="auto"
+      h="auto"
     >
-      <Center fontSize="40px" color="teal" mt="10px">
+      <Center fontSize="40px" color="teal">
         User Managment
       </Center>
       <Link style={{ textDecoration: "none" }} as={ReachLink} to="/StaffForm">
-        <Button ml="158px" backgroundColor="#16134F" color="white">
+        <Button ml="100px" backgroundColor="#16134F" color="white">
           Add User
         </Button>
       </Link>
@@ -196,22 +197,27 @@ function UserManagment() {
             <div>won't be visible</div>
           </Skeleton>
           <Skeleton>
+            {" "}
             <div>contents wrapped</div>
             <div>won't be visible</div>
           </Skeleton>
           <Skeleton>
+            {" "}
             <div>contents wrapped</div>
             <div>won't be visible</div>
           </Skeleton>
           <Skeleton>
+            {" "}
             <div>contents wrapped</div>
             <div>won't be visible</div>
           </Skeleton>
           <Skeleton>
+            {" "}
             <div>contents wrapped</div>
             <div>won't be visible</div>
           </Skeleton>
           <Skeleton>
+            {" "}
             <div>contents wrapped</div>
             <div>won't be visible</div>
           </Skeleton>{" "}
@@ -220,10 +226,15 @@ function UserManagment() {
             <div>won't be visible</div>
           </Skeleton>
           <Skeleton>
+            {" "}
             <div>contents wrapped</div>
             <div>won't be visible</div>
           </Skeleton>
-          <Skeleton>
+          <Skeleton
+            style={{
+              marginBottom: "260px",
+            }}
+          >
             <div>contents wrapped</div>
             <div>won't be visible</div>
           </Skeleton>
@@ -231,9 +242,9 @@ function UserManagment() {
       ) : (
         <MaterialTable
           style={{
-            marginLeft: "150px",
-            marginTop: "20px",
-            width: "80%",
+            marginLeft: "40px",
+            width: "95%",
+            marginBottom: "260px",
           }}
           icons={tableIcons}
           data={data}
@@ -241,7 +252,7 @@ function UserManagment() {
           title="User Managment"
           options={{
             filtering: true,
-            pageSize: 3,
+            pageSize: 5,
             pageSizeOptions: [3, 5, 10, 20, 30, 40, 50],
             // selection: true,
             exportButton: true,
