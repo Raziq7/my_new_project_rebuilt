@@ -99,7 +99,6 @@ function Test() {
     },
     onSubmit: (values) => {
       values.select = select;
-      // alert(JSON.stringify(values, null, 2));
       dispatch(addProductAction(values));
       navigate("/home");
     },
@@ -448,7 +447,7 @@ function Test() {
                 name="meterial"
                 onChange={formik.handleChange}
                 value={formik.values.meterial}
-                placeholder="Product Meterial"
+                placeholder="Product Material"
               >
                 {showCategory &&
                   showCategory.map((data) => {
@@ -559,7 +558,7 @@ function Test() {
           <Spacer />
 
           <Divider />
-          <HStack mt="5px" ml="360px">
+          <HStack mt="15px" ml="390px">
             <Button
               type="submit"
               boxShadow="sm"

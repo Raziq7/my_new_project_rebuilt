@@ -131,6 +131,7 @@ function LadgerBook() {
       debit,
     };
     dispatch(AddladgerBookAction(obj));
+    setDebit("");
   };
   //background setup
   const [color, setColor] = useState("white");

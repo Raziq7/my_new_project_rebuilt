@@ -348,7 +348,7 @@ function Home() {
               )}
               {/* <Button onClick={clickZipDownload}>Zip Download</Button> */}
             </Box>
-            <Box ml="30px">
+            <Box ml="50px">
               {/* <Button onClick={clickMrpZipDownload}>Zip Download MRP</Button> */}
               {checked && (
                 <Button
@@ -391,9 +391,9 @@ function Home() {
           ) : (
             <MaterialTable
               style={{
-                marginLeft: 40,
+                marginLeft: "60px",
                 marginTop: "20px",
-                width: "95%",
+                width: "90vw",
               }}
               icons={tableIcons}
               data={data}

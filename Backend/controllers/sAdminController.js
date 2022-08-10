@@ -182,7 +182,11 @@ module.exports = {
 
           context.fillStyle = "black";
           context.font = "bold 60pt Menlo";
-          context.fillText(`MRP ${sellingPrice}`, 600, 530);
+          context.fillText(
+            `MRP ${sellingPrice.toLocaleString("en-US")}`,
+            600,
+            530
+          );
           // context.fillText(pro.ProductName, 455, 50);
 
           loadImage(BarCode_link2.secure_url).then(async (image) => {
@@ -191,7 +195,11 @@ module.exports = {
             context.fillText(`QTY - ${qty}`, 259, 135);
             context.fillText(`Sort No: ${val}`, 460, 205);
             context.fillText(priceCode, 320, 720);
-            context.fillText(`MRP ${sellingPrice}`, 620, 810);
+            context.fillText(
+              `MRP ${sellingPrice.toLocaleString("en-US")}`,
+              620,
+              810
+            );
 
             const buffer = canvas.toBuffer("image/png");
             fs.writeFileSync(`./frontend/public/copy/${val}.png`, buffer);

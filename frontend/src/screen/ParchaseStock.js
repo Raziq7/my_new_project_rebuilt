@@ -102,12 +102,13 @@ function ParchaseStock() {
       return {
         ProductName: data.ProductName,
         Size: data.Size,
+        Color: data.Color,
         Brand: data.Brand,
         MaterialType: data.MaterialType,
         MaxStock: data.MaxStock,
         MinStock: data.MinStock,
-        SellingPrice: data.SellingPrice,
-        VendorName: data.VendorName,
+        Price: data.SellingPrice,
+        vendorName: data.VendorName,
         Action: (
           // if (!data.superAdmin)
           <Button
@@ -196,8 +197,8 @@ function ParchaseStock() {
     { title: "Color", field: "Color" },
 
     { title: "Brand", field: "Brand" },
-    { title: "Material", field: "Material" },
-    { title: "Max Qty", field: "MaxQty" },
+    { title: "Material", field: "MaterialType" },
+    { title: "Max Qty", field: "MaxStock" },
     { title: "Min Stock", field: "MinStock" },
     { title: "Price", field: "Price" },
     { title: "vendor Name", field: "vendorName" },

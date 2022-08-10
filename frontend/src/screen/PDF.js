@@ -12,7 +12,6 @@ import {
   TableCaption,
   TableContainer,
   Button,
-  Input,
 } from "@chakra-ui/react";
 
 const ref = React.createRef();
@@ -22,14 +21,14 @@ export const PDF = ({ billInfo, qty, grand }) => {
     <>
       <div className="Post" ref={ref}>
         <TableContainer
-          ml="auto"
-          mt="50px"
+          ml="30px"
           mr="auto"
+          mt="50px"
           width={{
             sm: "100%",
             md: "100%",
-            lg: "100%",
-            xl: "100%",
+            lg: "auto",
+            xl: "auto",
           }}
         >
           <Table variant="simple">
@@ -37,12 +36,11 @@ export const PDF = ({ billInfo, qty, grand }) => {
             <Thead>
               <Tr>
                 <Th>Product Name</Th>
-                <Th>Size</Th>
-                <Th>Brand</Th>
-                <Th>Discount</Th>
-
                 <Th>Price</Th>
                 <Th>Qty</Th>
+                <Th>Discount</Th>
+                <Th>Size</Th>
+                <Th>Brand</Th>
               </Tr>
             </Thead>
 
@@ -53,14 +51,13 @@ export const PDF = ({ billInfo, qty, grand }) => {
                     <>
                       <Tr>
                         <Td>{data.ProductName}</Td>
-
-                        <Td>{data.Size}</Td>
-                        <Td> {data.Brand}</Td>
-                        <Td> {data.Discount}</Td>
-
                         <Td>{data.SellingPrice}</Td>
 
                         <Td>{data.qtyVal}</Td>
+
+                        <Td> {data.Discount}</Td>
+                        <Td>{data.Size}</Td>
+                        <Td> {data.Brand}</Td>
                       </Tr>
                     </>
                   );
@@ -73,7 +70,7 @@ export const PDF = ({ billInfo, qty, grand }) => {
 
       <Pdf targetRef={ref} filename="post.pdf">
         {({ toPdf }) => (
-          <Button colorScheme="red" onClick={toPdf}>
+          <Button sx={{ marginLeft: "35px" }} colorScheme="red" onClick={toPdf}>
             Download as PDF
           </Button>
         )}
