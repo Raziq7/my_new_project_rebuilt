@@ -130,7 +130,7 @@ module.exports = {
         loadImage(BarCode_link2.secure_url).then(async (image) => {
           context1.drawImage(image, 50, 320, 1100, 380);
           context1.fillText(productName, 500, 45);
-          context1.fillText(`QTY - ${qty}`, 259, 135);
+          context1.fillText("QTY - 1", 259, 135);
           context1.fillText(`Sort No: ${val}`, 460, 205);
           context1.fillText(priceCode, 320, 720);
 
@@ -192,7 +192,7 @@ module.exports = {
           loadImage(BarCode_link2.secure_url).then(async (image) => {
             context.drawImage(image, 50, 320, 1100, 380);
             context.fillText(productName, 500, 45);
-            context.fillText(`QTY - ${qty}`, 259, 135);
+            context.fillText("QTY - 1", 259, 135);
             context.fillText(`Sort No: ${val}`, 460, 205);
             context.fillText(priceCode, 320, 720);
             context.fillText(
@@ -618,7 +618,7 @@ module.exports = {
       loadImage(BarCode_link2.secure_url).then(async (image) => {
         context1.drawImage(image, 50, 320, 1100, 380);
         context1.fillText(pro.ProductName, 500, 45);
-        context1.fillText(`QTY - ${pro.Qty}`, 259, 135);
+        context1.fillText("QTY - 1", 259, 135);
         context1.fillText(`Sort No: ${val}`, 460, 205);
         context1.fillText(pro.priceCode, 320, 720);
 
@@ -676,7 +676,7 @@ module.exports = {
         loadImage(BarCode_link2.secure_url).then(async (image) => {
           context.drawImage(image, 50, 320, 1100, 380);
           context.fillText(pro.ProductName, 500, 45);
-          context.fillText(`QTY - ${pro.Qty}`, 259, 135);
+          context.fillText("QTY - 1", 259, 135);
           context.fillText(`Sort No: ${val}`, 460, 205);
           context.fillText(pro.priceCode, 320, 720);
           context.fillText(

@@ -150,14 +150,16 @@ function Billing() {
       grand = grand + data.SellingPrice - data.Discount;
       let qtyRate = data.SellingPrice * data.qtyVal;
       grand = grand + qtyRate - data.SellingPrice;
+      let subUnit = data.SellingPrice - data.Discount;
+      let subTotal = data.qtyVal * data.SellingPrice - data.Discount;
       return {
         ProductName: data.ProductName,
         Size: data.Size,
         Brand: data.Brand,
         Discount: data.Discount,
         MRP: data.SellingPrice.toLocaleString("en-US"),
-        SubtotalUnit: data.SellingPrice - data.Discount,
-        Subtotal: data.qtyVal * data.SellingPrice - data.Discount,
+        SubtotalUnit: subUnit.toLocaleString("en-US"),
+        Subtotal: subTotal.toLocaleString("en-US"),
         Qty: (
           <HStack>
             <AiOutlineMinus onClick={() => decrement(data._id)} />
