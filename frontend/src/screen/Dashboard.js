@@ -106,8 +106,9 @@ function Dashboard() {
           justifyContent="space-around"
         >
           <Box
-            backgroundColor={DarkMode == "light" ? "white" : color}
+            backgroundColor={DarkMode == "light" ? "white !important" : color}
             borderRadius="25px"
+            border="1px solid #8792a3"
             w="300px"
             h="150px"
             boxShadow="xl"
@@ -144,6 +145,7 @@ function Dashboard() {
           <Box
             backgroundColor={DarkMode == "light" ? "white" : color}
             borderRadius="25px"
+            border="1px solid #8792a3"
             w="300px"
             h="150px"
             boxShadow="xl"
@@ -180,6 +182,7 @@ function Dashboard() {
           <Box
             backgroundColor={DarkMode == "light" ? "white" : color}
             borderRadius="25px"
+            border="1px solid #8792a3"
             w="300px"
             h="150px"
             boxShadow="xl"

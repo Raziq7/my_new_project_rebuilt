@@ -66,6 +66,7 @@ function Billing() {
   const [qtyVal, setQtyVal] = useState(1);
   const [qtyErr, setQtyErr] = useState();
   const [gst, setGst] = useState(0);
+  const [tracking, setTracking] = useState();
 
   let qty = 1;
 
@@ -143,6 +144,8 @@ function Billing() {
 
   //INITIAL VALUE
   let grand = 0;
+  let subTotal;
+  let subUnit;
   //data Meterial
   let data =
     billInfo &&
@@ -150,8 +153,8 @@ function Billing() {
       grand = grand + data.SellingPrice - data.Discount;
       let qtyRate = data.SellingPrice * data.qtyVal;
       grand = grand + qtyRate - data.SellingPrice;
-      let subUnit = data.SellingPrice - data.Discount;
-      let subTotal = data.qtyVal * data.SellingPrice - data.Discount;
+      subUnit = data.SellingPrice - data.Discount;
+      subTotal = data.qtyVal * data.SellingPrice - data.Discount;
       return {
         ProductName: data.ProductName,
         Size: data.Size,
@@ -295,8 +298,8 @@ function Billing() {
     let gstcont = parseInt(gst);
     grand += gstcont;
     setGrandTotal(grand);
-    setGst("");
   };
+
   return (
     <>
       <Box
@@ -465,10 +468,12 @@ function Billing() {
                 </Box>
                 {BillDetail && (
                   <Button
-                    onClick={() => {
+                    onClick={async () => {
                       setGrandTotal(grand);
                       setVisiblePdf(true);
-                      dispacth(checkoutBill(billInfo, grand));
+                      let track = await Math.floor(1000 + Math.random() * 9000);
+                      setTracking(track);
+                      dispacth(checkoutBill(billInfo, grand, track));
                     }}
                     background="teal"
                     color="white"
@@ -482,7 +487,15 @@ function Billing() {
             </>
           )
         ) : (
-          <PDF billInfo={billInfo} qty={qty} grand={grandTotal} />
+          <PDF
+            billInfo={billInfo}
+            qty={qty}
+            grand={grand}
+            gst={gst}
+            name={name}
+            phone={phone}
+            tracking={tracking}
+          />
         )}
       </Box>
     </>

@@ -229,13 +229,15 @@ export const billingAction = (value) => async (dispatch, getState) => {
 //increas Qty Value
 
 export const checkoutBill =
-  (billInfo, grandTotal) => async (dispacth, getState) => {
+  (billInfo, grandTotal, Tracking) => async (dispacth, getState) => {
+    alert(Tracking);
     try {
       dispacth({ type: INCREAS_BILLING_QTY_REQUEST });
 
       let { data } = await axios.post("/api/superAdmin/checkoutBillingQty", {
         billInfo,
         grandTotal,
+        Tracking,
       });
 
       dispacth({ type: INCREAS_BILLING_QTY_SUCCESS, payload: data });

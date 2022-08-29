@@ -391,7 +391,7 @@ function Home() {
           ) : (
             <MaterialTable
               style={{
-                marginLeft: "60px",
+                marginLeft: "35px",
                 marginTop: "20px",
                 width: "90vw",
               }}

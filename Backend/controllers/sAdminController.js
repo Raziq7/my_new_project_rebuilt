@@ -764,7 +764,7 @@ module.exports = {
 
   checkoutBillingQty: asyncHandler(async (req, res) => {
     try {
-      const { billInfo, grandTotal } = req.body;
+      const { billInfo, grandTotal, Tracking } = req.body;
       console.log(grandTotal, "5454545454");
 
       billInfo.map(async (data) => {
@@ -781,6 +781,7 @@ module.exports = {
       });
       let insertBilling = await Billing.insertMany({
         grandTotal,
+        Tracking,
       });
       res, json(increaseQty);
     } catch (err) {

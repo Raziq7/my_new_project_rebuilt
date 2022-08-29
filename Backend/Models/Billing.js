@@ -2,7 +2,9 @@ const mongoose = require("mongoose");
 const BillingSchema = mongoose.Schema(
   {
     grandTotal: Number,
+    Tracking: Number,
   },
+
   {
     timestamps: true,
   }
