@@ -230,7 +230,6 @@ export const billingAction = (value) => async (dispatch, getState) => {
 
 export const checkoutBill =
   (billInfo, grandTotal, Tracking) => async (dispacth, getState) => {
-    alert(Tracking);
     try {
       dispacth({ type: INCREAS_BILLING_QTY_REQUEST });
 

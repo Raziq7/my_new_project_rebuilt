@@ -85,10 +85,13 @@ table td {
   border: 1px solid #dee2e6;
 }
 .text-right {
-  text-align: end !important;
+  text-align: 150px !important;
 }
 .w-20 {
   width: 20%;
+}
+.auto {
+  width: "auto";
 }
 .float-right {
   float: right;

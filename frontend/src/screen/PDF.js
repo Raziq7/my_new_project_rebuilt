@@ -21,6 +21,11 @@ export const PDF = ({ billInfo, qty, grand, gst, name, phone, tracking }) => {
   let subTotal;
   let gstcont = parseInt(gst);
   let GrandTotal = grand + gstcont;
+  const d1 = new Date();
+  console.log(d1);
+
+  // converting to number
+  const result = `${d1.getDate()}${d1.getMonth()}${d1.getYear()}`;
 
   return (
     <>
@@ -50,7 +55,7 @@ export const PDF = ({ billInfo, qty, grand, gst, name, phone, tracking }) => {
           <div className="body-section">
             <div className="row">
               <div className="col-6">
-                <h2 className="heading">Invoice No:- {tracking}</h2>
+                <h2 className="heading">Invoice No:- {result}</h2>
                 <p className="sub-heading">Tracking No. {tracking} </p>
                 <p className="sub-heading">
                   Billing Date:{" "}
@@ -71,12 +76,12 @@ export const PDF = ({ billInfo, qty, grand, gst, name, phone, tracking }) => {
             <table className="table-bordered">
               <thead>
                 <tr>
-                  <th>Product</th>
-                  <th className="w-20">Size</th>
-                  <th className="w-20">Discount</th>
-                  <th className="w-20">Rate</th>
-                  <th className="w-20">Quantity</th>
+                  <th className="w-20">Product</th>
+                  <th className="auto">Size</th>
+                  <th className="auto">Discount</th>
+                  <th className="auto">Quantity</th>
                   <th className="w-20">Amount</th>
+                  <th className="w-20">Rate</th>
                 </tr>
               </thead>
               <tbody>
@@ -92,26 +97,26 @@ export const PDF = ({ billInfo, qty, grand, gst, name, phone, tracking }) => {
                         <td>{data.ProductName}</td>
                         <td>{data.Size}</td>
                         <td>{data.Discount}</td>
-                        <td>{data.SellingPrice.toLocaleString("en-US")}</td>
                         <td>{data.qtyVal}</td>
                         <td>{subTotal.toLocaleString("en-US")}</td>
+                        <td>{data.SellingPrice.toLocaleString("en-US")}</td>
                       </tr>
                     );
                   })}
                 <tr>
-                  <td colspan="3" className="text-right">
+                  <td colspan="5" className="text-right">
                     Sub Total
                   </td>
                   <td>{grand.toLocaleString("en-US")}</td>
                 </tr>
                 <tr>
-                  <td colspan="3" className="text-right">
+                  <td colspan="5" className="text-right">
                     GST Total
                   </td>
                   <td>{gst}</td>
                 </tr>
                 <tr>
-                  <td colspan="3" className="text-right">
+                  <td colspan="5" className="text-right">
                     Grand Total
                   </td>
                   <td>{GrandTotal.toLocaleString("en-US")}</td>
@@ -127,17 +132,17 @@ export const PDF = ({ billInfo, qty, grand, gst, name, phone, tracking }) => {
             <p>
               &copy; Copyright 2021 - ukkensVasthralaya. All rights reserved.
               <a
-                href="https://www.ukkensVasthralaya.com/"
+                // href="https://www.ukkensVasthralaya.com/"
                 className="float-right"
               >
-                https://www.ukkensVasthralaya.com
+                Thank you for shopping 👋
               </a>
             </p>
           </div>
         </div>
       </div>
 
-      <Pdf targetRef={ref} filename="post.pdf">
+      <Pdf targetRef={ref} filename="post.pdf" x={-8.0} y={0.1} scale={0.7}>
         {({ toPdf }) => (
           <Button
             style={{ marginLeft: "35px", marginTop: "10px" }}
