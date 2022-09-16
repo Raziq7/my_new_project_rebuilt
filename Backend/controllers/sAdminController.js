@@ -183,7 +183,7 @@ module.exports = {
           context.fillStyle = "black";
           context.font = "bold 60pt Menlo";
           context.fillText(
-            `MRP ${sellingPrice.toLocaleString("en-US")}`,
+            `MRP = ${sellingPrice.toLocaleString("en-US")}`,
             600,
             530
           );
@@ -196,7 +196,7 @@ module.exports = {
             context.fillText(`Sort No: ${val}`, 460, 205);
             context.fillText(priceCode, 320, 720);
             context.fillText(
-              `MRP ${sellingPrice.toLocaleString("en-US")}`,
+              `MRP = ${sellingPrice.toLocaleString("en-US")}`,
               620,
               810
             );
@@ -680,7 +680,7 @@ module.exports = {
           context.fillText(`Sort No: ${val}`, 460, 205);
           context.fillText(pro.priceCode, 320, 720);
           context.fillText(
-            `MRP ${pro.SellingPrice.toLocaleString("en-US")}`,
+            `MRP = ${pro.SellingPrice.toLocaleString("en-US")}`,
             620,
             810
           );

@@ -64,7 +64,7 @@ export const PDF = ({ billInfo, qty, grand, gst, name, phone, tracking }) => {
                 {/* <p className="sub-heading">Billing Date: 20-20-2021 </p> */}
               </div>
               <div className="col-6">
-                <p className="sub-heading">Full Name: {name}</p>
+                <p className="sub-heading">Customer Name: {name}</p>
                 <p className="sub-heading">Phone Number: {phone}</p>
               </div>
             </div>
@@ -141,8 +141,14 @@ export const PDF = ({ billInfo, qty, grand, gst, name, phone, tracking }) => {
           </div>
         </div>
       </div>
-
-      <Pdf targetRef={ref} filename="post.pdf" x={-8.0} y={0.1} scale={0.7}>
+      <Button
+        style={{ marginLeft: "35px", marginTop: "10px" }}
+        colorScheme="blue"
+        onClick={() => window.location.reload()}
+      >
+        Back
+      </Button>
+      <Pdf targetRef={ref} filename="post.pdf" x={-11.9} y={0.1} scale={0.7}>
         {({ toPdf }) => (
           <Button
             style={{ marginLeft: "35px", marginTop: "10px" }}

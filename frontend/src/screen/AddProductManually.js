@@ -141,10 +141,10 @@ function Test() {
         height="700px"
         ml="40px"
         mt="5px"
-        mb="auto"
+        style={{ padding: "10px" }}
       >
         <form
-          style={{ marginTop: "40px" }}
+          style={{ marginTop: "40px", marginLeft: "20px" }}
           width={["444px", "444px", "444px", "100%", "100%"]}
           display={["444px", "444px", "444px", "100%", "100%"]}
           onSubmit={formik.handleSubmit}
