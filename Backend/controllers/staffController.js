@@ -47,7 +47,8 @@ module.exports = {
     // Admin Details
 
     let { email, password } = req.body;
-    const findStaff = await staffModel.findOne({ email, isBlock: false });
+    const findStaff = await staffModel.findOne({ email, isBlock:false });
+    console.log(findStaff,'dfjaskdhfksadhfasdhfj');
     if (findStaff) {
       bcrypt
         .compare(password, findStaff.password)
@@ -73,7 +74,7 @@ module.exports = {
   //staffShowing
   staffShowing: asyncHandler(async (req, res) => {
     try {
-      let staffShowing = await staffModel.find({});
+      let staffShowing = await staffModel.find({status: {$ne : "superAdmin"}});
 
       res.json(staffShowing);
     } catch (err) {

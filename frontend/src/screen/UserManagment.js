@@ -175,8 +175,9 @@ function UserManagment() {
       width={{
         sm: "60%",
         md: "650px",
-        lg: "600px",
+        lg: "90%",
         xl: "100%",
+
       }}
       mb="auto"
       mt="auto"
@@ -243,7 +244,7 @@ function UserManagment() {
         <MaterialTable
           style={{
             marginLeft: "40px",
-            width: "95%",
+            width: "100%",
             marginBottom: "260px",
           }}
           icons={tableIcons}

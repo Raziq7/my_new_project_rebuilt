@@ -102,7 +102,7 @@ function SideNav() {
               />
             </Link>
 
-            {staffExit.findStaff.status == "admin" && "superAdmin" && (
+            {staffExit.findStaff.status == "admin" || "superAdmin" && (
               <Link
                 style={{
                   marginRight: "100%",

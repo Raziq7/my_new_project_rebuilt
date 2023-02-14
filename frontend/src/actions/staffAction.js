@@ -30,7 +30,7 @@ export const staffRegster = (detail) => async (dispatch, getState) => {
       type: STAFF_REGISTER_SUCCESS,
       payload: data,
     });
-    localStorage.setItem("staffInfo", JSON.stringify(data));
+    // localStorage.setItem("staffInfo", JSON.stringify(data));
   } catch (error) {
     console.log(error);
   }

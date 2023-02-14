@@ -52,7 +52,7 @@ export default function Navbar() {
             <Box>
               {" "}
               {/* <Avatar size={"sm"} src={"images/UK-Logo.png"} w="200px" /> */}
-              <img src="images/UK-Logo.png" alt="" width="80px" h="auto" />
+              <img src="images/UK-Logo.png" alt="" width="80px !important" h="auto" />
             </Box>
             <Text fontSize="2xl">Sales and Stock Managment Dashboard</Text>
 

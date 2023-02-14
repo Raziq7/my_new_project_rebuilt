@@ -27,6 +27,7 @@ import {
   Skeleton,
   useColorModeValue,
   useDisclosure,
+  HStack,
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
 
@@ -168,13 +169,7 @@ function LadgerBook() {
           style={{ marginBottom: "10px" }}
         >
           <form onSubmit={submitHandler}>
-            <Box
-              spacing={3}
-              display={["block", "block", "block", "flex", "flex"]}
-              alignItems="center"
-              justifyContent="center"
-              mt="80px"
-            >
+            <Box spacing={3} mt="80px">
               <VStack mb="28px" w="150px">
                 <Text>Select Category</Text>
                 <Select
@@ -197,7 +192,7 @@ function LadgerBook() {
                 </Select>
               </VStack>
               <Divider />
-              <VStack mb="28px">
+              <VStack mt="-98px" ml="-290px">
                 <Text>Enter Details</Text>
                 <Input
                   onChange={(e) => {
@@ -206,75 +201,73 @@ function LadgerBook() {
                   backgroundColor={color == "dark" && "wheat"}
                   placeholder="Details"
                   _placeholder={{ color: "inherit" }}
-                  sx={{ marginLeft: "15px" }}
                 />
               </VStack>
-              <Box sx={{ marginLeft: "20px" }}></Box>
-              <VStack mb="28px">
-                <Text>Select Type</Text>
+              <HStack mt="-61px" ml="490px">
+                <VStack>
+                  <Text>Select Type</Text>
+                  <Select
+                    onChange={(e) => {
+                      setExpense(e.target.value);
+                    }}
+                    placeholder="Select category"
+                    size="md"
+                    style={{ marginLeft: "15px", width: "100px" }}
+                  >
+                    <option style={{ marginLeft: "15px" }} value="credit">
+                      Credit
+                    </option>
+                    <option style={{ marginLeft: "15px" }} value="debit">
+                      Debit
+                    </option>
+                  </Select>
+                </VStack>
+                <Box sx={{ marginLeft: "20px" }}></Box>
+                {expense == "credit" && (
+                  <VStack mb="28px">
+                    <Text>Credit</Text>
+                    <Input
+                      onChange={(e) => {
+                        setCredit(e.target.value);
+                      }}
+                      focusBorderColor="red"
+                      placeholder="Credit"
+                      _placeholder={{ color: "inherit" }}
+                      type="number"
+                    />
+                  </VStack>
+                )}
 
-                <Select
-                  onChange={(e) => {
-                    setExpense(e.target.value);
+                {expense == "debit" && (
+                  <VStack mb="28px">
+                    <Text>Debit</Text>
+                    <Input
+                      onChange={(e) => {
+                        setDebit(e.target.value);
+                      }}
+                      focusBorderColor="red"
+                      placeholder="Debit"
+                      _placeholder={{ color: "inherit" }}
+                      type="number"
+                      sx={{ marginLeft: "15px" }}
+                    />
+                  </VStack>
+                )}
+
+                <Button
+                  style={{
+                    backgroundColor: "#008081",
+                    marginLeft: "15px",
+                    color: "white",
                   }}
-                  placeholder="Select category"
-                  size="md"
-                  style={{ marginLeft: "15px", width: "100px" }}
+                  type="submit"
+                  width="100px"
+                  boxShadow="2xl"
+                  rounded="xl"
                 >
-                  <option style={{ marginLeft: "15px" }} value="credit">
-                    Credit
-                  </option>
-                  <option style={{ marginLeft: "15px" }} value="debit">
-                    Debit
-                  </option>
-                </Select>
-              </VStack>
-
-              <Box sx={{ marginLeft: "20px" }}></Box>
-              {expense == "credit" && (
-                <VStack mb="28px">
-                  <Text>Credit</Text>
-                  <Input
-                    onChange={(e) => {
-                      setCredit(e.target.value);
-                    }}
-                    focusBorderColor="red"
-                    placeholder="Credit"
-                    _placeholder={{ color: "inherit" }}
-                    type="number"
-                  />
-                </VStack>
-              )}
-
-              {expense == "debit" && (
-                <VStack mb="28px">
-                  <Text>Debit</Text>
-                  <Input
-                    onChange={(e) => {
-                      setDebit(e.target.value);
-                    }}
-                    focusBorderColor="red"
-                    placeholder="Debit"
-                    _placeholder={{ color: "inherit" }}
-                    type="number"
-                    sx={{ marginLeft: "15px" }}
-                  />
-                </VStack>
-              )}
-
-              <Button
-                style={{
-                  backgroundColor: "#008081",
-                  marginLeft: "15px",
-                  color: "white",
-                }}
-                type="submit"
-                width="100px"
-                boxShadow="2xl"
-                rounded="xl"
-              >
-                Add Ledger
-              </Button>
+                  Add Ledger
+                </Button>
+              </HStack>
             </Box>
           </form>
         </Box>

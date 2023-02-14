@@ -137,16 +137,17 @@ function Test() {
         rounded="lg"
         boxShadow="2xl"
         backgroundColor={bg}
-        width={["auto", "auto", "90%", "100%", "100%"]}
-        height="700px"
-        ml="40px"
+        // width={["auto", "auto", "90%", "auto", "auto"]}
+        height="800px"
+        ml="20px"
         mt="5px"
         style={{ padding: "10px" }}
+        overflow="scroll"
       >
         <form
           style={{ marginTop: "40px", marginLeft: "20px" }}
-          width={["444px", "444px", "444px", "100%", "100%"]}
-          display={["444px", "444px", "444px", "100%", "100%"]}
+          // width={["444px", "444px", "444px", "100%", "100%"]}
+          // display={["444px", "444px", "444px", "100%", "100%"]}
           onSubmit={formik.handleSubmit}
         >
           <Box mt="9px">
@@ -168,9 +169,10 @@ function Test() {
           </Box>
 
           <Box
-            display={["block", "block", "block", "block", "flex"]}
+            display={["block", "block", "block", "flex", "flex"]}
             justifyContent="space-around"
             mt="20px"
+            width='auto'
           >
             {Error && (
               <Text color="red">
@@ -180,12 +182,12 @@ function Test() {
             <Box>
               <Text width="100px">Product Size</Text>
               <Select
-                w={{
-                  sm: "200px",
-                  md: "auto",
-                  lg: "auto",
-                  xl: "auto",
-                }}
+                // w={{
+                //   sm: "200px",
+                //   md: "auto",
+                //   lg: "auto",
+                //   xl: "auto",
+                // }}
                 name="proSize"
                 placeholder="The Size"
                 onChange={(e) => {
@@ -327,7 +329,7 @@ function Test() {
               />
             </Box>
             <Box>
-              <Text width="100px">Min Qty</Text>
+              <Text width="100px" >Min Qty</Text>
               <Input
                 onChange={(e) => {
                   setMinQty(e.target.value);
@@ -352,7 +354,7 @@ function Test() {
           </Box>
 
           <Box
-            width={["65%", "60%", "650px", "800px", "900px"]}
+            // width={["65%", "60%", "650px", "800px", "900px"]}
             overflowY="auto"
             mt="10px"
           >
